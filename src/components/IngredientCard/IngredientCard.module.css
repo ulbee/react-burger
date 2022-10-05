@@ -1,15 +1,21 @@
 .card {
-
+  min-width: 272px;
+  min-height: 208px;
 }
 
 .image {
-
+  display: block;
+  margin: 0 auto;
 }
 
 .price {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
 
+  margin: 0;
 }
 
 .title {
-  
+  text-align: center;
 }
