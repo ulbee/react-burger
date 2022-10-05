@@ -6,6 +6,7 @@ import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients'
 import { INGREDIENTS } from './utils/data';
 
 function App() {
+  console.log('app');
   return (
     <div className={AppStyles.main + ' m-10'}>
       <AppHeader />

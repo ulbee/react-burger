@@ -1,32 +1,24 @@
+import React, { useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCategory from '../IngredientCategory/IngredientCategory';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
 
 function BurgerIngredients({ data }) {
 
-  let categories = [
-    {
-      title: 'Булки',
-      titleId: 'bun'  ,
-      data: []    
-    },
-    {
-      title: 'Начинки',
-      titleId: 'main',
-      data: []   
-    },
-    {
-      title: 'Соусы',
-      titleId: 'sauce',
-      data: []
-    }
-  ]
+  const categoriesTitles = {
+    'bun': 'Булки',
+    'main': 'Начинки',
+    'sauce': 'Соусы'
+  }
   
-  data.forEach((item) => {
-    categories.find((el) => {
-      return el.titleId === item.type;
-    }).data.push(item);
-  });
+  const categoriesOrder = ['bun', 'main', 'sauce'];
+      
+  const [activeTab, setActiveTab] = useState('bun');
+
+  const categories = data.reduce((res, item) => {
+    (res[item.type] || (res[item.type] = [])).push(item);
+    return res;
+  }, {});    
 
   return (
     <section className={BurgerIngredientsStyles.section}>
@@ -34,20 +26,27 @@ function BurgerIngredients({ data }) {
         Соберите бургер
       </h1>
       <div className={BurgerIngredientsStyles.tabs + ' pb-10'}>
-        <Tab value='bun' active={true} onClick={() => {console.log('tab')}}>
-          Булки
-        </Tab>
-        <Tab value='sauce' onClick={() => {console.log('tab')}}>
-          Соусы
-        </Tab>
-        <Tab value='main' onClick={() => {console.log('tab')}}>
-          Начинки
-        </Tab>
+        {categoriesOrder.map((categoryId) => {
+          return <Tab
+              key={categoryId}
+              value={categoryId} 
+              active={activeTab === categoryId} 
+              onClick={() => {
+                window.location.hash = '#' + categoryId;
+                setActiveTab(categoryId);
+              }}>
+            {categoriesTitles[categoryId]}
+          </Tab>
+        })}          
       </div>
       <div className={BurgerIngredientsStyles.categories}>
-        {categories.map((el) => {
-          return <IngredientCategory title={el.title} titleId={el.titleId} data={el.data} key={el.titleId}/>
-        })}
+        {categoriesOrder.map((categoryId) => ( 
+          <IngredientCategory 
+            key={categoryId}
+            id={categoryId} 
+            title={categoriesTitles[categoryId]} 
+            data={categories[categoryId]}/>
+        ))}
       </div>
     </section>
   );
