@@ -3,7 +3,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCategory from '../IngredientCategory/IngredientCategory';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
 
-function BurgerIngredients({ data }) {
+function BurgerIngredients({ data, order }) {
 
   const categoriesTitles = {
     'bun': 'Булки',
@@ -45,7 +45,8 @@ function BurgerIngredients({ data }) {
             key={categoryId}
             id={categoryId} 
             title={categoriesTitles[categoryId]} 
-            data={categories[categoryId]}/>
+            data={categories[categoryId]}
+            order={order} />
         ))}
       </div>
     </section>

@@ -6,7 +6,7 @@ function IngredientCard({ data, count }) {
   return (
     <div className={IngredientCardStyles.card}>
 
-      {count && <Counter count={count} size="default" />}
+      { count ? <Counter count={count} size="default"/> : '' }
 
       <img src={data.image} alt={data.name} className={IngredientCardStyles.image}/>
       <p className={IngredientCardStyles.price + ' pt-1 pb-1'}>
