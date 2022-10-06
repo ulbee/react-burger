@@ -13,7 +13,7 @@ function App() {
       <AppHeader />
       <main className={AppStyles.container}>
         <BurgerIngredients data={INGREDIENTS} order={ORDER} />
-        <BurgerConstructor data={ORDER} />
+        <BurgerConstructor order={ORDER} />
       </main>
     </div>
   );

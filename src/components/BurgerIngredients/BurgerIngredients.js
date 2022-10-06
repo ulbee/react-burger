@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCategory from '../IngredientCategory/IngredientCategory';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
-import ingredientsPropTypes from '../../utils/propTypes';
+import IngredientsPropTypes from '../../utils/propTypes';
 
 function BurgerIngredients({ data, order }) {
 
@@ -56,8 +56,8 @@ function BurgerIngredients({ data, order }) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientsPropTypes),
-  order: PropTypes.arrayOf(ingredientsPropTypes)
+  data: PropTypes.arrayOf(IngredientsPropTypes),
+  order: PropTypes.arrayOf(IngredientsPropTypes)
 };
 
 export default BurgerIngredients;

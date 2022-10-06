@@ -23,7 +23,7 @@ function IngredientCard({ data, count }) {
 }
 
 IngredientCard.propTypes = {
-  data: PropTypes.arrayOf(IngredientsPropTypes),
+  data: IngredientsPropTypes,
   count: PropTypes.number
 }
 

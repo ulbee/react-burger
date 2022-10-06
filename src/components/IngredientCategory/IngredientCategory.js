@@ -25,7 +25,7 @@ function IngredientCategory({ id, title, data, order }) {
   );
 }
 
-IngredientCard.propTypes = {
+IngredientCategory.propTypes = {
   id: PropTypes.string,
   title: PropTypes.string,
   data: PropTypes.arrayOf(IngredientsPropTypes),
