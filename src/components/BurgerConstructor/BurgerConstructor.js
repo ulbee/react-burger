@@ -1,9 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
+import IngredientsPropTypes from '../../utils/propTypes';
 
-function BurgerConstructor({ data }) {
-  const ingredients = data.reduce((res, item) => {
+function BurgerConstructor({ order }) {
+  const ingredients = order.reduce((res, item) => {
     res.total += item.price;
 
     if (item.type === 'bun') {
@@ -60,5 +62,9 @@ function BurgerConstructor({ data }) {
     </section>
   );
 }
+
+BurgerConstructor.propTypes = {
+  order: PropTypes.arrayOf(IngredientsPropTypes)
+};
 
 export default BurgerConstructor;

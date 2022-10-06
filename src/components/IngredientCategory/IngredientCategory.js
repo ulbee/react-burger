@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
 import IngredientCard from '../IngredientCard/IngredientCard';
 import IngredientCategoryStyles from './IngredientCategory.module.css';
+import IngredientsPropTypes from '../../utils/propTypes';
 
 function IngredientCategory({ id, title, data, order }) {
   const ingredientsCount = data.reduce((res, item) => {
@@ -21,6 +23,13 @@ function IngredientCategory({ id, title, data, order }) {
       </div>        
     </>  
   );
+}
+
+IngredientCard.propTypes = {
+  id: PropTypes.string,
+  title: PropTypes.string,
+  data: PropTypes.arrayOf(IngredientsPropTypes),
+  order: PropTypes.arrayOf(IngredientsPropTypes)
 }
 
 export default IngredientCategory;
