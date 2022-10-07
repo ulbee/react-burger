@@ -26,10 +26,10 @@ function IngredientCategory({ id, title, data, order }) {
 }
 
 IngredientCategory.propTypes = {
-  id: PropTypes.string,
-  title: PropTypes.string,
-  data: PropTypes.arrayOf(IngredientsPropTypes),
-  order: PropTypes.arrayOf(IngredientsPropTypes)
+  id: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  data: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
+  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired
 }
 
 export default IngredientCategory;

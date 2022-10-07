@@ -22,7 +22,7 @@ function BurgerConstructor({ order }) {
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={ingredients.bun.name}
+          text={ingredients.bun.name + ' (верх)'}
           price={ingredients.bun.price}
           thumbnail={ingredients.bun.image}/>
       </div>
@@ -30,7 +30,8 @@ function BurgerConstructor({ order }) {
         {
           ingredients.others.map((item, index) => {
             if (item.type !== 'bun') {
-              return <li key={index} className={BurgerConstructorStyles.item + ' pb-4 pr-2'} >
+              return (
+                <li key={index} className={BurgerConstructorStyles.item + ' pb-4 pr-2'} >
                   <DragIcon type="primary" />
                   <ConstructorElement
                     isLocked={false}
@@ -38,6 +39,7 @@ function BurgerConstructor({ order }) {
                     price={item.price}
                     thumbnail={item.image}/>
                 </li>
+              );
             }
           })
         }
@@ -46,7 +48,7 @@ function BurgerConstructor({ order }) {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={ingredients.bun.name}
+          text={ingredients.bun.name + ' (низ)'}
           price={ingredients.bun.price}
           thumbnail={ingredients.bun.image}/>
       </div>
@@ -64,7 +66,7 @@ function BurgerConstructor({ order }) {
 }
 
 BurgerConstructor.propTypes = {
-  order: PropTypes.arrayOf(IngredientsPropTypes)
+  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired
 };
 
 export default BurgerConstructor;

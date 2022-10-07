@@ -23,7 +23,7 @@ function IngredientCard({ data, count }) {
 }
 
 IngredientCard.propTypes = {
-  data: IngredientsPropTypes,
+  data: IngredientsPropTypes.isRequired,
   count: PropTypes.number
 }
 

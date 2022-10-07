@@ -29,7 +29,8 @@ function BurgerIngredients({ data, order }) {
       </h1>
       <div className={BurgerIngredientsStyles.tabs + ' pb-10'}>
         {categoriesOrder.map((categoryId) => {
-          return <Tab
+          return (
+            <Tab
               key={categoryId}
               value={categoryId} 
               active={activeTab === categoryId} 
@@ -39,6 +40,7 @@ function BurgerIngredients({ data, order }) {
               }}>
             {categoriesTitles[categoryId]}
           </Tab>
+          );
         })}          
       </div>
       <div className={BurgerIngredientsStyles.categories}>
@@ -56,8 +58,8 @@ function BurgerIngredients({ data, order }) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(IngredientsPropTypes),
-  order: PropTypes.arrayOf(IngredientsPropTypes)
+  data: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
+  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired
 };
 
 export default BurgerIngredients;
