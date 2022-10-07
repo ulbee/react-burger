@@ -1,11 +1,11 @@
 import React from 'react';
 import AppStyles from './App.module.css';
-import AppHeader from './components/AppHeader/AppHeader';
-import BurgerIngredients from './components/BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from './components/BurgerConstructor/BurgerConstructor';
+import AppHeader from '../AppHeader/AppHeader';
+import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
+import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 
-import { INGREDIENTS } from './utils/data';
-import { ORDER } from './utils/order';
+import { INGREDIENTS } from '../../utils/data';
+import { ORDER } from '../../utils/order';
 
 function App() {
   return (
