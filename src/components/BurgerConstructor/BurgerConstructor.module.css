@@ -1,0 +1,57 @@
+.section {
+  display: grid;
+  grid-template-rows: min-content auto min-content;
+  gap: 16px;
+  justify-items: end;
+
+  min-width: 600px;
+  height: 100%;
+  overflow: hidden;
+
+  box-sizing: border-box;
+}
+
+.bun {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(133, 133, 173, 1) rgba(47, 47, 55, 1);
+  scroll-behavior: smooth;
+}
+
+.list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: rgba(47, 47, 55, 1);
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: rgba(133, 133, 173, 1);
+}
+
+.item {
+  list-style: none;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.total {
+  display: flex;
+}
+
+.info {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
