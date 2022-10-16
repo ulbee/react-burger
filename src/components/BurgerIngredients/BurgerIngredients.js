@@ -55,7 +55,8 @@ function BurgerIngredients({ data, order, openIngredientModal }) {
 
 BurgerIngredients.propTypes = {
   data: PropTypes.objectOf(PropTypes.arrayOf(IngredientsPropTypes)).isRequired,
-  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired
+  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
+  openIngredientModal: PropTypes.func.isRequired
 };
 
 export default BurgerIngredients;

@@ -21,10 +21,6 @@ function App() {
     setIsOrderDetailsOpened(false);
     setIngredientDetails({isOpened: false, id: null})
   };
-
-  const handleEscKeydown = (e) => {
-    e.key === 'Escape' && closeAllModals();
-  };
   
   const openOrderDetailsModal = () => {
     setIsOrderDetailsOpened(true);
@@ -38,7 +34,13 @@ function App() {
     const getIngredients = async () => {
       try {
         setState({...state, loading: true});
-        const res = await (await fetch(URL)).json();
+        const data = await fetch(URL);
+
+        // Почему-то не получилось с .then обработать ответ, сделала немного по-другому. Надеюсь, так тоже нормально 
+        if (!data.ok) {
+          throw new Error('Произошла ошибка: ' + data.status);
+        }
+        const res = await data.json();
 
         const ingredientsById = {};
         const ingredientsByType = {};
@@ -80,13 +82,13 @@ function App() {
       </main>
       {
         isOrderDetailsOpened &&
-        <Modal title='' onOverlayClick={closeAllModals} onEscKeydown={handleEscKeydown}>          
+        <Modal title='' onClose={closeAllModals}>
           <OrderDetails id='034536'/>
         </Modal>
       }
       {
         ingredientDetails.isOpened &&
-        <Modal title='Детали ингридиента' onOverlayClick={closeAllModals} onEscKeydown={handleEscKeydown}>
+        <Modal title='Детали ингридиента' onClose={closeAllModals}>
           <IngredientDetails data={state.ingredientsById[ingredientDetails.id]}/>
         </Modal>
       }

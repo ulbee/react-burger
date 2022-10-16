@@ -33,7 +33,8 @@ IngredientCategory.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
-  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired
+  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
+  openIngredientModal: PropTypes.func.isRequired
 }
 
 export default IngredientCategory;

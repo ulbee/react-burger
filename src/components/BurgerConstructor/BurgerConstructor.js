@@ -66,7 +66,8 @@ function BurgerConstructor({ order, openOrderDetailsModal }) {
 }
 
 BurgerConstructor.propTypes = {
-  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired
+  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
+  openOrderDetailsModal: PropTypes.func.isRequired
 };
 
 export default BurgerConstructor;

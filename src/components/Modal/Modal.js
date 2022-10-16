@@ -7,21 +7,25 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const modalsContainer = document.querySelector('#modals');
 
-function Modal({ title, onOverlayClick, onEscKeydown, children }) {
-  
+function Modal({ title, onClose, children }) {
+
   React.useEffect(() => {
-    document.addEventListener('keydown', onEscKeydown);
+    const handleEscKeydown = (e) => {
+      e.key === 'Escape' && onClose();
+    };
+
+    document.addEventListener('keydown', handleEscKeydown);
 
     return () => {
-      document.removeEventListener('keydown', onEscKeydown);
+      document.removeEventListener('keydown', handleEscKeydown);
     };
   }, []);
 
   return ReactDOM.createPortal(
     (<div className={ModalStyles.container}>
-      <ModalOverlay onClick={onOverlayClick} />
+      <ModalOverlay onClick={onClose} />
       <div className={ModalStyles.modal + ' pt-10 pr-10 pl-10 pb-15'}>
-        <div  className={ModalStyles.close} onClick={onOverlayClick}>
+        <div  className={ModalStyles.close} onClick={onClose}>
           <CloseIcon type="primary"/>
         </div>
         {title && <h3 className={ModalStyles.title + ' text text_type_main-large pt-3'}>{title}</h3>}
@@ -34,8 +38,7 @@ function Modal({ title, onOverlayClick, onEscKeydown, children }) {
 
 Modal.propTypes = {
   title: PropTypes.string,
-  onOverlayClick: PropTypes.func.isRequired,
-  onEscKeydown: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
   children: PropTypes.node.isRequired
 }
 
