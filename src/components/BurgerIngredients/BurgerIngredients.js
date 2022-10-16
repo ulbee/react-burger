@@ -5,7 +5,7 @@ import IngredientCategory from '../IngredientCategory/IngredientCategory';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
 import IngredientsPropTypes from '../../utils/propTypes';
 
-function BurgerIngredients({ data, order }) {
+function BurgerIngredients({ data, order, openIngredientModal }) {
 
   const categoriesTitles = {
     'bun': 'Булки',
@@ -50,7 +50,8 @@ function BurgerIngredients({ data, order }) {
             id={categoryId} 
             title={categoriesTitles[categoryId]} 
             data={categories[categoryId]}
-            order={order} />
+            order={order} 
+            openIngredientModal={openIngredientModal} />
         ))}
       </div>
     </section>
