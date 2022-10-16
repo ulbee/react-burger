@@ -6,19 +6,20 @@ import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
 import { ORDER } from '../../utils/order';
 
 function App() {
   const URL = 'https://norma.nomoreparties.space/api/ingredients';
 
-  const [state, setState] = React.useState({ingredients: [], loading: false});
-  const [isOrderDetailsOpened, setIsOrderDetailsOpened] = React.useState(true);
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = React.useState(false);
+  const [state, setState] = React.useState({ingredientsById: undefined, ingredientsByType: undefined, loading: false});
+  const [isOrderDetailsOpened, setIsOrderDetailsOpened] = React.useState(false);
+  const [ingredientDetails, setIngredientDetails] = React.useState({isOpened: false, id: null});
 
   const closeAllModals = () => {
     setIsOrderDetailsOpened(false);
-    setIsIngredientDetailsOpened(false)
+    setIngredientDetails({isOpened: false, id: null})
   };
 
   const handleEscKeydown = (e) => {
@@ -29,17 +30,30 @@ function App() {
     setIsOrderDetailsOpened(true);
   }
 
-  const openIngredientModal = () => {
-    setIsIngredientDetailsOpened(true);
+  const openIngredientModal = (e) => {
+    setIngredientDetails({isOpened: true, id: e.currentTarget.id});
   }
 
   useEffect(() => {
     const getIngredients = async () => {
       try {
         setState({...state, loading: true});
-        const res = await fetch(URL);
-        const data = await res.json();
-        setState({...state, ingredients: data, loading: false});
+        const res = await (await fetch(URL)).json();
+
+        const ingredientsById = {};
+        const ingredientsByType = {};
+
+        res.data.forEach((item) => {
+          ingredientsById[item._id] = item;
+          (ingredientsByType[item.type] || (ingredientsByType[item.type] = [])).push(item);
+        });
+
+        setState({
+          ...state,
+          ingredientsById,
+          ingredientsByType,
+          loading: false
+        });
       } catch(err) {
         console.log('Ошибка при получении данных: ' + err);
       }
@@ -53,12 +67,14 @@ function App() {
       <AppHeader />
       <main className={AppStyles.container}>
         <ErrorBoundary>
-          { state.loading && 'Загружаем данные' }
-          { !state.loading && state.ingredients.data &&        
-          <>
-            <BurgerIngredients data={state.ingredients.data} order={ORDER} openIngredientModal={openIngredientModal}/>
-            <BurgerConstructor order={ORDER} openOrderDetailsModal={openOrderDetailsModal}/>
-          </>
+          {
+            state.loading ? 
+              'Загружаем данные' :
+              state.ingredientsByType &&
+              <>
+                <BurgerIngredients data={state.ingredientsByType} order={ORDER} openIngredientModal={openIngredientModal}/>
+                <BurgerConstructor order={ORDER} openOrderDetailsModal={openOrderDetailsModal}/>
+              </>
           }
         </ErrorBoundary>
       </main>
@@ -69,9 +85,9 @@ function App() {
         </Modal>
       }
       {
-        isIngredientDetailsOpened &&
+        ingredientDetails.isOpened &&
         <Modal title='Детали ингридиента' onOverlayClick={closeAllModals} onEscKeydown={handleEscKeydown}>
-
+          <IngredientDetails data={state.ingredientsById[ingredientDetails.id]}/>
         </Modal>
       }
     </div>

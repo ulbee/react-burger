@@ -17,11 +17,6 @@ function BurgerIngredients({ data, order, openIngredientModal }) {
       
   const [activeTab, setActiveTab] = useState('bun');
 
-  const categories = data.reduce((res, item) => {
-    (res[item.type] || (res[item.type] = [])).push(item);
-    return res;
-  }, {});    
-
   return (
     <section className={BurgerIngredientsStyles.section}>
       <h1 className={BurgerIngredientsStyles.title + ' pt-10 pb-5 text text_type_main-large'}>
@@ -49,7 +44,7 @@ function BurgerIngredients({ data, order, openIngredientModal }) {
             key={categoryId}
             id={categoryId} 
             title={categoriesTitles[categoryId]} 
-            data={categories[categoryId]}
+            data={data[categoryId]}
             order={order} 
             openIngredientModal={openIngredientModal} />
         ))}
@@ -59,7 +54,7 @@ function BurgerIngredients({ data, order, openIngredientModal }) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
+  data: PropTypes.objectOf(PropTypes.arrayOf(IngredientsPropTypes)).isRequired,
   order: PropTypes.arrayOf(IngredientsPropTypes).isRequired
 };
 

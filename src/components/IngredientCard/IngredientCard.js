@@ -6,7 +6,7 @@ import IngredientsPropTypes from '../../utils/propTypes';
 function IngredientCard({ data, count, openIngredientModal }) {
 
   return (
-    <div className={IngredientCardStyles.card} onClick={openIngredientModal}>
+    <div id={data._id} className={IngredientCardStyles.card} onClick={openIngredientModal}>
 
       { count ? <Counter count={count} size="default"/> : '' }
 
