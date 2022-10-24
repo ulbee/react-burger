@@ -5,7 +5,7 @@ import IngredientCategory from '../IngredientCategory/IngredientCategory';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
 import IngredientsPropTypes from '../../utils/propTypes';
 
-function BurgerIngredients({ data, order }) {
+function BurgerIngredients({ data, order, openIngredientModal }) {
 
   const categoriesTitles = {
     'bun': 'Булки',
@@ -16,11 +16,6 @@ function BurgerIngredients({ data, order }) {
   const categoriesOrder = ['bun', 'main', 'sauce'];
       
   const [activeTab, setActiveTab] = useState('bun');
-
-  const categories = data.reduce((res, item) => {
-    (res[item.type] || (res[item.type] = [])).push(item);
-    return res;
-  }, {});    
 
   return (
     <section className={BurgerIngredientsStyles.section}>
@@ -49,8 +44,9 @@ function BurgerIngredients({ data, order }) {
             key={categoryId}
             id={categoryId} 
             title={categoriesTitles[categoryId]} 
-            data={categories[categoryId]}
-            order={order} />
+            data={data[categoryId]}
+            order={order} 
+            openIngredientModal={openIngredientModal} />
         ))}
       </div>
     </section>
@@ -58,8 +54,9 @@ function BurgerIngredients({ data, order }) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
-  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired
+  data: PropTypes.objectOf(PropTypes.arrayOf(IngredientsPropTypes)).isRequired,
+  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
+  openIngredientModal: PropTypes.func.isRequired
 };
 
 export default BurgerIngredients;

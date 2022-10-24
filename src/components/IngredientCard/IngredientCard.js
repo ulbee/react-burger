@@ -3,10 +3,10 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 import IngredientCardStyles from './IngredientCard.module.css';
 import IngredientsPropTypes from '../../utils/propTypes';
 
-function IngredientCard({ data, count }) {
+function IngredientCard({ data, count, openIngredientModal }) {
 
   return (
-    <div className={IngredientCardStyles.card}>
+    <div id={data._id} className={IngredientCardStyles.card} onClick={openIngredientModal}>
 
       { count ? <Counter count={count} size="default"/> : '' }
 

@@ -4,7 +4,7 @@ import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktiku
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
 import IngredientsPropTypes from '../../utils/propTypes';
 
-function BurgerConstructor({ order }) {
+function BurgerConstructor({ order, openOrderDetailsModal }) {
   const ingredients = order.reduce((res, item) => {
     res.total += item.price;
 
@@ -57,7 +57,7 @@ function BurgerConstructor({ order }) {
           <span className='text text_type_digits-default'>{ingredients.total}</span>
           <CurrencyIcon type="primary"/>
         </div>
-        <Button type="primary" size="medium" htmlType="submit">
+        <Button type="primary" size="medium" htmlType="submit" onClick={openOrderDetailsModal}>
           Оформить заказ
         </Button>
       </div>
@@ -66,7 +66,8 @@ function BurgerConstructor({ order }) {
 }
 
 BurgerConstructor.propTypes = {
-  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired
+  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
+  openOrderDetailsModal: PropTypes.func.isRequired
 };
 
 export default BurgerConstructor;

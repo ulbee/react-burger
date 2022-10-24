@@ -1,0 +1,27 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+}
+
+.modal {
+  position: relative;
+  z-index: 2;
+  align-self: center;
+
+  min-width: 720px;
+
+  background-color: rgba(28, 28, 33, 1);
+}
+
+.close {
+  position: absolute;
+  top: 60px;
+  right: 40px;
+  cursor: pointer;
+}
