@@ -1,43 +1,35 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
 import { OrderContext } from '../../utils/OrderContext';
+import { sendOrder } from '../../utils/api';
 
 function BurgerConstructor({ openOrderDetailsModal }) {
   const [order, setOrder] = useContext(OrderContext);
-  const ingredientIds = [];
-  ingredientIds.push(order.bun._id);
+
+
+  const ingredientIds = useRef([]);
+  ingredientIds.current.push(order.bun._id);
+
+  const total = useMemo(() => {
+    return order.others.reduce((res, item) => {
+      res += item.price;
+      ingredientIds.current.push(item._id);
+
+      return res;
+    }, order.bun.price * 2);
+  }, [order.bun, order.others]);
   
-  const total = order.others.reduce((res, item) => {
-    res += item.price;
-    ingredientIds.push(item._id);
+  ingredientIds.current.push(order.bun._id);
+  
+  const sendOrderHandler = () => {
+    sendOrder(ingredientIds.current).then((orderDetails) => {
+      setOrder({...order, id: orderDetails.order.number});
 
-    return res;
-  }, order.bun.price * 2);
-
-  const sendOrder = async () => {
-    const res = await fetch('https://norma.nomoreparties.space/api/orders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify({
-        ingredients: ingredientIds
-      })
+      openOrderDetailsModal();
     });
-
-    if (!res.ok) {
-      throw new Error('Произошла ошибка: ' + res.status);
-    }
-
-    const orderDetails = await res.json();
-
-    setOrder({...order, id: orderDetails.order.number});
-
-    openOrderDetailsModal();
   }
-
 
   return (
     <section className={BurgerConstructorStyles.section + ' pt-25 pl-4 pr-4 pb-13'}>
@@ -78,7 +70,7 @@ function BurgerConstructor({ openOrderDetailsModal }) {
           <span className='text text_type_digits-default'>{total}</span>
           <CurrencyIcon type="primary"/>
         </div>
-        <Button type="primary" size="medium" htmlType="submit" onClick={sendOrder}>
+        <Button type="primary" size="medium" htmlType="submit" onClick={sendOrderHandler}>
           Оформить заказ
         </Button>
       </div>
