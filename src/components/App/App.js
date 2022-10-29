@@ -7,6 +7,7 @@ import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import { OrderContext } from '../../utils/OrderContext';
 
 import { ORDER } from '../../utils/order';
 
@@ -36,7 +37,6 @@ function App() {
         setState({...state, loading: true});
         const data = await fetch(URL);
 
-        // Почему-то не получилось с .then обработать ответ, сделала немного по-другому. Надеюсь, так тоже нормально 
         if (!data.ok) {
           throw new Error('Произошла ошибка: ' + data.status);
         }
@@ -74,8 +74,10 @@ function App() {
               'Загружаем данные' :
               state.ingredientsByType &&
               <>
-                <BurgerIngredients data={state.ingredientsByType} order={ORDER} openIngredientModal={openIngredientModal}/>
-                <BurgerConstructor order={ORDER} openOrderDetailsModal={openOrderDetailsModal}/>
+                <OrderContext.Provider value={ORDER}>
+                  <BurgerIngredients data={state.ingredientsByType} openIngredientModal={openIngredientModal}/>
+                  <BurgerConstructor openOrderDetailsModal={openOrderDetailsModal}/>
+                </OrderContext.Provider>
               </>
           }
         </ErrorBoundary>

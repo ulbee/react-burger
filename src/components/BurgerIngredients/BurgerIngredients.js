@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCategory from '../IngredientCategory/IngredientCategory';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
 import IngredientsPropTypes from '../../utils/propTypes';
 
-function BurgerIngredients({ data, order, openIngredientModal }) {
+function BurgerIngredients({ data, openIngredientModal }) {
 
   const categoriesTitles = {
     'bun': 'Булки',
@@ -45,7 +45,6 @@ function BurgerIngredients({ data, order, openIngredientModal }) {
             id={categoryId} 
             title={categoriesTitles[categoryId]} 
             data={data[categoryId]}
-            order={order} 
             openIngredientModal={openIngredientModal} />
         ))}
       </div>
@@ -55,7 +54,6 @@ function BurgerIngredients({ data, order, openIngredientModal }) {
 
 BurgerIngredients.propTypes = {
   data: PropTypes.objectOf(PropTypes.arrayOf(IngredientsPropTypes)).isRequired,
-  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
   openIngredientModal: PropTypes.func.isRequired
 };
 
