@@ -2,16 +2,42 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
-import IngredientsPropTypes from '../../utils/propTypes';
 import { OrderContext } from '../../utils/OrderContext';
 
 function BurgerConstructor({ openOrderDetailsModal }) {
-  const order = useContext(OrderContext);
+  const [order, setOrder] = useContext(OrderContext);
+  const ingredientIds = [];
+  ingredientIds.push(order.bun._id);
+  
   const total = order.others.reduce((res, item) => {
     res += item.price;
+    ingredientIds.push(item._id);
 
     return res;
   }, order.bun.price * 2);
+
+  const sendOrder = async () => {
+    const res = await fetch('https://norma.nomoreparties.space/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+      },
+      body: JSON.stringify({
+        ingredients: ingredientIds
+      })
+    });
+
+    if (!res.ok) {
+      throw new Error('Произошла ошибка: ' + res.status);
+    }
+
+    const orderDetails = await res.json();
+
+    setOrder({...order, id: orderDetails.order.number});
+
+    openOrderDetailsModal();
+  }
+
 
   return (
     <section className={BurgerConstructorStyles.section + ' pt-25 pl-4 pr-4 pb-13'}>
@@ -52,7 +78,7 @@ function BurgerConstructor({ openOrderDetailsModal }) {
           <span className='text text_type_digits-default'>{total}</span>
           <CurrencyIcon type="primary"/>
         </div>
-        <Button type="primary" size="medium" htmlType="submit" onClick={openOrderDetailsModal}>
+        <Button type="primary" size="medium" htmlType="submit" onClick={sendOrder}>
           Оформить заказ
         </Button>
       </div>

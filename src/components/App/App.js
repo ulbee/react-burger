@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppStyles from './App.module.css';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import AppHeader from '../AppHeader/AppHeader';
@@ -13,6 +13,7 @@ import { ORDER } from '../../utils/order';
 
 function App() {
   const URL = 'https://norma.nomoreparties.space/api/ingredients';
+  const orderState = useState({...ORDER, id: undefined});
 
   const [state, setState] = React.useState({ingredientsById: undefined, ingredientsByType: undefined, loading: false});
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = React.useState(false);
@@ -74,7 +75,7 @@ function App() {
               'Загружаем данные' :
               state.ingredientsByType &&
               <>
-                <OrderContext.Provider value={ORDER}>
+                <OrderContext.Provider value={orderState}>
                   <BurgerIngredients data={state.ingredientsByType} openIngredientModal={openIngredientModal}/>
                   <BurgerConstructor openOrderDetailsModal={openOrderDetailsModal}/>
                 </OrderContext.Provider>
@@ -85,7 +86,9 @@ function App() {
       {
         isOrderDetailsOpened &&
         <Modal title='' onClose={closeAllModals}>
-          <OrderDetails id='034536'/>
+          <OrderContext.Provider value={orderState}>
+            <OrderDetails/>
+          </OrderContext.Provider>
         </Modal>
       }
       {
