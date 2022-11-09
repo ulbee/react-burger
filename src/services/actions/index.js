@@ -36,17 +36,16 @@ export function getIngredients() {
   }
 }
 
-export function getOrder() {
+export function sendOrder(ids) {
   return function(dispatch) {
     dispatch({type: GET_ORDER_REQUEST});
 
-    getIngredientsRequest()
+    sendOrderRequest(ids)
       .then((res) => {
         if (res && res.success) {          
-          console.log('getOrder', res);
           dispatch({
             type: GET_ORDER_SUCCESS,
-            order: res.data
+            orderId: res.order.number
           })
         } else {
           dispatch({type: GET_ORDER_FAILED});

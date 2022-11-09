@@ -6,7 +6,8 @@ import {
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
   GET_ORDER_FAILED
- } from '../../utils/constants'; 
+ } from '../../utils/constants';
+ import { ORDER } from '../../utils/order';
 
 const initialState = {
   ingredientsByType: null,
@@ -14,7 +15,7 @@ const initialState = {
   ingredientsRequest: false,
   ingredientsFailed: false,
 
-  addedIngredients: [],
+  addedIngredients: ORDER,
   currentIngredient: {},
 
   orderId: null,

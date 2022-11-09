@@ -11,14 +11,10 @@ import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
-import { ORDER } from '../../utils/order';
-
 import { getIngredients } from '../../services/actions';
 
 function App() {
   const dispatch = useDispatch();
-
-  const orderState = useState({...ORDER, id: undefined});
 
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = React.useState(false);
   const [ingredientDetails, setIngredientDetails] = React.useState({isOpened: false, id: null});
@@ -52,7 +48,7 @@ function App() {
           {ingredientsByType && (
             <>
                 <BurgerIngredients openIngredientModal={openIngredientModal}/>
-                {/* <BurgerConstructor openOrderDetailsModal={openOrderDetailsModal}/> */}
+                <BurgerConstructor openOrderDetailsModal={openOrderDetailsModal}/>
             </>
           )}
         </ErrorBoundary>

@@ -1,34 +1,39 @@
-import React, { useContext, useMemo, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
-import { OrderContext } from '../../utils/OrderContext';
-import { sendOrderRequest } from '../../utils/api';
+
+import React, { useMemo, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { sendOrder } from '../../services/actions';
+
 
 function BurgerConstructor({ openOrderDetailsModal }) {
-  const [order, setOrder] = useContext(OrderContext);
+  const dispatch = useDispatch();
 
+  const {addedIngredients} = useSelector(state => state.menu);
 
   const ingredientIds = useRef([]);
-  ingredientIds.current.push(order.bun._id);
+  ingredientIds.current.push(addedIngredients.bun._id);
 
   const total = useMemo(() => {
-    return order.others.reduce((res, item) => {
+    return addedIngredients.others.reduce((res, item) => {
       res += item.price;
       ingredientIds.current.push(item._id);
 
       return res;
-    }, order.bun.price * 2);
-  }, [order.bun, order.others]);
+    }, addedIngredients.bun.price * 2);
+  }, [addedIngredients.bun, addedIngredients.others]);
   
-  ingredientIds.current.push(order.bun._id);
+  ingredientIds.current.push(addedIngredients.bun._id);
   
   const sendOrderHandler = () => {
-    sendOrderRequest(ingredientIds.current).then((orderDetails) => {
-      setOrder({...order, id: orderDetails.order.number});
+    dispatch(sendOrder(ingredientIds.current));
+    // sendOrderRequest(ingredientIds.current).then((orderDetails) => {
+    //   setOrder({...order, id: orderDetails.order.number});
 
       openOrderDetailsModal();
-    });
+    // });
   }
 
   return (
@@ -37,13 +42,13 @@ function BurgerConstructor({ openOrderDetailsModal }) {
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={order.bun.name + ' (верх)'}
-          price={order.bun.price}
-          thumbnail={order.bun.image}/>
+          text={addedIngredients.bun.name + ' (верх)'}
+          price={addedIngredients.bun.price}
+          thumbnail={addedIngredients.bun.image}/>
       </div>
       <ul className={BurgerConstructorStyles.list} >
         {
-          order.others.map((item, index) => {
+          addedIngredients.others.map((item, index) => {
             return (
               <li key={index} className={BurgerConstructorStyles.item + ' pb-4 pr-2'} >
                 <DragIcon type="primary" />
@@ -61,9 +66,9 @@ function BurgerConstructor({ openOrderDetailsModal }) {
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={order.bun.name + ' (низ)'}
-          price={order.bun.price}
-          thumbnail={order.bun.image}/>
+          text={addedIngredients.bun.name + ' (низ)'}
+          price={addedIngredients.bun.price}
+          thumbnail={addedIngredients.bun.image}/>
       </div>
       <div className={BurgerConstructorStyles.total + ' pr-4'}>
         <div className={BurgerConstructorStyles.info + ' pr-10'}>
@@ -78,8 +83,8 @@ function BurgerConstructor({ openOrderDetailsModal }) {
   );
 }
 
-// BurgerConstructor.propTypes = {
-//   openOrderDetailsModal: PropTypes.func.isRequired
-// };
+BurgerConstructor.propTypes = {
+  openOrderDetailsModal: PropTypes.func.isRequired
+};
 
 export default BurgerConstructor;

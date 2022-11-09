@@ -15,11 +15,11 @@ const root = ReactDOM.createRoot(
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-    : compose; 
+    : compose;
 
 const enhancer = composeEnhancers(applyMiddleware(thunk));
 
-const store = createStore(rootReducer, enhancer); 
+const store = createStore(rootReducer, enhancer);
 
 root.render(
   <React.StrictMode>
