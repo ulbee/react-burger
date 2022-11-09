@@ -24,7 +24,8 @@ function IngredientCard({ data, count, openIngredientModal }) {
 
 IngredientCard.propTypes = {
   data: IngredientsPropTypes.isRequired,
-  count: PropTypes.number
+  count: PropTypes.number,
+  openIngredientModal: PropTypes.func.isRequired
 }
 
 export default IngredientCard;

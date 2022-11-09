@@ -1,15 +1,24 @@
+import { useContext, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import IngredientCard from '../IngredientCard/IngredientCard';
 import IngredientCategoryStyles from './IngredientCategory.module.css';
 import IngredientsPropTypes from '../../utils/propTypes';
+import { OrderContext } from '../../utils/OrderContext';
 
-function IngredientCategory({ id, title, data, order, openIngredientModal }) {
-  const ingredientsCount = data.reduce((res, item) => {
-    res[item._id] = {};
-    res[item._id].count = order.filter((el) => el._id === item._id).length;
+function IngredientCategory({ id, title, data, openIngredientModal }) {
+  const [order] = useContext(OrderContext);
+  const ingredientsCount = useMemo(() => {
+    return data.reduce((res, item) => {
+      res[item._id] = {};
+      if (item.type === 'bun' && item._id === order.bun._id) {
+        res[item._id].count = 1;
+      } else {
+        res[item._id].count = order.others.filter((el) => el._id === item._id).length;
+      }
 
-    return res;
-  }, {});
+      return res;
+    }, {});
+  }, [order.bun, order.others, data]);
 
   return (    
     <>
@@ -33,7 +42,6 @@ IngredientCategory.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
-  order: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
   openIngredientModal: PropTypes.func.isRequired
 }
 

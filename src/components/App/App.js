@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppStyles from './App.module.css';
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import AppHeader from '../AppHeader/AppHeader';
@@ -7,11 +7,13 @@ import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import { OrderContext } from '../../utils/OrderContext';
+import { getIngredients } from '../../utils/api';
 
 import { ORDER } from '../../utils/order';
 
 function App() {
-  const URL = 'https://norma.nomoreparties.space/api/ingredients';
+  const orderState = useState({...ORDER, id: undefined});
 
   const [state, setState] = React.useState({ingredientsById: undefined, ingredientsByType: undefined, loading: false});
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = React.useState(false);
@@ -31,37 +33,26 @@ function App() {
   }
 
   useEffect(() => {
-    const getIngredients = async () => {
-      try {
-        setState({...state, loading: true});
-        const data = await fetch(URL);
+    setState({...state, loading: true});
+    getIngredients().then((res) => {
+      const ingredientsById = {};
+      const ingredientsByType = {};
 
-        // Почему-то не получилось с .then обработать ответ, сделала немного по-другому. Надеюсь, так тоже нормально 
-        if (!data.ok) {
-          throw new Error('Произошла ошибка: ' + data.status);
-        }
-        const res = await data.json();
+      res.data.forEach((item) => {
+        ingredientsById[item._id] = item;
+        (ingredientsByType[item.type] || (ingredientsByType[item.type] = [])).push(item);
+      });
 
-        const ingredientsById = {};
-        const ingredientsByType = {};
-
-        res.data.forEach((item) => {
-          ingredientsById[item._id] = item;
-          (ingredientsByType[item.type] || (ingredientsByType[item.type] = [])).push(item);
-        });
-
-        setState({
-          ...state,
-          ingredientsById,
-          ingredientsByType,
-          loading: false
-        });
-      } catch(err) {
-        console.log('Ошибка при получении данных: ' + err);
-      }
-    }
-
-    getIngredients();
+      setState({
+        ...state,
+        ingredientsById,
+        ingredientsByType,
+        loading: false
+      });
+    })
+    .catch((err) => {
+      console.log('Ошибка при получении данных: ' + err);
+    })
   }, []);
 
   return (
@@ -74,8 +65,10 @@ function App() {
               'Загружаем данные' :
               state.ingredientsByType &&
               <>
-                <BurgerIngredients data={state.ingredientsByType} order={ORDER} openIngredientModal={openIngredientModal}/>
-                <BurgerConstructor order={ORDER} openOrderDetailsModal={openOrderDetailsModal}/>
+                <OrderContext.Provider value={orderState}>
+                  <BurgerIngredients data={state.ingredientsByType} openIngredientModal={openIngredientModal}/>
+                  <BurgerConstructor openOrderDetailsModal={openOrderDetailsModal}/>
+                </OrderContext.Provider>
               </>
           }
         </ErrorBoundary>
@@ -83,7 +76,9 @@ function App() {
       {
         isOrderDetailsOpened &&
         <Modal title='' onClose={closeAllModals}>
-          <OrderDetails id='034536'/>
+          <OrderContext.Provider value={orderState}>
+            <OrderDetails/>
+          </OrderContext.Provider>
         </Modal>
       }
       {
