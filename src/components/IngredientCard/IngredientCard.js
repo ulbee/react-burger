@@ -1,7 +1,9 @@
-import PropTypes from 'prop-types';
-import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCardStyles from './IngredientCard.module.css';
+
+import PropTypes from 'prop-types';
 import IngredientsPropTypes from '../../utils/propTypes';
+
+import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function IngredientCard({ data, count, openIngredientModal }) {
 

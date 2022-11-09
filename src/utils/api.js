@@ -1,6 +1,6 @@
 import { GETINGREDIENTSURL, SAVEORDERURL } from "./constants";
 
-const getIngredients = async () => {
+const getIngredientsRequest = async () => {
   const data = await fetch(GETINGREDIENTSURL);
 
   if (!data.ok) {
@@ -9,7 +9,7 @@ const getIngredients = async () => {
   return await data.json();
 }
 
-const sendOrder = async (ingredientIds) => {
+const sendOrderRequest = async (ingredientIds) => {
   const res = await fetch(SAVEORDERURL, {
     method: 'POST',
     headers: {
@@ -27,4 +27,4 @@ const sendOrder = async (ingredientIds) => {
   return await res.json();
 }
 
-export { getIngredients, sendOrder };
+export { getIngredientsRequest, sendOrderRequest };

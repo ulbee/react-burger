@@ -1,12 +1,19 @@
-import React, { useState, useContext } from 'react';
-import PropTypes from 'prop-types';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientCategory from '../IngredientCategory/IngredientCategory';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
+
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+
+import PropTypes from 'prop-types';
 import IngredientsPropTypes from '../../utils/propTypes';
 
-function BurgerIngredients({ data, openIngredientModal }) {
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import IngredientCategory from '../IngredientCategory/IngredientCategory';
 
+
+function BurgerIngredients({ openIngredientModal }) {
+
+  const { ingredientsByType } = useSelector(state => state.menu);
+  
   const categoriesTitles = {
     'bun': 'Булки',
     'main': 'Начинки',
@@ -14,7 +21,7 @@ function BurgerIngredients({ data, openIngredientModal }) {
   }
   
   const categoriesOrder = ['bun', 'main', 'sauce'];
-      
+  
   const [activeTab, setActiveTab] = useState('bun');
 
   return (
@@ -44,7 +51,7 @@ function BurgerIngredients({ data, openIngredientModal }) {
             key={categoryId}
             id={categoryId} 
             title={categoriesTitles[categoryId]} 
-            data={data[categoryId]}
+            data={ingredientsByType[categoryId]}
             openIngredientModal={openIngredientModal} />
         ))}
       </div>
@@ -53,7 +60,6 @@ function BurgerIngredients({ data, openIngredientModal }) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.objectOf(PropTypes.arrayOf(IngredientsPropTypes)).isRequired,
   openIngredientModal: PropTypes.func.isRequired
 };
 

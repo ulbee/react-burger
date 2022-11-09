@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
 import { OrderContext } from '../../utils/OrderContext';
-import { sendOrder } from '../../utils/api';
+import { sendOrderRequest } from '../../utils/api';
 
 function BurgerConstructor({ openOrderDetailsModal }) {
   const [order, setOrder] = useContext(OrderContext);
@@ -24,7 +24,7 @@ function BurgerConstructor({ openOrderDetailsModal }) {
   ingredientIds.current.push(order.bun._id);
   
   const sendOrderHandler = () => {
-    sendOrder(ingredientIds.current).then((orderDetails) => {
+    sendOrderRequest(ingredientIds.current).then((orderDetails) => {
       setOrder({...order, id: orderDetails.order.number});
 
       openOrderDetailsModal();
@@ -78,8 +78,8 @@ function BurgerConstructor({ openOrderDetailsModal }) {
   );
 }
 
-BurgerConstructor.propTypes = {
-  openOrderDetailsModal: PropTypes.func.isRequired
-};
+// BurgerConstructor.propTypes = {
+//   openOrderDetailsModal: PropTypes.func.isRequired
+// };
 
 export default BurgerConstructor;
