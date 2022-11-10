@@ -11,3 +11,7 @@ export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
 export const GET_ORDER_REQUEST = 'GET_ORDER_REQUEST';
 export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
 export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
+
+// Константы для получения/удаления данных об отдельном ингридиенте
+export const SHOW_INGREDIENT = 'SHOW_INGREDIENT';
+export const HIDE_INGREDIENT = 'HIDE_INGREDIENT';

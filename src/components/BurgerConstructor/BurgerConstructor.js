@@ -29,11 +29,8 @@ function BurgerConstructor({ openOrderDetailsModal }) {
   
   const sendOrderHandler = () => {
     dispatch(sendOrder(ingredientIds.current));
-    // sendOrderRequest(ingredientIds.current).then((orderDetails) => {
-    //   setOrder({...order, id: orderDetails.order.number});
 
-      openOrderDetailsModal();
-    // });
+    openOrderDetailsModal();
   }
 
   return (

@@ -5,7 +5,9 @@ import {
   GET_INGREDIENTS_FAILED,
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
-  GET_ORDER_FAILED
+  GET_ORDER_FAILED,
+  SHOW_INGREDIENT,
+  HIDE_INGREDIENT
  } from '../../utils/constants';
  import { ORDER } from '../../utils/order';
 
@@ -16,7 +18,7 @@ const initialState = {
   ingredientsFailed: false,
 
   addedIngredients: ORDER,
-  currentIngredient: {},
+  currentIngredient: null,
 
   orderId: null,
   orderRequest: false,
@@ -69,7 +71,19 @@ export const ingredientsReducer = (state = initialState, action) => {
         orderFailed: true
       }
     }
-    
+    case SHOW_INGREDIENT: {
+      return {
+        ...state,
+        currentIngredient: state.ingredientsById[action.id]
+      }
+    }
+    case HIDE_INGREDIENT: {
+      return {
+        ...state,
+        currentIngredient: null
+      }
+    }
+
     default: return state;  
   }
 }

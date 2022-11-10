@@ -11,19 +11,21 @@ import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
-import { getIngredients } from '../../services/actions';
+import {getIngredients} from '../../services/actions';
+import {SHOW_INGREDIENT, HIDE_INGREDIENT} from '../../utils/constants';
 
 function App() {
   const dispatch = useDispatch();
 
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = React.useState(false);
-  const [ingredientDetails, setIngredientDetails] = React.useState({isOpened: false, id: null});
+  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = React.useState(false);
 
   const { ingredientsByType, ingredientsById, ingredientsRequest, ingredientsFailed } = useSelector(state => state.menu);
   
   const closeAllModals = () => {
+    dispatch({type: HIDE_INGREDIENT});
     setIsOrderDetailsOpened(false);
-    setIngredientDetails({isOpened: false, id: null})
+    setIsIngredientDetailsOpened({isOpened: false})
   };
   
   const openOrderDetailsModal = () => {
@@ -31,7 +33,8 @@ function App() {
   }
 
   const openIngredientModal = (e) => {
-    setIngredientDetails({isOpened: true, id: e.currentTarget.id});
+    dispatch({type: SHOW_INGREDIENT, id: e.currentTarget.id});
+    setIsIngredientDetailsOpened({isOpened: true});
   }
 
   useEffect(() => {
@@ -60,9 +63,9 @@ function App() {
         </Modal>
       }
       {
-        ingredientDetails.isOpened &&
+        isIngredientDetailsOpened.isOpened &&
         <Modal title='Детали ингридиента' onClose={closeAllModals}>
-          <IngredientDetails data={ingredientsById[ingredientDetails.id]}/>
+          <IngredientDetails data={ingredientsById[isIngredientDetailsOpened.id]}/>
         </Modal>
       }
     </div>
