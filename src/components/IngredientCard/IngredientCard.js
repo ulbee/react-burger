@@ -1,12 +1,26 @@
-import PropTypes from 'prop-types';
-import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientCardStyles from './IngredientCard.module.css';
+
+import PropTypes from 'prop-types';
 import IngredientsPropTypes from '../../utils/propTypes';
+import { useDrag } from 'react-dnd';
+
+import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function IngredientCard({ data, count, openIngredientModal }) {
 
+  const [{ opacity }, ref] = useDrag({
+    type: 'ingredient',
+    item: {id: data._id},
+    collect: monitor => ({
+      opacity: monitor.isDragging() ? 0.5 : 1
+    })
+  });
+
   return (
-    <div id={data._id} className={IngredientCardStyles.card} onClick={openIngredientModal}>
+    <div draggable ref={ref}
+      id={data._id} className={IngredientCardStyles.card} 
+      onClick={openIngredientModal} 
+      style={{ opacity }}>
 
       { count ? <Counter count={count} size="default"/> : '' }
 

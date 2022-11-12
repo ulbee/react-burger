@@ -1,27 +1,40 @@
-import { useContext, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import IngredientCard from '../IngredientCard/IngredientCard';
 import IngredientCategoryStyles from './IngredientCategory.module.css';
-import IngredientsPropTypes from '../../utils/propTypes';
-import { OrderContext } from '../../utils/OrderContext';
 
-function IngredientCategory({ id, title, data, openIngredientModal }) {
-  const [order] = useContext(OrderContext);
+import { useMemo, useEffect } from 'react';
+
+import PropTypes from 'prop-types';
+import IngredientsPropTypes from '../../utils/propTypes';
+
+import IngredientCard from '../IngredientCard/IngredientCard';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_ACTIVE_TAB } from '../../utils/constants';
+
+function IngredientCategory({ id, title, data, openIngredientModal, link, inView }) {
+  const dispatch = useDispatch();
+
+  const { addedIngredients } = useSelector(store => store.menu);
+
   const ingredientsCount = useMemo(() => {
     return data.reduce((res, item) => {
       res[item._id] = {};
-      if (item.type === 'bun' && item._id === order.bun._id) {
+      if (item.type === 'bun' && item._id === addedIngredients.bun?._id) {
         res[item._id].count = 1;
       } else {
-        res[item._id].count = order.others.filter((el) => el._id === item._id).length;
+        res[item._id].count = addedIngredients.others.filter((el) => el._id === item._id).length;
       }
 
       return res;
     }, {});
-  }, [order.bun, order.others, data]);
+  }, [addedIngredients.bun, addedIngredients.others, data]);
+
+  useEffect(() => {
+    if (inView) {
+      dispatch({type: SET_ACTIVE_TAB, name: id});
+    }
+  }, [inView, dispatch, title]);
 
   return (    
-    <>
+    <div  ref={link}>
       <h2 id={id} className={IngredientCategoryStyles.title}>
         {title}
       </h2>
@@ -34,7 +47,7 @@ function IngredientCategory({ id, title, data, openIngredientModal }) {
             openIngredientModal={openIngredientModal}/>
         })}
       </div>        
-    </>  
+    </div>  
   );
 }
 
