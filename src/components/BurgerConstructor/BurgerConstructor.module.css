@@ -38,20 +38,7 @@
   background-color: rgba(133, 133, 173, 1);
 }
 
-.item {
-  list-style: none;
-
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 .total {
   display: flex;
-}
-
-.info {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+  align-self: flex-start;
 }

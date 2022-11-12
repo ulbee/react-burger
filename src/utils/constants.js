@@ -15,3 +15,11 @@ export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 // Константы для получения/удаления данных об отдельном ингридиенте
 export const SHOW_INGREDIENT = 'SHOW_INGREDIENT';
 export const HIDE_INGREDIENT = 'HIDE_INGREDIENT';
+
+// Константы для добавления ингридиента в конструктор бургера
+export const ADD_INGREDIENT = 'ADD_INGREDIENT';
+export const DELETE_INGREDIENT = 'DELETE_INGREDIENT';
+export const ADD_BUN = 'ADD_BUN';
+
+// Константы для сортировки ингридиентов бургера
+export const CHANGE_INGREDIENT_ORDER = 'CHANGE_INGREDIENT_ORDER';

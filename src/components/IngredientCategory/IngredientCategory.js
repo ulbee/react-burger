@@ -1,26 +1,29 @@
 import IngredientCategoryStyles from './IngredientCategory.module.css';
 
-import { useContext, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import PropTypes from 'prop-types';
 import IngredientsPropTypes from '../../utils/propTypes';
 
 import IngredientCard from '../IngredientCard/IngredientCard';
+import { useSelector } from 'react-redux';
 
 function IngredientCategory({ id, title, data, openIngredientModal }) {
-  // const [order] = useContext(OrderContext);
+
+  const { addedIngredients } = useSelector(store => store.menu);
+
   const ingredientsCount = useMemo(() => {
     return data.reduce((res, item) => {
       res[item._id] = {};
-      // if (item.type === 'bun' && item._id === order.bun._id) {
+      if (item.type === 'bun' && item._id === addedIngredients.bun?._id) {
         res[item._id].count = 1;
-      // } else {
-      //   res[item._id].count = order.others.filter((el) => el._id === item._id).length;
-      // }
+      } else {
+        res[item._id].count = addedIngredients.others.filter((el) => el._id === item._id).length;
+      }
 
       return res;
     }, {});
-  }, [data]);
+  }, [addedIngredients.bun, addedIngredients.others, data]);
 
   return (    
     <>

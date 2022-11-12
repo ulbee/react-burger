@@ -7,9 +7,12 @@ import {
   GET_ORDER_SUCCESS,
   GET_ORDER_FAILED,
   SHOW_INGREDIENT,
-  HIDE_INGREDIENT
+  HIDE_INGREDIENT,
+  ADD_INGREDIENT,
+  DELETE_INGREDIENT,
+  ADD_BUN,
+  CHANGE_INGREDIENT_ORDER
  } from '../../utils/constants';
- import { ORDER } from '../../utils/order';
 
 const initialState = {
   ingredientsByType: null,
@@ -17,7 +20,10 @@ const initialState = {
   ingredientsRequest: false,
   ingredientsFailed: false,
 
-  addedIngredients: ORDER,
+  addedIngredients: {
+    bun: null,
+    others: []
+  },
   currentIngredient: null,
 
   orderId: null,
@@ -82,6 +88,52 @@ export const ingredientsReducer = (state = initialState, action) => {
         ...state,
         currentIngredient: null
       }
+    }
+    case ADD_INGREDIENT: {
+      return {
+        ...state,
+        addedIngredients: {
+          ...state.addedIngredients,
+          others: [...state.addedIngredients.others, state.ingredientsById[action.id]]
+        }
+      }
+    }
+    case DELETE_INGREDIENT: {
+      const items = [...state.addedIngredients.others];
+      items.splice(action.index, 1);
+      return {
+        ...state,
+        addedIngredients: {
+          ...state.addedIngredients,
+          others: items
+        }
+      }
+    }
+    case ADD_BUN: {
+      return {
+        ...state,
+        addedIngredients: {
+          ...state.addedIngredients,
+          bun: state.ingredientsById[action.id]
+        }
+      }
+    }
+    case CHANGE_INGREDIENT_ORDER: {
+      const items = [...state.addedIngredients.others];
+
+      items.splice(
+        action.newId,
+        0,
+        items.splice(action.prevId, 1)[0]
+      );
+      return {
+        ...state,
+        addedIngredients: {
+          ...state.addedIngredients,
+          others: items
+        }
+      }
+      
     }
 
     default: return state;  

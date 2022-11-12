@@ -3,75 +3,82 @@ import BurgerConstructorStyles from './BurgerConstructor.module.css';
 import React, { useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useDrop } from 'react-dnd';
 
-import { DragIcon, ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import TotalPrice from '../TotalPrice/TotalPrice';
+import Ingredient from '../Ingredient/Ingredient';
+
 import { sendOrder } from '../../services/actions';
+import { ADD_BUN, ADD_INGREDIENT } from '../../utils/constants';
 
 
 function BurgerConstructor({ openOrderDetailsModal }) {
   const dispatch = useDispatch();
 
-  const {addedIngredients} = useSelector(state => state.menu);
+  const {addedIngredients, ingredientsById} = useSelector(state => state.menu);
 
-  const ingredientIds = useRef([]);
-  ingredientIds.current.push(addedIngredients.bun._id);
+  const ingredientIds = () => {
+    let res = addedIngredients.bun ? [addedIngredients.bun._id] : [];
 
-  const total = useMemo(() => {
-    return addedIngredients.others.reduce((res, item) => {
-      res += item.price;
-      ingredientIds.current.push(item._id);
+    addedIngredients.others.map(item => {
+      res.push(item._id);
+    });
 
-      return res;
-    }, addedIngredients.bun.price * 2);
-  }, [addedIngredients.bun, addedIngredients.others]);
-  
-  ingredientIds.current.push(addedIngredients.bun._id);
+    if (addedIngredients.bun) {
+      res.push(addedIngredients.bun._id);
+    }
+    return res;
+  }
   
   const sendOrderHandler = () => {
-    dispatch(sendOrder(ingredientIds.current));
+    dispatch(sendOrder(ingredientIds()));
 
     openOrderDetailsModal();
   }
 
+  const [{isHover}, dropTarget] = useDrop({
+    accept: 'ingredient',
+    item: {},
+    collect: monitor => ({
+      isHover: monitor.isOver()
+    }),
+    drop(item) {
+      const type = ingredientsById[item.id].type === 'bun' ? ADD_BUN : ADD_INGREDIENT;
+      dispatch({type: type, id: item.id})
+  },
+  })
+
   return (
-    <section className={BurgerConstructorStyles.section + ' pt-25 pl-4 pr-4 pb-13'}>
+    <section ref={dropTarget} className={BurgerConstructorStyles.section + ' pt-25 pl-4 pr-4 pb-13'}>
       <div className={BurgerConstructorStyles.bun + ' pl-8 pr-4'}>
         <ConstructorElement
           type="top"
           isLocked={true}
-          text={addedIngredients.bun.name + ' (верх)'}
-          price={addedIngredients.bun.price}
-          thumbnail={addedIngredients.bun.image}/>
+          text={addedIngredients.bun?.name + ' (верх)'}
+          price={addedIngredients.bun?.price}
+          thumbnail={addedIngredients.bun?.image}/>
       </div>
       <ul className={BurgerConstructorStyles.list} >
-        {
-          addedIngredients.others.map((item, index) => {
+        {(addedIngredients.others.length) ?
+            addedIngredients.others.map((item, index) => {
             return (
-              <li key={index} className={BurgerConstructorStyles.item + ' pb-4 pr-2'} >
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  isLocked={false}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}/>
-              </li>
+              <Ingredient key={index} id={item._id} index={index}/>
             );
           })
+          : ''
         }
       </ul>
       <div className={BurgerConstructorStyles.bun + ' pl-8 pr-4'}>
         <ConstructorElement
           type="bottom"
           isLocked={true}
-          text={addedIngredients.bun.name + ' (низ)'}
-          price={addedIngredients.bun.price}
-          thumbnail={addedIngredients.bun.image}/>
+          text={addedIngredients.bun?.name + ' (низ)'}
+          price={addedIngredients.bun?.price}
+          thumbnail={addedIngredients.bun?.image}/>
       </div>
       <div className={BurgerConstructorStyles.total + ' pr-4'}>
-        <div className={BurgerConstructorStyles.info + ' pr-10'}>
-          <span className='text text_type_digits-default'>{total}</span>
-          <CurrencyIcon type="primary"/>
-        </div>
+        <TotalPrice/>        
         <Button type="primary" size="medium" htmlType="submit" onClick={sendOrderHandler}>
           Оформить заказ
         </Button>

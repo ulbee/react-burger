@@ -2,6 +2,8 @@ import AppStyles from './App.module.css';
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import AppHeader from '../AppHeader/AppHeader';
@@ -20,12 +22,12 @@ function App() {
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = React.useState(false);
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = React.useState(false);
 
-  const { ingredientsByType, ingredientsById, ingredientsRequest, ingredientsFailed } = useSelector(state => state.menu);
+  const { ingredientsByType, ingredientsRequest, ingredientsFailed } = useSelector(state => state.menu);
   
   const closeAllModals = () => {
     dispatch({type: HIDE_INGREDIENT});
     setIsOrderDetailsOpened(false);
-    setIsIngredientDetailsOpened({isOpened: false})
+    setIsIngredientDetailsOpened({isOpened: false});
   };
   
   const openOrderDetailsModal = () => {
@@ -49,10 +51,10 @@ function App() {
           {ingredientsFailed && <p>Произошла ошибка</p>}
           {ingredientsRequest && <p>Загружаем данные</p>}
           {ingredientsByType && (
-            <>
-                <BurgerIngredients openIngredientModal={openIngredientModal}/>
-                <BurgerConstructor openOrderDetailsModal={openOrderDetailsModal}/>
-            </>
+            <DndProvider backend={HTML5Backend}>
+              <BurgerIngredients openIngredientModal={openIngredientModal}/>
+              <BurgerConstructor openOrderDetailsModal={openOrderDetailsModal}/>
+            </DndProvider>
           )}
         </ErrorBoundary>
       </main>
@@ -65,7 +67,7 @@ function App() {
       {
         isIngredientDetailsOpened.isOpened &&
         <Modal title='Детали ингридиента' onClose={closeAllModals}>
-          <IngredientDetails data={ingredientsById[isIngredientDetailsOpened.id]}/>
+          <IngredientDetails/>
         </Modal>
       }
     </div>
