@@ -1,6 +1,6 @@
 import IngredientStyles from './Ingredient.module.css';
 
-import React, { useMemo, useRef } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useDrag, useDrop } from 'react-dnd';
@@ -62,8 +62,9 @@ function Ingredient({id, index}) {
     },
     collect: (monitor) => {
       return {      
-      isDragging: monitor.isDragging(),
-    }},
+        isDragging: monitor.isDragging(),
+      }
+    },
   })
 
   const opacity = isDragging ? 0 : 1;

@@ -23,3 +23,6 @@ export const ADD_BUN = 'ADD_BUN';
 
 // Константы для сортировки ингридиентов бургера
 export const CHANGE_INGREDIENT_ORDER = 'CHANGE_INGREDIENT_ORDER';
+
+// Константа для изменения активного таба
+export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';

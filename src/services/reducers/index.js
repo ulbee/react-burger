@@ -11,7 +11,8 @@ import {
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
   ADD_BUN,
-  CHANGE_INGREDIENT_ORDER
+  CHANGE_INGREDIENT_ORDER,
+  SET_ACTIVE_TAB
  } from '../../utils/constants';
 
 const initialState = {
@@ -25,6 +26,8 @@ const initialState = {
     others: []
   },
   currentIngredient: null,
+
+  activeTab: 'bun',
 
   orderId: null,
   orderRequest: false,
@@ -135,6 +138,12 @@ export const ingredientsReducer = (state = initialState, action) => {
         }
       }
       
+    }
+    case SET_ACTIVE_TAB: {
+      return {
+        ...state,
+        activeTab: action.name
+      }
     }
 
     default: return state;  

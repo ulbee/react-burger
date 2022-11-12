@@ -1,14 +1,16 @@
 import IngredientCategoryStyles from './IngredientCategory.module.css';
 
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 
 import PropTypes from 'prop-types';
 import IngredientsPropTypes from '../../utils/propTypes';
 
 import IngredientCard from '../IngredientCard/IngredientCard';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_ACTIVE_TAB } from '../../utils/constants';
 
-function IngredientCategory({ id, title, data, openIngredientModal }) {
+function IngredientCategory({ id, title, data, openIngredientModal, link, inView }) {
+  const dispatch = useDispatch();
 
   const { addedIngredients } = useSelector(store => store.menu);
 
@@ -25,8 +27,14 @@ function IngredientCategory({ id, title, data, openIngredientModal }) {
     }, {});
   }, [addedIngredients.bun, addedIngredients.others, data]);
 
+  useEffect(() => {
+    if (inView) {
+      dispatch({type: SET_ACTIVE_TAB, name: id});
+    }
+  }, [inView, dispatch, title]);
+
   return (    
-    <>
+    <div  ref={link}>
       <h2 id={id} className={IngredientCategoryStyles.title}>
         {title}
       </h2>
@@ -39,7 +47,7 @@ function IngredientCategory({ id, title, data, openIngredientModal }) {
             openIngredientModal={openIngredientModal}/>
         })}
       </div>        
-    </>  
+    </div>  
   );
 }
 
