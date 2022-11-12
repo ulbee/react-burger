@@ -33,6 +33,9 @@ export function getIngredients() {
           dispatch({type: GET_INGREDIENTS_FAILED});
         }
       })
+      .catch((err) => {
+        dispatch({type: GET_INGREDIENTS_FAILED});
+      })
   }
 }
 
@@ -50,6 +53,9 @@ export function sendOrder(ids) {
         } else {
           dispatch({type: GET_ORDER_FAILED});
         }
+      })
+      .catch((err) => {
+        dispatch({type: GET_ORDER_FAILED});
       })
   }
 }

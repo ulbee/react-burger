@@ -46,43 +46,46 @@ function BurgerConstructor({ openOrderDetailsModal }) {
     drop(item) {
       const type = ingredientsById[item.id].type === 'bun' ? ADD_BUN : ADD_INGREDIENT;
       dispatch({type: type, id: item.id})
-  },
+    },
   })
 
-  const hoverClassName = isHover ? 'onHover' : '';
-  
+  const hoverClassName = isHover ? 'onHover': '' ;
+
   return (
     <section ref={dropTarget} className={BurgerConstructorStyles.section + ' pt-25 pl-4 pr-4 pb-13'}>
-      <div className={BurgerConstructorStyles.bun + ' pl-8 pr-4'}>
-        { !addedIngredients.bun && <p className={BurgerConstructorStyles.info}>Выберите булку</p> }
-        { addedIngredients.bun &&
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={addedIngredients.bun?.name + ' (верх)'}
-            price={addedIngredients.bun?.price}
-            thumbnail={addedIngredients.bun?.image}/>
-        } 
-      </div>
-      <ul className={BurgerConstructorStyles.list} >
+      <div className={BurgerConstructorStyles.burger + ' ' + BurgerConstructorStyles[hoverClassName]} >
+        <div className={BurgerConstructorStyles.bun + ' pl-8 pr-4'}>
+          { !addedIngredients.bun && <p className={BurgerConstructorStyles.info}>Выберите булку</p> }
+          { addedIngredients.bun &&
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={addedIngredients.bun?.name + ' (верх)'}
+              price={addedIngredients.bun?.price}
+              thumbnail={addedIngredients.bun?.image}/>
+          } 
+        </div>
         {(addedIngredients.others.length) ?
-            addedIngredients.others.map((item, index) => {
-              return (
-                <Ingredient key={item.key} id={item._id} index={index}/>
-              );
-            })
+          <ul className={BurgerConstructorStyles.list} >
+            {addedIngredients.others.map((item, index) => {
+                return (
+                  <Ingredient key={item.key} id={item._id} index={index}/>
+                );
+              })
+            }
+          </ul>
           : <p className={BurgerConstructorStyles.info + ' pl-8'}>Выберите начинку для бургера</p>
         }
-      </ul>
-      <div className={BurgerConstructorStyles.bun + ' pl-8 pr-4'}>
-        { addedIngredients.bun &&
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={addedIngredients.bun?.name + ' (низ)'}
-            price={addedIngredients.bun?.price}
-            thumbnail={addedIngredients.bun?.image}/>
-        }
+        <div className={BurgerConstructorStyles.bun + ' pl-8 pr-4'}>
+          { addedIngredients.bun &&
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={addedIngredients.bun?.name + ' (низ)'}
+              price={addedIngredients.bun?.price}
+              thumbnail={addedIngredients.bun?.image}/>
+          }
+        </div>
       </div>
       <div className={BurgerConstructorStyles.total + ' pr-4'}>
         <TotalPrice/>        
