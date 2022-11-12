@@ -49,33 +49,40 @@ function BurgerConstructor({ openOrderDetailsModal }) {
   },
   })
 
+  const hoverClassName = isHover ? 'onHover' : '';
+  
   return (
     <section ref={dropTarget} className={BurgerConstructorStyles.section + ' pt-25 pl-4 pr-4 pb-13'}>
       <div className={BurgerConstructorStyles.bun + ' pl-8 pr-4'}>
-        <ConstructorElement
-          type="top"
-          isLocked={true}
-          text={addedIngredients.bun?.name + ' (верх)'}
-          price={addedIngredients.bun?.price}
-          thumbnail={addedIngredients.bun?.image}/>
+        { !addedIngredients.bun && <p className={BurgerConstructorStyles.info}>Выберите булку</p> }
+        { addedIngredients.bun &&
+          <ConstructorElement
+            type="top"
+            isLocked={true}
+            text={addedIngredients.bun?.name + ' (верх)'}
+            price={addedIngredients.bun?.price}
+            thumbnail={addedIngredients.bun?.image}/>
+        } 
       </div>
       <ul className={BurgerConstructorStyles.list} >
         {(addedIngredients.others.length) ?
             addedIngredients.others.map((item, index) => {
-            return (
-              <Ingredient key={index} id={item._id} index={index}/>
-            );
-          })
-          : ''
+              return (
+                <Ingredient key={item.key} id={item._id} index={index}/>
+              );
+            })
+          : <p className={BurgerConstructorStyles.info + ' pl-8'}>Выберите начинку для бургера</p>
         }
       </ul>
       <div className={BurgerConstructorStyles.bun + ' pl-8 pr-4'}>
-        <ConstructorElement
-          type="bottom"
-          isLocked={true}
-          text={addedIngredients.bun?.name + ' (низ)'}
-          price={addedIngredients.bun?.price}
-          thumbnail={addedIngredients.bun?.image}/>
+        { addedIngredients.bun &&
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={addedIngredients.bun?.name + ' (низ)'}
+            price={addedIngredients.bun?.price}
+            thumbnail={addedIngredients.bun?.image}/>
+        }
       </div>
       <div className={BurgerConstructorStyles.total + ' pr-4'}>
         <TotalPrice/>        

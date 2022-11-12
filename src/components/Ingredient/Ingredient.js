@@ -18,24 +18,13 @@ function Ingredient({id, index}) {
   const moveItem = (prevId, newId) => {
     dispatch({type: CHANGE_INGREDIENT_ORDER, prevId, newId});
   }
+
   const handleDeleteIngredient = (e) => {
     const targetElement = e.target.parentNode.parentNode;
     if (targetElement.classList.contains('constructor-element__action')) {
       dispatch({type: DELETE_INGREDIENT, index: e.currentTarget.id});
     }
   }
-
-  const [{ isDragging }, dragRef] = useDrag({
-    type: 'sortIngregient',
-    item: () => {
-      return { id, index }
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  })
-
-  const opacity = isDragging ? 0 : 1
 
   const [, dropRef] = useDrop({
     accept: 'sortIngregient',
@@ -46,44 +35,42 @@ function Ingredient({id, index}) {
       }
       const dragIndex = item.index
       const hoverIndex = index
-      // Don't replace items with themselves
+
       if (dragIndex === hoverIndex) {
-        return
+        return;
       }
-      // Determine rectangle on screen
       const hoverBoundingRect = ref.current?.getBoundingClientRect()
-      // Get vertical middle
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
-      // Determine mouse position
-      const clientOffset = monitor.getClientOffset()
-      // Get pixels to the top
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top
-      // Only perform the move when the mouse has crossed half of the items height
-      // When dragging downwards, only move when the cursor is below 50%
-      // When dragging upwards, only move when the cursor is above 50%
-      // Dragging downwards
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-        return
+        return;
       }
-      // Dragging upwards
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-        return
+        return;
       }
-      // Time to actually perform the action
-      moveItem(dragIndex, hoverIndex)
-      // Note: we're mutating the monitor item here!
-      // Generally it's better to avoid mutations,
-      // but it's good here for the sake of performance
-      // to avoid expensive index searches.
-      item.index = hoverIndex
+      moveItem(dragIndex, hoverIndex);
+      item.index = hoverIndex;
     },
   })
   
+  const [{ isDragging }, dragRef] = useDrag({
+    type: 'sortIngregient',
+    item: () => {
+      return { id, index }
+    },
+    collect: (monitor) => {
+      return {      
+      isDragging: monitor.isDragging(),
+    }},
+  })
+
+  const opacity = isDragging ? 0 : 1;
 
   dragRef(dropRef(ref));
   return (
-    <li id={index} draggable ref={ref} className={IngredientStyles.item + ' pb-4 pr-2'} style={{opacity}} onClick={handleDeleteIngredient}>
+    <li id={index} draggable ref={ref} className={IngredientStyles.item + ' mb-4 mr-2'} style={{opacity}} onClick={handleDeleteIngredient}>
       <DragIcon type="primary" />
       <ConstructorElement
         isLocked={false}
@@ -94,6 +81,11 @@ function Ingredient({id, index}) {
     </li>
   );
 
+}
+
+Ingredient.propTypes = {
+  id: PropTypes.string,
+  index: PropTypes.number
 }
 
 export default Ingredient;

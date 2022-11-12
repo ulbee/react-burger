@@ -31,7 +31,7 @@ const initialState = {
   orderFailed: false
 }
 
-
+let uniqId = 0;
 export const ingredientsReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
@@ -94,7 +94,7 @@ export const ingredientsReducer = (state = initialState, action) => {
         ...state,
         addedIngredients: {
           ...state.addedIngredients,
-          others: [...state.addedIngredients.others, state.ingredientsById[action.id]]
+          others: [...state.addedIngredients.others, {...state.ingredientsById[action.id], key: uniqId++}]
         }
       }
     }
@@ -119,12 +119,13 @@ export const ingredientsReducer = (state = initialState, action) => {
       }
     }
     case CHANGE_INGREDIENT_ORDER: {
-      const items = [...state.addedIngredients.others];
+      const items = state.addedIngredients.others.slice();
+      const draggedItem = items.splice(action.prevId, 1)[0];
 
       items.splice(
         action.newId,
         0,
-        items.splice(action.prevId, 1)[0]
+        draggedItem
       );
       return {
         ...state,
