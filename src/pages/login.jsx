@@ -28,11 +28,11 @@ export function LoginPage() {
         </Button>
         <p className='text text_type_main-default text_color_inactive mt-20'>
           Вы&nbsp;—&nbsp;новый пользователь?&nbsp;
-          <Link to='/register' style={{color: '#4C4CFF'}}>Зарегистрироваться</Link>
+          <Link to='/register' className={LoginPageStyles.link}>Зарегистрироваться</Link>
         </p>
         <p className='text text_type_main-default text_color_inactive mt-4'>
         Забыли пароль?&nbsp;
-          <Link to='/forgot-password' style={{color: '#4C4CFF'}}>Восстановить пароль</Link>
+          <Link to='/forgot-password' className={LoginPageStyles.link}>Восстановить пароль</Link>
         </p>
       </form>
     </div>

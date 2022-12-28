@@ -19,6 +19,9 @@ import {SHOW_INGREDIENT, HIDE_INGREDIENT} from '../../utils/constants';
 
 import { LoginPage } from '../../pages/login';
 import { RegisterPage } from '../../pages/register';
+import { ForgotPasswordPage } from '../../pages/forgotPassword';
+import { ResetPasswordPage } from '../../pages/resetPassword';
+import { ProfilePage } from '../../pages/profile';
 
 function App() {
   const dispatch = useDispatch();
@@ -72,10 +75,13 @@ function App() {
               <RegisterPage />
             </Route>
             <Route path="/forgot-password" exact={true}>
+              <ForgotPasswordPage />
             </Route>
             <Route path="/reset-password" exact={true}>
+              <ResetPasswordPage />
             </Route>
             <Route path="/profile" exact={true}>
+              <ProfilePage />
             </Route>
             <Route path="/ingredients/:id" exact={true}>
             </Route>
