@@ -26,3 +26,13 @@ export const setCookie = (name, value, props) => {
 
   document.cookie = updatedCookie;
 }
+
+export const getCookie = (name) => {
+  let cookies = document.cookie.split('; ').reduce((res, el) => {
+    let cookie = el.split('=');   
+    res[cookie[0]] = cookie[1];
+    return res;
+  }, {});
+
+  return cookies[name];
+}

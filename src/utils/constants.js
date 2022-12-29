@@ -4,7 +4,8 @@ export const SAVEORDERURL = BASEURL + '/orders';
 export const ADDUSERURL = BASEURL + '/auth/register';
 export const LOGINUSERURL = BASEURL + '/auth/login';
 export const LOGOUTUSERURL = BASEURL + '/auth/logout';
-export const SAVETOKENURL = BASEURL + '/auth/token';
+export const REFRESHTOKENURL = BASEURL + '/auth/token';
+export const USERURL = BASEURL + '/auth/user';
 
 // Константы для обработки запроса для получения всех ингридиентов
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
@@ -32,7 +33,15 @@ export const CHANGE_INGREDIENT_ORDER = 'CHANGE_INGREDIENT_ORDER';
 export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
 
 // Константы для обработки запроса получения данных о пользователе
-export const SET_REGISTER_FORM_VALUE = 'SET_REGISTER_FORM_VALUE';
-export const ADD_USER_REQUEST = 'GET_USER_REQUEST';
-export const ADD_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const ADD_USER_FAILED = 'GET_USER_FAILED';
+export const SET_REGISTER_FORM_VALUE = 'SET_REGISTER_FORM_VALUE'; //TODO это только для регистрации данных или в принципе для любой формы о пользователе?
+
+export const ADD_USER_REQUEST = 'ADD_USER_REQUEST';
+export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS';
+export const ADD_USER_FAILED = 'ADD_USER_FAILED';
+
+export const LOGIN_USER_REQUEST = 'LOGIN_USER_REQUEST';
+export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
+export const LOGIN_USER_FAILED = 'LOGIN_USER_FAILED';
+
+export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
+export const GET_USER_FAILED = 'GET_USER_FAILED';

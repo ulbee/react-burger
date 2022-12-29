@@ -23,7 +23,7 @@ function AppHeader() {
           </ul>
         </nav>
         <Logo/>
-        <a href='#account' className={AppHeaderStyles.link + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive'}>
+        <a href='/profile' className={AppHeaderStyles.link + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive'}>
           <ProfileIcon type="secondary" />
           Личный кабинет
         </a>

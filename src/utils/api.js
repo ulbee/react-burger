@@ -1,4 +1,5 @@
-import { GETINGREDIENTSURL, SAVEORDERURL, ADDUSERURL, LOGINUSERURL, LOGOUTUSERURL, SAVETOKENURL } from "./constants";
+import { GETINGREDIENTSURL, SAVEORDERURL, ADDUSERURL, LOGINUSERURL, LOGOUTUSERURL, REFRESHTOKENURL, USERURL } from "./constants";
+import { getCookie } from "./methods";
 
 const getIngredientsRequest = async () => {
   const data = await fetch(GETINGREDIENTSURL);
@@ -18,6 +19,38 @@ const sendOrderRequest = async (ingredientIds) => {
     body: JSON.stringify({
       ingredients: ingredientIds
     })
+  });
+
+  if (!res.ok) {
+    throw new Error('Произошла ошибка: ' + res.status);
+  }
+
+  return await res.json();
+}
+
+const getUserRequest = async (token) => {
+  const res = await fetch(USERURL, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      Authorization: 'Bearer ' + token
+    }
+  });
+
+  if (!res.ok) {
+    throw new Error('Произошла ошибка: ' + res.status);
+  }
+
+  return await res.json();
+}
+
+const editUserRequest = async (user) => {
+  const res = await fetch(USERURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8'
+    },
+    body: JSON.stringify(user)
   });
 
   if (!res.ok) {
@@ -75,8 +108,8 @@ const logoutRequest = async (token) => {
   return await res.json();
 }
 
-const saveTokenRequest = async (token) => {
-  const res = await fetch(SAVETOKENURL, {
+const refreshTokenRequest = async (token) => {
+  const res = await fetch(REFRESHTOKENURL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8'
@@ -91,4 +124,11 @@ const saveTokenRequest = async (token) => {
   return await res.json();
 }
 
-export { getIngredientsRequest, sendOrderRequest, addUserRequest, loginRequest, logoutRequest, saveTokenRequest };
+export { 
+  getIngredientsRequest, 
+  sendOrderRequest, 
+  addUserRequest, 
+  loginRequest, 
+  logoutRequest, 
+  refreshTokenRequest,
+  getUserRequest };

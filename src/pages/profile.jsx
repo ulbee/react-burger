@@ -1,23 +1,29 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ProfilePageStyles from './profile.module.css';
 
 import { Link } from 'react-router-dom';
 import { Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
+import { setRegisterFormValue, getUser } from '../services/actions/user';
+import { getCookie } from '../utils/methods';
 
 export function ProfilePage() {
-  const [nameValue, setNameValue] = React.useState();
-  const onNameChange = e => {
-    setNameValue(e.target.value)
-  }
+  const dispatch = useDispatch();
 
-  const [passwordValue, setPasswordValue] = React.useState();
-  const onPasswordChange = e => {
-    setPasswordValue(e.target.value)
-  }
+  
+  
+  // dispatch(getUser(accessToken));
+  const {name, email, password} = useSelector(state => state.user);
 
-  const [emailValue, setEmailValue] = React.useState();
-  const onEmailChange = e => {
-    setEmailValue(e.target.value)
+
+  // const loginUserHandler = (e) => {
+  //   e.preventDefault();
+
+  //   dispatch(loginUser({email, password}));
+  // }
+
+  const onFormChange = (e) => {
+    dispatch(setRegisterFormValue(e.target.name, e.target.value));    
   }
 
   return (
@@ -37,9 +43,9 @@ export function ProfilePage() {
         </p>
       </div>
       <form className={ProfilePageStyles.form}>        
-        <Input placeholder='Имя' value={nameValue} onChange={onNameChange} icon='EditIcon'/>
-        <EmailInput placeholder='E-mail' value={emailValue} onChange={onEmailChange} extraClass='mt-6' icon='EditIcon'/>
-        <PasswordInput placeholder='Пароль' value={passwordValue} onChange={onPasswordChange} extraClass='mt-6' icon='EditIcon'/>                
+        <Input placeholder='Имя' value={name} onChange={onFormChange} icon='EditIcon'/>
+        <EmailInput placeholder='E-mail' value={email} onChange={onFormChange} extraClass='mt-6' icon='EditIcon'/>
+        <PasswordInput placeholder='Пароль' value={password} onChange={onFormChange} extraClass='mt-6' icon='EditIcon'/>                
       </form>
     </div>
   );
