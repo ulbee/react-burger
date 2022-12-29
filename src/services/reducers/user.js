@@ -8,11 +8,13 @@ import {
 
 
 const initialUserState = {
+  // requiredForRegistration: ['name', 'email', 'password'],
   name: '',
   email: '',
   password: '',
   token: '',
 
+  // canAddUser: false,
   addUserRequest: false,
   addUserFailed: false
 }
@@ -20,9 +22,15 @@ const initialUserState = {
 export const userReducer = (state = initialUserState, action) => {
   switch (action.type) {
     case SET_REGISTER_FORM_VALUE: {
+      // let canAddUser = state.requiredForRegistration.reduce((res, value) => {
+      //   console.log('value', state[value], res);
+      //   return res && state[value];
+      // }, true);
+      
       return {
         ...state,
-        [action.field]: action.value
+        [action.field]: action.value,
+        // canAddUser
       }
     }
     case ADD_USER_REQUEST: {
@@ -36,7 +44,8 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         name: action.user.name,
         email: action.user.email,
-        token: action.accessToken.split('Bearer ')[1],
+        password: '',
+        token: action.accessToken,
         addUserRequest: false
       }
     }

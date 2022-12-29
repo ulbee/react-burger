@@ -1,7 +1,7 @@
 import AppStyles from './App.module.css';
 
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -14,7 +14,7 @@ import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
-import {getIngredients} from '../../services/actions';
+import {getIngredients} from '../../services/actions/ingredients';
 import {SHOW_INGREDIENT, HIDE_INGREDIENT} from '../../utils/constants';
 
 import { LoginPage } from '../../pages/login';
@@ -30,6 +30,7 @@ function App() {
   const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = useState(false);
 
   const { ingredientsByType, ingredientsRequest, ingredientsFailed } = useSelector(state => state.menu);
+  const { token } = useSelector(state => state.user);
   
   const closeAllModals = () => {
     dispatch({type: HIDE_INGREDIENT});
@@ -56,7 +57,7 @@ function App() {
       <main className={AppStyles.container}>
         <Router>
           <Switch>
-            <Route path="/" exact={true}>
+            <Route path="/" exact>
               <ErrorBoundary>
                 {ingredientsFailed && <p>Произошла ошибка</p>}
                 {ingredientsRequest && <p>Загружаем данные</p>}
@@ -68,25 +69,27 @@ function App() {
                 )}
               </ErrorBoundary>
             </Route>
-            <Route path="/login" exact={true}>
+            <Route path="/login">
               <LoginPage />
             </Route>
-            <Route path="/register" exact={true}>
-              <RegisterPage />
+            <Route path="/register">
+              { !token && <RegisterPage />}
+              { token && <Redirect to={{pathname: "/"}}/>}              
             </Route>
-            <Route path="/forgot-password" exact={true}>
+            <Route path="/forgot-password">
               <ForgotPasswordPage />
             </Route>
-            <Route path="/reset-password" exact={true}>
+            <Route path="/reset-password">
               <ResetPasswordPage />
             </Route>
-            <Route path="/profile" exact={true}>
+            <Route path="/profile">
               <ProfilePage />
             </Route>
-            <Route path="/ingredients/:id" exact={true}>
-            </Route>
-            <Route>
+            <Route path="/ingredients/:id">
 
+            </Route>
+            <Route path='*'>
+              404
             </Route>
           </Switch>
         </Router>

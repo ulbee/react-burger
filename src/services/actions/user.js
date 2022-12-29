@@ -1,4 +1,5 @@
 import { addUserRequest, saveTokenRequest, loginRequest, logoutRequest } from "../../utils/api";
+import { setCookie } from "../../utils/methods";
 import {
   SET_REGISTER_FORM_VALUE,
 
@@ -17,14 +18,20 @@ export function addUser(user) {
   return function(dispatch) {
     dispatch({type: ADD_USER_REQUEST});
 
-    addUserRequest()
+    console.log('addUser', user);
+    addUserRequest(user)
       .then((res) => {
+        console.log('success');
         if (res && res.success) {
+          const token = res.accessToken.split('Bearer ')[1];
+          console.log('token', token);
 
+          setCookie('token', token);
           dispatch({
             type: ADD_USER_SUCCESS,
-            user: res.user
-          })
+            user: res.user,
+            accessToken: token
+          })          
         } else {
           dispatch({type: ADD_USER_FAILED});
         }

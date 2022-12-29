@@ -9,7 +9,7 @@ function AppHeader() {
         <nav>
           <ul className={AppHeaderStyles.menu}>
             <li className={AppHeaderStyles.item}>
-              <a href='#constructor' className={AppHeaderStyles.link + ' ' + AppHeaderStyles.active + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive'}>
+              <a href='/' className={AppHeaderStyles.link + ' ' + AppHeaderStyles.active + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive'}>
                 <BurgerIcon type="primary"/>
                 Конструктор
               </a>

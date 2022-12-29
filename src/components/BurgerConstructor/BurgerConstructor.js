@@ -9,7 +9,7 @@ import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger
 import TotalPrice from '../TotalPrice/TotalPrice';
 import Ingredient from '../Ingredient/Ingredient';
 
-import { sendOrder } from '../../services/actions';
+import { sendOrder } from '../../services/actions/ingredients';
 import { ADD_BUN, ADD_INGREDIENT } from '../../utils/constants';
 
 

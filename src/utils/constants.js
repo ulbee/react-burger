@@ -1,10 +1,10 @@
 const BASEURL = 'https://norma.nomoreparties.space/api';
 export const GETINGREDIENTSURL = BASEURL + '/ingredients';
 export const SAVEORDERURL = BASEURL + '/orders';
-export const ADDUSERURL = BASEURL + 'auth/register';
-export const LOGINUSERURL = BASEURL + 'auth/login';
-export const LOGOUTUSERURL = BASEURL + 'auth/logout';
-export const SAVETOKENURL = BASEURL + 'auth/token';
+export const ADDUSERURL = BASEURL + '/auth/register';
+export const LOGINUSERURL = BASEURL + '/auth/login';
+export const LOGOUTUSERURL = BASEURL + '/auth/logout';
+export const SAVETOKENURL = BASEURL + '/auth/token';
 
 // Константы для обработки запроса для получения всех ингридиентов
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
