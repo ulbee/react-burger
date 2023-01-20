@@ -13,6 +13,7 @@ import { RegisterPage } from '../../pages/register';
 import { ForgotPasswordPage } from '../../pages/forgotPassword';
 import { ResetPasswordPage } from '../../pages/resetPassword';
 import { ProfilePage } from '../../pages/profile';
+import { NotFoundPage } from '../../pages/notFound';
 
 function App() {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ function App() {
 
             </Route>
             <Route path='*'>
-              404
+              <NotFoundPage />
             </Route>
           </Switch>
         </Router>
