@@ -10,7 +10,6 @@ import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
 // import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
-import {getIngredients} from '../../services/actions/ingredients';
 import {SHOW_INGREDIENT, HIDE_INGREDIENT} from '../../utils/constants';
 
 function Main() {
@@ -34,10 +33,6 @@ function Main() {
   const openIngredientModal = (e) => {
     dispatch({type: SHOW_INGREDIENT, id: e.currentTarget.id});
   }
-
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   return (
     <>

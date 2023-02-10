@@ -29,6 +29,10 @@ function App() {
   const { ingredientsByType } = useSelector(state => state.menu);
 
   const { refreshToken } = useSelector(state => state.user);
+
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
   
   return (
     <div className={AppStyles.main + ' m-10'}>
@@ -36,7 +40,7 @@ function App() {
       <main className={AppStyles.container}>
           <Routes location={ modalBackground || location}>
               <Route path="/" exact element={<Main/>} />
-
+              <Route path="/ingredients/:ingredientId" element={ingredientsByType && <IngredientDetails/>} />
             {/* <Route path="/login">
               { !refreshToken && <LoginPage />}
               { refreshToken && <Navigate to={{pathname: "/"}}/>}
