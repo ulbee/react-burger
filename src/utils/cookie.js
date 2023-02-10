@@ -1,5 +1,8 @@
 export const setCookie = (name, value, props) => {
-  props = props || {};
+  props = {
+    path: '/',
+    ...props
+  };
 
   let exp = props.expires;
 

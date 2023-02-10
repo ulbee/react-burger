@@ -1,5 +1,5 @@
 import { GETINGREDIENTSURL, SAVEORDERURL, ADDUSERURL, LOGINUSERURL, LOGOUTUSERURL, REFRESHTOKENURL, USERURL } from "./constants";
-import { getCookie } from "./methods";
+import { getCookie } from "./cookie";
 
 const getIngredientsRequest = async () => {
   const data = await fetch(GETINGREDIENTSURL);

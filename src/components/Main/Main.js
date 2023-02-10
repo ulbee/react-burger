@@ -8,7 +8,7 @@ import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
+// import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
 import {getIngredients} from '../../services/actions/ingredients';
 import {SHOW_INGREDIENT, HIDE_INGREDIENT} from '../../utils/constants';
@@ -17,14 +17,14 @@ function Main() {
   const dispatch = useDispatch();
 
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = useState(false);
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = useState(false);
+  // const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = useState(false);
 
   const { ingredientsByType, ingredientsRequest, ingredientsFailed } = useSelector(state => state.menu);
   
   const closeAllModals = () => {
     dispatch({type: HIDE_INGREDIENT});
     setIsOrderDetailsOpened(false);
-    setIsIngredientDetailsOpened({isOpened: false});
+    // setIsIngredientDetailsOpened({isOpened: false});
   };
   
   const openOrderDetailsModal = () => {
@@ -33,7 +33,6 @@ function Main() {
 
   const openIngredientModal = (e) => {
     dispatch({type: SHOW_INGREDIENT, id: e.currentTarget.id});
-    setIsIngredientDetailsOpened({isOpened: true});
   }
 
   useEffect(() => {
@@ -56,12 +55,6 @@ function Main() {
         isOrderDetailsOpened &&
         <Modal title='' onClose={closeAllModals}>
             <OrderDetails/>
-        </Modal>
-      }
-      {
-        isIngredientDetailsOpened.isOpened &&
-        <Modal title='Детали ингридиента' onClose={closeAllModals}>
-          <IngredientDetails/>
         </Modal>
       }
     </>

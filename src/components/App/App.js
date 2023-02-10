@@ -1,7 +1,7 @@
 import AppStyles from './App.module.css';
 
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation, Outlet, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Main from '../Main/Main';
@@ -14,30 +14,36 @@ import { ForgotPasswordPage } from '../../pages/forgotPassword';
 import { ResetPasswordPage } from '../../pages/resetPassword';
 import { ProfilePage } from '../../pages/profile';
 import { NotFoundPage } from '../../pages/notFound';
+import Modal from '../Modal/Modal';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import { getIngredients } from '../../services/actions/ingredients';
 
 function App() {
   const dispatch = useDispatch();
 
+  const history = useNavigate();
+
+  const location = useLocation();
+  const modalBackground = location.state?.modalBackground;
+
+  const { ingredientsByType } = useSelector(state => state.menu);
 
   const { refreshToken } = useSelector(state => state.user);
   
-  
   return (
     <div className={AppStyles.main + ' m-10'}>
-      <AppHeader />      
+      <AppHeader />
       <main className={AppStyles.container}>
-        <Router>
-          <Switch>
-            <Route path="/" exact>
-              <Main />              
-            </Route>
-            <Route path="/login">
+          <Routes location={ modalBackground || location}>
+              <Route path="/" exact element={<Main/>} />
+
+            {/* <Route path="/login">
               { !refreshToken && <LoginPage />}
-              { refreshToken && <Redirect to={{pathname: "/"}}/>}
+              { refreshToken && <Navigate to={{pathname: "/"}}/>}
             </Route>
             <Route path="/register">
               { !refreshToken && <RegisterPage />}
-              { refreshToken && <Redirect to={{pathname: "/"}}/>}
+              { refreshToken && <Navigate to={{pathname: "/"}}/>}
             </Route>
             <Route path="/forgot-password">
               <ForgotPasswordPage />
@@ -53,9 +59,18 @@ function App() {
             </Route>
             <Route path='*'>
               <NotFoundPage />
-            </Route>
-          </Switch>
-        </Router>
+            </Route> */}
+          </Routes>
+          { modalBackground && (
+            <Routes>
+              <Route path="/ingredients/:ingredientId" element={
+                  <Modal title='Детали ингридиента' onClose={() => history(-1)} >
+                    {ingredientsByType && <IngredientDetails/>}
+                  </Modal>
+                }
+              />
+            </Routes>
+          )}
       </main>
       
     </div>

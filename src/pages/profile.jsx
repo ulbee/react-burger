@@ -5,7 +5,7 @@ import ProfilePageStyles from './profile.module.css';
 import { Link } from 'react-router-dom';
 import { Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
 import { setRegisterFormValue, getUser } from '../services/actions/user';
-import { getCookie } from '../utils/methods';
+import { getCookie } from '../utils/cookie';
 
 export function ProfilePage() {
   const dispatch = useDispatch();

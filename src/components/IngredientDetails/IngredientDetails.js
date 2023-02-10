@@ -1,10 +1,17 @@
 import IngredientDetailsStyles from './IngredientDetails.module.css';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+
+import { SHOW_INGREDIENT } from '../../utils/constants';
 
 function IngredientDetails() {
+  const dispatch = useDispatch();
+  const { ingredientId } = useParams();
 
-  const {currentIngredient} = useSelector(store => store.menu);
+  const { currentIngredient } = useSelector(store => store.menu);
+
+  !currentIngredient && dispatch({type: SHOW_INGREDIENT, id: ingredientId});
   
   return (
     <div className={IngredientDetailsStyles.container}>

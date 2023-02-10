@@ -1,5 +1,5 @@
 import { addUserRequest, refreshTokenRequest, loginRequest, logoutRequest, getUserRequest } from "../../utils/api";
-import { setCookie } from "../../utils/methods";
+import { setCookie } from "../../utils/cookie";
 import {
   SET_REGISTER_FORM_VALUE,
 
