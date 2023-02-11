@@ -41,10 +41,13 @@ function App() {
           <Routes location={ modalBackground || location}>
               <Route path="/" exact element={<Main/>} />
               <Route path="/ingredients/:ingredientId" element={ingredientsByType && <IngredientDetails/>} />
-            {/* <Route path="/login">
-              { !refreshToken && <LoginPage />}
-              { refreshToken && <Navigate to={{pathname: "/"}}/>}
-            </Route>
+
+              <Route path="/login" element={ <ProtectedRoute element={<LoginPage />} isAuthPage /> } />
+              <Route path="/profile" element={ <ProtectedRoute element={<ProfilePage/>}/> } />
+
+              <Route path='*' element={ <NotFoundPage/> } />
+              
+            {/* 
             <Route path="/register">
               { !refreshToken && <RegisterPage />}
               { refreshToken && <Navigate to={{pathname: "/"}}/>}
@@ -58,12 +61,7 @@ function App() {
             <ProtectedRoute path="/profile">
               <ProfilePage />
             </ProtectedRoute>
-            <Route path="/ingredients/:id">
-
-            </Route>
-            <Route path='*'>
-              <NotFoundPage />
-            </Route> */}
+             */}
           </Routes>
           { modalBackground && (
             <Routes>

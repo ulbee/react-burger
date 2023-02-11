@@ -1,32 +1,32 @@
 import { useEffect } from 'react';
-import { Route, Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getCookie } from '../../utils/cookie';
 import { getUser } from '../../services/actions/user';
 
-function ProtectedRoute({children, ...rest}) {
+function ProtectedRoute({element, isAuthPage}) {
   console.log('ProtectedRoute');
   const dispatch = useDispatch();
   const accessToken = getCookie('accessToken');
   const { isUserLoaded } = useSelector(state => state.user);
 
+  const {location} = useLocation();
+
   useEffect(() => {
     dispatch(getUser(accessToken));
   }, [dispatch, accessToken]);
 
-  return (
-    <>
-      {console.log('RRR', isUserLoaded)}
-      {isUserLoaded ? <Route {...rest} render={() => (children)}/> : <Navigate to='/login'/>}
-    </>
-    // <Route
-    //   {...rest}
-    //   render={() =>
-    //     isUserLoaded ? ( children ) : ( <Redirect to='/login'/> )
-    //   }
-    // />    
-  );
+  if (isAuthPage && isUserLoaded) {
+    const { from } = location?.state || { from: {pathname: '/'}}
+    return <Navigate to={from} />;
+  }
+
+  if (!isAuthPage && !isUserLoaded) {
+    return <Navigate to="/login" replace state={ {from: location} }/>;
+  }
+
+  return element;
 }
 
 export default ProtectedRoute;

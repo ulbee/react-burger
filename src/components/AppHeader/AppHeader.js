@@ -1,5 +1,6 @@
 // import React from 'react';
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { Link } from 'react-router-dom';
 import AppHeaderStyles from './AppHeader.module.css';
 
 function AppHeader() {
@@ -23,10 +24,10 @@ function AppHeader() {
           </ul>
         </nav>
         <Logo/>
-        <a href='/profile' className={AppHeaderStyles.link + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive'}>
+        <Link to='/profile' state={{from: '/profile'}} className={AppHeaderStyles.link + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive'}>
           <ProfileIcon type="secondary" />
           Личный кабинет
-        </a>
+        </Link>
       </div>
     </header>
   );

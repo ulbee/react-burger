@@ -18,7 +18,6 @@ const initialUserState = {
   // requiredForRegistration: ['name', 'email', 'password'],
   name: '',
   email: '',
-  password: '',
   accessToken: '',
   refreshToken: '',
 
