@@ -1,5 +1,6 @@
 import { 
   SET_REGISTER_FORM_VALUE,
+  SET_EDIT_USER_FORM,
 
   ADD_USER_SUCCESS,
   ADD_USER_REQUEST,
@@ -10,40 +11,44 @@ import {
   LOGIN_USER_FAILED,
 
   GET_USER_SUCCESS,
-  GET_USER_FAILED
+  GET_USER_FAILED,
+
+  EDIT_USER_SUCCESS,
+  EDIT_USER_FAILED
  } from '../../utils/constants';
 
 
 const initialUserState = {
-  // requiredForRegistration: ['name', 'email', 'password'],
   name: '',
   email: '',
-  accessToken: '',
-  refreshToken: '',
 
-  isUserLoaded: false,
+  isAuthSuccess: false,
 
-  // canAddUser: false,
   addUserRequest: false,
   addUserFailed: false,
 
   loginUserRequest: false,
   loginUserFailed: false,
 
+  editUserFailed: false,
+  isUserEdited: false
 }
 
 export const userReducer = (state = initialUserState, action) => {
   switch (action.type) {
     case SET_REGISTER_FORM_VALUE: {
-      // let canAddUser = state.requiredForRegistration.reduce((res, value) => {
-      //   console.log('value', state[value], res);
-      //   return res && state[value];
-      // }, true);
       
       return {
         ...state,
         [action.field]: action.value,
-        // canAddUser
+      }
+    }
+    case SET_EDIT_USER_FORM: {
+
+      return {
+        ...state,
+        [action.field]: action.value,
+        isUserEdited: true
       }
     }
     case ADD_USER_REQUEST: {
@@ -57,9 +62,6 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         name: action.user.name,
         email: action.user.email,
-        password: '',
-        accessToken: action.accessToken,
-        refreshToken: action.refreshToken,
         addUserRequest: false
       }
     }
@@ -81,9 +83,6 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         name: action.user.name,
         email: action.user.email,
-        password: '',
-        accessToken: action.accessToken,
-        refreshToken: action.refreshToken,
         loginUserRequest: false
       }
     }
@@ -99,13 +98,28 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         name: action.user.name,
         email: action.user.email,
-        isUserLoaded: true
+        isAuthSuccess: true
       }
     }
     case GET_USER_FAILED: {
       return {
         ...state,
-        isUserLoaded: false
+        isAuthSuccess: false
+      }
+    }
+    case EDIT_USER_SUCCESS: {
+      return {
+        ...state,
+        name: action.user.name,
+        email: action.user.email,
+        editUserFailed: false,
+        isUserEdited: false
+      }
+    }
+    case EDIT_USER_FAILED: {
+      return {
+        ...state,
+        editUserFailed: true
       }
     }
     

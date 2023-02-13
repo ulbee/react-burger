@@ -1,5 +1,4 @@
 import { GETINGREDIENTSURL, SAVEORDERURL, ADDUSERURL, LOGINUSERURL, LOGOUTUSERURL, REFRESHTOKENURL, USERURL } from "./constants";
-import { getCookie } from "./cookie";
 
 const getIngredientsRequest = async () => {
   const data = await fetch(GETINGREDIENTSURL);
@@ -37,18 +36,15 @@ const getUserRequest = async (token) => {
     }
   });
 
-  if (!res.ok) {
-    throw new Error('Произошла ошибка: ' + res.status);
-  }
-
   return await res.json();
 }
 
-const editUserRequest = async (user) => {
+const editUserRequest = async (user, token) => {
   const res = await fetch(USERURL, {
-    method: 'POST',
+    method: 'PATCH',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
+      Authorization: 'Bearer ' + token
     },
     body: JSON.stringify(user)
   });
@@ -131,4 +127,6 @@ export {
   loginRequest, 
   logoutRequest, 
   refreshTokenRequest,
-  getUserRequest };
+  getUserRequest,
+  editUserRequest
+ };

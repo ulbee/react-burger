@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -8,7 +8,6 @@ import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import Modal from '../Modal/Modal';
 import OrderDetails from '../OrderDetails/OrderDetails';
-// import IngredientDetails from '../IngredientDetails/IngredientDetails';
 
 import {SHOW_INGREDIENT, HIDE_INGREDIENT} from '../../utils/constants';
 
@@ -16,14 +15,12 @@ function Main() {
   const dispatch = useDispatch();
 
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = useState(false);
-  // const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = useState(false);
 
   const { ingredientsByType, ingredientsRequest, ingredientsFailed } = useSelector(state => state.menu);
   
   const closeAllModals = () => {
     dispatch({type: HIDE_INGREDIENT});
     setIsOrderDetailsOpened(false);
-    // setIsIngredientDetailsOpened({isOpened: false});
   };
   
   const openOrderDetailsModal = () => {

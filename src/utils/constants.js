@@ -33,7 +33,8 @@ export const CHANGE_INGREDIENT_ORDER = 'CHANGE_INGREDIENT_ORDER';
 export const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
 
 // Константы для обработки запроса получения данных о пользователе
-export const SET_REGISTER_FORM_VALUE = 'SET_REGISTER_FORM_VALUE'; //TODO это только для регистрации данных или в принципе для любой формы о пользователе?
+export const SET_REGISTER_FORM_VALUE = 'SET_REGISTER_FORM_VALUE';
+export const SET_EDIT_USER_FORM = 'SET_EDIT_USER_FORM';
 
 export const ADD_USER_REQUEST = 'ADD_USER_REQUEST';
 export const ADD_USER_SUCCESS = 'ADD_USER_SUCCESS';
@@ -45,3 +46,6 @@ export const LOGIN_USER_FAILED = 'LOGIN_USER_FAILED';
 
 export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
 export const GET_USER_FAILED = 'GET_USER_FAILED';
+
+export const EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS';
+export const EDIT_USER_FAILED = 'EDIT_USER_FAILED';

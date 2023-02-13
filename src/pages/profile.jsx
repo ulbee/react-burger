@@ -1,30 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfilePageStyles from './profile.module.css';
 
 import { Link } from 'react-router-dom';
 import { Input, EmailInput, PasswordInput } from '@ya.praktikum/react-developer-burger-ui-components';
-import { setRegisterFormValue, getUser } from '../services/actions/user';
-import { getCookie } from '../utils/cookie';
+import { editUser, setEditUserForm } from '../services/actions/user';
 
 export function ProfilePage() {
   const dispatch = useDispatch();
-
-  
-  
-  // dispatch(getUser(accessToken));
-  const {name, email, password} = useSelector(state => state.user);
-
-
-  // const loginUserHandler = (e) => {
-  //   e.preventDefault();
-
-  //   dispatch(loginUser({email, password}));
-  // }
+  const {name, email, isUserEdited} = useSelector(state => state.user);
 
   const onFormChange = (e) => {
-    dispatch(setRegisterFormValue(e.target.name, e.target.value));    
+    dispatch(setEditUserForm(e.target.name, e.target.value));
   }
+
+  useEffect(() => {
+    if (isUserEdited) {
+      dispatch(editUser({name, email, password: ''}));
+    }
+  }, [name, email]);
 
   return (
     <div className={ProfilePageStyles.container + ' mt-30'}>
@@ -43,9 +37,9 @@ export function ProfilePage() {
         </p>
       </div>
       <form className={ProfilePageStyles.form}>        
-        <Input placeholder='Имя' value={name} onChange={onFormChange} icon='EditIcon'/>
-        <EmailInput placeholder='E-mail' value={email} onChange={onFormChange} extraClass='mt-6' icon='EditIcon'/>
-        <PasswordInput placeholder='Пароль' value={password} onChange={onFormChange} extraClass='mt-6' icon='EditIcon'/>                
+        <Input placeholder='Имя' value={name} name='name' onChange={onFormChange} icon='EditIcon'/>
+        <EmailInput placeholder='E-mail' value={email} name='email' onChange={onFormChange} extraClass='mt-6' icon='EditIcon'/>
+        <PasswordInput placeholder='Пароль' value='' name='password' onChange={onFormChange} extraClass='mt-6' icon='EditIcon'/>
       </form>
     </div>
   );

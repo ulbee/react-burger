@@ -28,7 +28,7 @@ export function LoginPage() {
           Вход
         </h1>
         <EmailInput placeholder='E-mail' value={email} name='email' onChange={onFormChange} extraClass='mt-6' required/>
-        <PasswordInput placeholder='Пароль' value={password} name='password' onChange={onFormChange} extraClass='mt-6' required/>
+        <PasswordInput placeholder='Пароль' value={password || ''} name='password' onChange={onFormChange} extraClass='mt-6' required/>
         <Button type='primary' htmlType='submit' size='medium' extraClass='mt-6'>
           Войти
         </Button>
