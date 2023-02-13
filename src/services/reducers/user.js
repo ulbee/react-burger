@@ -14,13 +14,18 @@ import {
   GET_USER_FAILED,
 
   EDIT_USER_SUCCESS,
-  EDIT_USER_FAILED
+  EDIT_USER_FAILED,
+  RESET_EDIT_USER_FORM
  } from '../../utils/constants';
 
 
 const initialUserState = {
   name: '',
   email: '',
+  password: '',
+  prevSavedName: '',
+  prevSavedEmail: '',
+  prevSavedPassword: '',
 
   isAuthSuccess: false,
 
@@ -98,6 +103,8 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         name: action.user.name,
         email: action.user.email,
+        prevSavedName: action.user.name,
+        prevSavedEmail: action.user.email,
         isAuthSuccess: true
       }
     }
@@ -112,6 +119,8 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         name: action.user.name,
         email: action.user.email,
+        prevSavedName: action.user.name,
+        prevSavedEmail: action.user.email,
         editUserFailed: false,
         isUserEdited: false
       }
@@ -120,6 +129,14 @@ export const userReducer = (state = initialUserState, action) => {
       return {
         ...state,
         editUserFailed: true
+      }
+    }
+    case RESET_EDIT_USER_FORM: {
+      return {
+        ...state,
+        name: state.prevSavedName,
+        email: state.prevSavedEmail,
+        password: state.prevSavedPassword
       }
     }
     
