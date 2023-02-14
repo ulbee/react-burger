@@ -39,3 +39,7 @@ export const getCookie = (name) => {
 
   return cookies[name];
 }
+
+export const getAccessToken = (accessToken) => {
+ return accessToken.split('Bearer ')[1];
+}

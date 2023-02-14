@@ -40,7 +40,9 @@ const initialUserState = {
   addUserFailed: false,
 
   loginUserRequest: false,
+  loginUserSuccess: false,
   loginUserFailed: false,
+  loginErrorMessage: '',
 
   editUserFailed: false,
   isUserEdited: false,
@@ -78,14 +80,16 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         name: action.user.name,
         email: action.user.email,
-        addUserRequest: false
+        addUserRequest: false,
+        loginUserSuccess: true
       }
     }
     case ADD_USER_FAILED: {
       return {
         ...state,
         addUserRequest: false,
-        addUserFailed: true
+        addUserFailed: true,
+        loginUserSuccess: false
       }
     }
     case LOGIN_USER_REQUEST: {
@@ -99,14 +103,16 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         name: action.user.name,
         email: action.user.email,
-        loginUserRequest: false
+        loginUserRequest: false,
+        loginUserSuccess: true
       }
     }
     case LOGIN_USER_FAILED: {
       return {
         ...state,
         loginUserRequest: false,
-        loginUserFailed: true
+        loginUserFailed: true,
+        loginErrorMessage: action.errorMessage
       }
     }
     case GET_USER_SUCCESS: {

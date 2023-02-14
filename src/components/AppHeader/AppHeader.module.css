@@ -49,8 +49,10 @@
   fill: var(--text-primary-color);
 }
 
-.link.active {
+.link.active,
+.link.active svg {
   color: var(--text-primary-color);
+  fill: var(--text-primary-color);
 }
 
 .account {

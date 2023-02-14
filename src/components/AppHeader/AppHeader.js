@@ -1,33 +1,39 @@
 // import React from 'react';
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import AppHeaderStyles from './AppHeader.module.css';
 
 function AppHeader() {
+
+  const active = AppHeaderStyles.link + ' ' + AppHeaderStyles.active + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default';
+  const link = AppHeaderStyles.link + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive';
+  const activeAccountLink = AppHeaderStyles.link + ' ' + AppHeaderStyles.active + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default';
+  const accountLink = AppHeaderStyles.link + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive';
+
   return (
     <header className={AppHeaderStyles.header}>
       <div className={AppHeaderStyles.container}>
         <nav>
           <ul className={AppHeaderStyles.menu}>
             <li className={AppHeaderStyles.item}>
-              <a href='/' className={AppHeaderStyles.link + ' ' + AppHeaderStyles.active + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive'}>
-                <BurgerIcon type="primary"/>
+              <NavLink to='/' className={({ isActive }) => isActive ? active : link}>
+                <BurgerIcon type="secondary"/>
                 Конструктор
-              </a>
+              </NavLink>
             </li>
             <li className={AppHeaderStyles.item}>
-              <a href='#feed' className={AppHeaderStyles.link + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive'}>
+              <NavLink to='/feed' className={({ isActive }) => isActive ? active : link}>
                 <ListIcon type="secondary"/>
                 Лента заказов
-              </a>
+              </NavLink>
             </li>
           </ul>
         </nav>
         <Logo/>
-        <Link to='/profile' state={{from: '/profile'}} className={AppHeaderStyles.link + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive'}>
+        <NavLink to='/profile' state={{from: '/profile'}} className={({ isActive }) => isActive ? activeAccountLink : accountLink}>
           <ProfileIcon type="secondary" />
           Личный кабинет
-        </Link>
+        </NavLink>
       </div>
     </header>
   );

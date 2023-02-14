@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfilePageStyles from './profile.module.css';
 
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { editUser, setEditUserForm } from '../services/actions/user';
 import { RESET_EDIT_USER_FORM } from '../utils/constants';
@@ -24,18 +24,21 @@ export function ProfilePage() {
     dispatch({type: RESET_EDIT_USER_FORM});
   }
 
+  const active = ProfilePageStyles.active + ' ' + ProfilePageStyles.link + ' pt-4 pb-4 text text_type_main-medium';
+  const link = ProfilePageStyles.link + ' pt-4 pb-4 text text_type_main-medium text_color_inactive';
+
   return (
     <div className={ProfilePageStyles.container + ' mt-30'}>
       <div className={ProfilePageStyles.menu}>
-        <p className={ProfilePageStyles.activeLink + ' pt-4 pb-4'}>
-          <span className='text text_type_main-medium'>Профиль</span>
-        </p>
-        <Link to='/profile/orders' className={ProfilePageStyles.link + ' pt-4 pb-4'}>
-          <span className='text text_type_main-medium text_color_inactive'>История заказов</span>
-        </Link>
-        <Link to='/logout' className={ProfilePageStyles.link + ' pt-4 pb-4'}>
-          <span className='text text_type_main-medium text_color_inactive'>Выход</span>
-        </Link>
+      <NavLink end to='/profile' className={({ isActive }) => isActive ? active : link}>
+          <span>Профиль</span>
+        </NavLink>
+        <NavLink to='/profile/orders'  className={({ isActive }) => isActive ? active : link}>
+          <span>История заказов</span>
+        </NavLink>
+        <NavLink to='/logout' className={({ isActive }) => isActive ? active : link}>
+          <span>Выход</span>
+        </NavLink>
         <p className='text text_type_main-small text_color_inactive mt-20'>
           В этом разделе вы можете изменить свои персональные данные
         </p>

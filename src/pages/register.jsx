@@ -2,14 +2,14 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import RegisterPageStyles from './login.module.css';
 
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { Input, EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { setRegisterFormValue, addUser } from '../services/actions/user';
 
 export function RegisterPage() {
   const dispatch = useDispatch();
 
-  const {name, email, password} = useSelector(state => state.user);
+  const {name, email, password, loginUserSuccess} = useSelector(state => state.user);
 
   const addUserHandler = (e) => {
     e.preventDefault();
@@ -19,7 +19,11 @@ export function RegisterPage() {
 
   const onFormChange = (e) => {
     dispatch(setRegisterFormValue(e.target.name, e.target.value));    
-  }  
+  }
+
+  if (loginUserSuccess) {
+    return <Navigate to='/' replace/>
+  }
 
   return (
     <div className={RegisterPageStyles.container}>

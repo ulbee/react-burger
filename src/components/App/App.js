@@ -19,6 +19,7 @@ import { NotFoundPage } from '../../pages/notFound';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { getIngredients } from '../../services/actions/ingredients';
+import { getUser } from '../../services/actions/user';
 
 function App() {
   const dispatch = useDispatch();
@@ -32,7 +33,8 @@ function App() {
 
   useEffect(() => {
     dispatch(getIngredients());
-  }, [dispatch]);
+    dispatch(getUser());
+  }, []);
   
   return (
     <div className={AppStyles.main + ' m-10'}>

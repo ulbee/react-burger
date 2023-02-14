@@ -19,7 +19,7 @@ function IngredientCard({ data, count, openIngredientModal }) {
   });
 
   return (
-    <Link to={`/ingredients/${data._id}`} state={{modalBackground: location}}>
+    <Link to={`/ingredients/${data._id}`} state={{modalBackground: location}} className={IngredientCardStyles.link}>
       <div draggable ref={ref}
         id={data._id} className={IngredientCardStyles.card}
         onClick={openIngredientModal}

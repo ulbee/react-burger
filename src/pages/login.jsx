@@ -2,14 +2,14 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import LoginPageStyles from './login.module.css';
 
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { setRegisterFormValue, loginUser } from '../services/actions/user';
 
 export function LoginPage() {
   const dispatch = useDispatch();
 
-  const {email, password} = useSelector(state => state.user);
+  const {email, password, loginUserSuccess} = useSelector(state => state.user);
 
   const onFormSubmit = (e) => {
     e.preventDefault();
@@ -19,6 +19,10 @@ export function LoginPage() {
 
   const onFormChange = (e) => {
     dispatch(setRegisterFormValue(e.target.name, e.target.value));    
+  }
+
+  if (loginUserSuccess) {
+    return <Navigate to='/' replace/>
   }
 
   return (

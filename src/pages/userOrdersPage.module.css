@@ -1,0 +1,21 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 320px;
+}
+
+.link {
+  text-decoration: none;
+  margin: 0;
+}
+
+.active {
+  color: var(--text-primary-color);
+}

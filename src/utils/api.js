@@ -19,11 +19,12 @@ const getIngredientsRequest = async () => {
   return await data.json();
 }
 
-const sendOrderRequest = async (ingredientIds) => {
+const sendOrderRequest = async (ingredientIds, accessToken) => {
   const res = await fetch(SAVEORDERURL, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json;charset=utf-8'
+      'Content-Type': 'application/json;charset=utf-8',
+      Authorization: 'Bearer ' + accessToken
     },
     body: JSON.stringify({
       ingredients: ingredientIds
@@ -142,13 +143,13 @@ const passwordForgotRequest = async (email) => {
   return await res.json();
 }
 
-const passwordResetRequest = async (email, token) => {
+const passwordResetRequest = async (password, token) => {
   const res = await fetch(PASSWORDRESETURL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
     },
-    body: JSON.stringify({'email': email, 'token': token})
+    body: JSON.stringify({'password': password, 'token': token})
   });
 
   return await res.json();

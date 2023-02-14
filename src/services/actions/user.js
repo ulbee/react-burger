@@ -1,5 +1,14 @@
-import { addUserRequest, refreshTokenRequest, loginRequest, logoutRequest, getUserRequest, editUserRequest, passwordForgotRequest } from "../../utils/api";
-import { setCookie, getCookie } from "../../utils/cookie";
+import { 
+  addUserRequest,
+  refreshTokenRequest,
+  loginRequest,
+  logoutRequest,
+  getUserRequest,
+  editUserRequest,
+  passwordForgotRequest,
+  passwordResetRequest
+} from "../../utils/api";
+import { setCookie, getCookie, getAccessToken } from "../../utils/cookie";
 import {
   SET_REGISTER_FORM_VALUE,
   SET_EDIT_USER_FORM,
@@ -25,9 +34,6 @@ import {
   RESET_PASSWORD_FAILED
  } from '../../utils/constants'; 
 
- const getAccessToken = (accessToken) => {
-  return accessToken.split('Bearer ')[1];
- }
 
 export const setRegisterFormValue = (field, value) => ({
   type: SET_REGISTER_FORM_VALUE,
@@ -85,11 +91,11 @@ export function loginUser(user) {
             user: res.user
           })          
         } else {
-          dispatch({type: LOGIN_USER_FAILED});
+          dispatch({type: LOGIN_USER_FAILED, errorMessage: res.message });
         }
       })
       .catch((err) => {
-        dispatch({type: LOGIN_USER_FAILED});
+        dispatch({type: LOGIN_USER_FAILED, errorMessage: err.message});
       })
   }
 }
@@ -166,7 +172,9 @@ export function forgotPassword(email) {
         dispatch({
           type: FORGOT_PASSWORD_SUCCESS,
           user: res.user
-        })
+        });
+
+
       }
     })
     .catch((err) => {
@@ -179,13 +187,10 @@ export function forgotPassword(email) {
 export function resetPassword(password, code) {
   return function(dispatch) {
 
-    passwordForgotRequest(password, code)
+    passwordResetRequest(password, code)
     .then((res) => {
       if (res && res.success) {
-        dispatch({
-          type: RESET_PASSWORD_SUCCESS,
-          user: res.user
-        })
+        dispatch({type: RESET_PASSWORD_SUCCESS})
       }
     })
     .catch((err) => {

@@ -13,13 +13,13 @@
 
 .link {
   text-decoration: none;
-}
-
-.activeLink {
-  text-decoration: none;
-  color: var(--text-primary-color);
   margin: 0;
 }
+
+.active {
+  color: var(--text-primary-color);
+}
+
 
 .formButtons {
   text-align: right;
