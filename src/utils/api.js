@@ -1,4 +1,14 @@
-import { GETINGREDIENTSURL, SAVEORDERURL, ADDUSERURL, LOGINUSERURL, LOGOUTUSERURL, REFRESHTOKENURL, USERURL } from "./constants";
+import { 
+  GETINGREDIENTSURL, 
+  SAVEORDERURL, 
+  ADDUSERURL, 
+  LOGINUSERURL, 
+  LOGOUTUSERURL, 
+  REFRESHTOKENURL, 
+  USERURL,
+  PASSWORDFORGOTURL,
+  PASSWORDRESETURL 
+} from "./constants";
 
 const getIngredientsRequest = async () => {
   const data = await fetch(GETINGREDIENTSURL);
@@ -27,24 +37,24 @@ const sendOrderRequest = async (ingredientIds) => {
   return await res.json();
 }
 
-const getUserRequest = async (token) => {
+const getUserRequest = async (accessToken) => {
   const res = await fetch(USERURL, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token
+      Authorization: 'Bearer ' + accessToken
     }
   });
 
   return await res.json();
 }
 
-const editUserRequest = async (user, token) => {
+const editUserRequest = async (user, accessToken) => {
   const res = await fetch(USERURL, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + token
+      Authorization: 'Bearer ' + accessToken
     },
     body: JSON.stringify(user)
   });
@@ -120,6 +130,30 @@ const refreshTokenRequest = async (token) => {
   return await res.json();
 }
 
+const passwordForgotRequest = async (email) => {
+  const res = await fetch(PASSWORDFORGOTURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({'email': email})
+  });
+
+  return await res.json();
+}
+
+const passwordResetRequest = async (email, token) => {
+  const res = await fetch(PASSWORDRESETURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+    },
+    body: JSON.stringify({'email': email, 'token': token})
+  });
+
+  return await res.json();
+}
+
 export { 
   getIngredientsRequest, 
   sendOrderRequest, 
@@ -128,5 +162,7 @@ export {
   logoutRequest, 
   refreshTokenRequest,
   getUserRequest,
-  editUserRequest
+  editUserRequest,
+  passwordForgotRequest,
+  passwordResetRequest
  };

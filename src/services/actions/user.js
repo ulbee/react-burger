@@ -1,4 +1,4 @@
-import { addUserRequest, refreshTokenRequest, loginRequest, logoutRequest, getUserRequest, editUserRequest } from "../../utils/api";
+import { addUserRequest, refreshTokenRequest, loginRequest, logoutRequest, getUserRequest, editUserRequest, passwordForgotRequest } from "../../utils/api";
 import { setCookie, getCookie } from "../../utils/cookie";
 import {
   SET_REGISTER_FORM_VALUE,
@@ -16,7 +16,13 @@ import {
   GET_USER_FAILED,
 
   EDIT_USER_SUCCESS,
-  EDIT_USER_FAILED
+  EDIT_USER_FAILED,
+
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAILED,
+
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAILED
  } from '../../utils/constants'; 
 
  const getAccessToken = (accessToken) => {
@@ -146,6 +152,44 @@ export function editUser(user) {
     })
     .catch((err) => {
       dispatch({type: EDIT_USER_FAILED});
+    })
+  }
+
+}
+
+export function forgotPassword(email) {
+  return function(dispatch) {
+
+    passwordForgotRequest(email)
+    .then((res) => {
+      if (res && res.success) {
+        dispatch({
+          type: FORGOT_PASSWORD_SUCCESS,
+          user: res.user
+        })
+      }
+    })
+    .catch((err) => {
+      dispatch({type: FORGOT_PASSWORD_FAILED});
+    })
+  }
+
+}
+
+export function resetPassword(password, code) {
+  return function(dispatch) {
+
+    passwordForgotRequest(password, code)
+    .then((res) => {
+      if (res && res.success) {
+        dispatch({
+          type: RESET_PASSWORD_SUCCESS,
+          user: res.user
+        })
+      }
+    })
+    .catch((err) => {
+      dispatch({type: RESET_PASSWORD_FAILED});
     })
   }
 

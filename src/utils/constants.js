@@ -6,6 +6,8 @@ export const LOGINUSERURL = BASEURL + '/auth/login';
 export const LOGOUTUSERURL = BASEURL + '/auth/logout';
 export const REFRESHTOKENURL = BASEURL + '/auth/token';
 export const USERURL = BASEURL + '/auth/user';
+export const PASSWORDFORGOTURL = BASEURL + '/password-reset';
+export const PASSWORDRESETURL = BASEURL + '/password-reset/reset';
 
 // Константы для обработки запроса для получения всех ингридиентов
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
@@ -50,3 +52,6 @@ export const GET_USER_FAILED = 'GET_USER_FAILED';
 export const EDIT_USER_SUCCESS = 'EDIT_USER_SUCCESS';
 export const EDIT_USER_FAILED = 'EDIT_USER_FAILED';
 export const RESET_EDIT_USER_FORM = 'RESET_EDIT_USER_FORM';
+
+export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
+export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getUser } from '../../services/actions/user';
 
-function ProtectedRoute({element, isAuthPage}) {
+function ProtectedRoute({element, isAuthPage, accessFrom}) {
   const dispatch = useDispatch();
 
   const { isAuthSuccess } = useSelector(state => state.user);
@@ -20,11 +20,9 @@ function ProtectedRoute({element, isAuthPage}) {
     return <Navigate to={from} />;
   }
 
-  // if (isAuthPage && !isAuthSuccess && location.pathname === '/reset-password') {
-  //   if (from !== '/forgot-password') {
-  //     return <Navigate to='/forgot-password' />;
-  //   }
-  // }
+  if (isAuthPage && !isAuthSuccess && accessFrom && from.pathname !== accessFrom) {
+    return <Navigate to={accessFrom} replace/>;
+  }
 
   if (!isAuthPage && !isAuthSuccess) {
     return <Navigate to="/login" replace state={ {from: location} }/>;

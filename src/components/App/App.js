@@ -1,7 +1,7 @@
 import AppStyles from './App.module.css';
 
-import React, { useEffect, useState } from 'react';
-import { Routes, Route, Navigate, useLocation, Outlet, useNavigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Main from '../Main/Main';
@@ -13,6 +13,8 @@ import { RegisterPage } from '../../pages/register';
 import { ForgotPasswordPage } from '../../pages/forgotPassword';
 import { ResetPasswordPage } from '../../pages/resetPassword';
 import { ProfilePage } from '../../pages/profile';
+import { UserOrdersPage } from '../../pages/userOrdersPage';
+import { UserOrderPage } from '../../pages/userOrderPage';
 import { NotFoundPage } from '../../pages/notFound';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
@@ -28,8 +30,6 @@ function App() {
 
   const { ingredientsByType } = useSelector(state => state.menu);
 
-  const { refreshToken } = useSelector(state => state.user);
-
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
@@ -42,26 +42,15 @@ function App() {
               <Route path="/" exact element={<Main/>} />
               <Route path="/ingredients/:ingredientId" element={ingredientsByType && <IngredientDetails/>} />
 
-              <Route path="/login" element={ <ProtectedRoute element={<LoginPage />} isAuthPage /> } />
               <Route path="/profile" element={ <ProtectedRoute element={<ProfilePage/>}/> } />
+              <Route path="/profile/orders" element={ <ProtectedRoute element={<UserOrdersPage/>}/> } />
+              <Route path="/profile/orders/:id" element={ <ProtectedRoute element={<UserOrderPage/>}/> } />
+              <Route path="/login" element={ <ProtectedRoute element={<LoginPage />} isAuthPage /> } />
+              <Route path="/register" element={ <ProtectedRoute element={<RegisterPage />} isAuthPage /> } />
+              <Route path="/forgot-password" element={ <ProtectedRoute element={<ForgotPasswordPage />} isAuthPage /> } />
+              <Route path="/reset-password" element={ <ProtectedRoute element={<ResetPasswordPage />} isAuthPage accessFrom='/forgot-password'/> } />
 
               <Route path='*' element={ <NotFoundPage/> } />
-              
-            {/* 
-            <Route path="/register">
-              { !refreshToken && <RegisterPage />}
-              { refreshToken && <Navigate to={{pathname: "/"}}/>}
-            </Route>
-            <Route path="/forgot-password">
-              <ForgotPasswordPage />
-            </Route>
-            <Route path="/reset-password">
-              <ResetPasswordPage />
-            </Route>
-            <ProtectedRoute path="/profile">
-              <ProfilePage />
-            </ProtectedRoute>
-             */}
           </Routes>
           { modalBackground && (
             <Routes>

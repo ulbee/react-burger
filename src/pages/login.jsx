@@ -11,7 +11,7 @@ export function LoginPage() {
 
   const {email, password} = useSelector(state => state.user);
 
-  const loginUserHandler = (e) => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
 
     dispatch(loginUser({email, password}));
@@ -23,7 +23,7 @@ export function LoginPage() {
 
   return (
     <div className={LoginPageStyles.container}>
-      <form className={LoginPageStyles.form} onSubmit={loginUserHandler}>
+      <form className={LoginPageStyles.form} onSubmit={onFormSubmit}>
         <h1 className='text text_type_main-medium'>
           Вход
         </h1>
