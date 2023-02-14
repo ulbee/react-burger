@@ -43,7 +43,6 @@ const initialUserState = {
   addUserFailed: false,
 
   loginUserRequest: false,
-  loginUserSuccess: false,
   loginUserFailed: false,
   loginErrorMessage: '',
 
@@ -86,7 +85,9 @@ export const userReducer = (state = initialUserState, action) => {
         name: action.user.name,
         email: action.user.email,
         addUserRequest: false,
-        loginUserSuccess: true
+        isAuthSuccess: true,
+        canResetPassword: false,
+        resetPasswordSuccess: false,
       }
     }
     case ADD_USER_FAILED: {
@@ -94,7 +95,7 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         addUserRequest: false,
         addUserFailed: true,
-        loginUserSuccess: false
+        isAuthSuccess: false
       }
     }
     case LOGIN_USER_REQUEST: {
@@ -109,7 +110,9 @@ export const userReducer = (state = initialUserState, action) => {
         name: action.user.name,
         email: action.user.email,
         loginUserRequest: false,
-        loginUserSuccess: true
+        isAuthSuccess: true,
+        canResetPassword: false,
+        resetPasswordSuccess: false
       }
     }
     case LOGIN_USER_FAILED: {
@@ -117,7 +120,8 @@ export const userReducer = (state = initialUserState, action) => {
         ...state,
         loginUserRequest: false,
         loginUserFailed: true,
-        loginErrorMessage: action.errorMessage
+        loginErrorMessage: action.errorMessage,
+        isAuthSuccess: false
       }
     }
     case GET_USER_SUCCESS: {
@@ -188,6 +192,14 @@ export const userReducer = (state = initialUserState, action) => {
     case LOGOUT_USER_SUCCESS: {
       return {
         ...state,
+        name: '',
+        email: '',
+        password: '',
+        prevSavedName: '',
+        prevSavedEmail: '',
+        prevSavedPassword: '',
+        canResetPassword: false,
+        resetPasswordSuccess: false,
         isAuthSuccess: false,
         logoutError: false
       }

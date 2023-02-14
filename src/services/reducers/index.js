@@ -71,7 +71,11 @@ export const ingredientsReducer = (state = initialMenuState, action) => {
       return {
         ...state,
         orderRequest: false,
-        orderId: action.orderId
+        orderId: action.orderId,
+        addedIngredients: {
+          bun: null,
+          others: []
+        }
       }
     }
     case GET_ORDER_FAILED: {

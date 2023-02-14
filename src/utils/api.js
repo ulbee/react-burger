@@ -10,13 +10,17 @@ import {
   PASSWORDRESETURL 
 } from "./constants";
 
-const getIngredientsRequest = async () => {
-  const data = await fetch(GETINGREDIENTSURL);
-
+const checkResponse = (data) => {
   if (!data.ok) {
     throw new Error('Произошла ошибка: ' + data.status);
   }
-  return await data.json();
+  return data.json();
+}
+
+const getIngredientsRequest = async () => {
+  const res = await fetch(GETINGREDIENTSURL);
+
+  return await checkResponse(res);
 }
 
 const sendOrderRequest = async (ingredientIds, accessToken) => {
@@ -31,11 +35,7 @@ const sendOrderRequest = async (ingredientIds, accessToken) => {
     })
   });
 
-  if (!res.ok) {
-    throw new Error('Произошла ошибка: ' + res.status);
-  }
-
-  return await res.json();
+  return await checkResponse(res);
 }
 
 const getUserRequest = async (accessToken) => {
@@ -60,11 +60,7 @@ const editUserRequest = async (user, accessToken) => {
     body: JSON.stringify(user)
   });
 
-  if (!res.ok) {
-    throw new Error('Произошла ошибка: ' + res.status);
-  }
-
-  return await res.json();
+  return await checkResponse(res);
 }
 
 const addUserRequest = async (user) => {
@@ -76,11 +72,7 @@ const addUserRequest = async (user) => {
     body: JSON.stringify(user)
   });
 
-  if (!res.ok) {
-    throw new Error('Произошла ошибка: ' + res.status);
-  }
-
-  return await res.json();
+  return await checkResponse(res);
 }
 
 const loginRequest = async (user) => {
@@ -92,11 +84,7 @@ const loginRequest = async (user) => {
     body: JSON.stringify(user)
   });
 
-  if (!res.ok) {
-    throw new Error('Произошла ошибка: ' + res.status);
-  }
-
-  return await res.json();
+  return await checkResponse(res);
 }
 
 const logoutRequest = async (token) => {
@@ -108,11 +96,7 @@ const logoutRequest = async (token) => {
     body: JSON.stringify({token})
   });
 
-  if (!res.ok) {
-    throw new Error('Произошла ошибка: ' + res.status);
-  }
-
-  return await res.json();
+  return await checkResponse(res);
 }
 
 const refreshTokenRequest = async (token) => {
@@ -124,11 +108,7 @@ const refreshTokenRequest = async (token) => {
     body: JSON.stringify({token})
   });
 
-  if (!res.ok) {
-    throw new Error('Произошла ошибка: ' + res.status);
-  }
-
-  return await res.json();
+  return await checkResponse(res);
 }
 
 const passwordForgotRequest = async (email) => {
@@ -140,7 +120,7 @@ const passwordForgotRequest = async (email) => {
     body: JSON.stringify({'email': email})
   });
 
-  return await res.json();
+  return await checkResponse(res);
 }
 
 const passwordResetRequest = async (password, token) => {
@@ -152,7 +132,7 @@ const passwordResetRequest = async (password, token) => {
     body: JSON.stringify({'password': password, 'token': token})
   });
 
-  return await res.json();
+  return await checkResponse(res);
 }
 
 export { 

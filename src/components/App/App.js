@@ -60,7 +60,8 @@ function App() {
             <Routes>
               <Route path="/ingredients/:ingredientId" element={
                   <Modal title='Детали ингридиента' onClose={() => history(-1)} >
-                    {ingredientsByType && <IngredientDetails/>}
+                    {!ingredientsByType && <p>Загружаем данные</p>}
+                    {ingredientsByType && <IngredientDetails />}
                   </Modal>
                 }
               />

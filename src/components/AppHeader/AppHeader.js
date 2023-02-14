@@ -29,7 +29,9 @@ function AppHeader() {
             </li>
           </ul>
         </nav>
-        <Logo/>
+        <NavLink to='/'>
+          <Logo/>
+        </NavLink>
         <NavLink to='/profile' state={{from: '/profile'}} className={({ isActive }) => isActive ? activeAccountLink : accountLink}>
           <ProfileIcon type="secondary" />
           Личный кабинет

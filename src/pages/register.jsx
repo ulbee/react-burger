@@ -9,7 +9,7 @@ import { setRegisterFormValue, addUser } from '../services/actions/user';
 export function RegisterPage() {
   const dispatch = useDispatch();
 
-  const {name, email, password, loginUserSuccess} = useSelector(state => state.user);
+  const {name, email, password, isAuthSuccess} = useSelector(state => state.user);
 
   const addUserHandler = (e) => {
     e.preventDefault();
@@ -21,7 +21,7 @@ export function RegisterPage() {
     dispatch(setRegisterFormValue(e.target.name, e.target.value));    
   }
 
-  if (loginUserSuccess) {
+  if (isAuthSuccess) {
     return <Navigate to='/' replace/>
   }
 
