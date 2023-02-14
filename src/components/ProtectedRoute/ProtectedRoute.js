@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import PropTypes from 'prop-types';
 
 function ProtectedRoute({element, isAuthPage, accessFrom}) {
 
@@ -22,6 +23,12 @@ function ProtectedRoute({element, isAuthPage, accessFrom}) {
   }
 
   return element;
+}
+
+ProtectedRoute.propTypes = {
+  element: PropTypes.node.isRequired,
+  isAuthPage: PropTypes.bool,
+  accessFrom: PropTypes.string
 }
 
 export default ProtectedRoute;
