@@ -6,7 +6,9 @@ import {
   GET_ORDER_REQUEST,
   GET_ORDER_SUCCESS,
   GET_ORDER_FAILED
- } from '../../utils/constants'; 
+ } from '../../utils/constants';
+ import { getAccessToken, getCookie, setCookie } from "../../utils/cookie";
+ import { getUserRequest, refreshTokenRequest } from "../../utils/api";
 
 export function getIngredients() {
   return function(dispatch) {
@@ -42,14 +44,37 @@ export function getIngredients() {
 export function sendOrder(ids) {
   return function(dispatch) {
     dispatch({type: GET_ORDER_REQUEST});
+    const accessToken = getCookie('accessToken');
 
-    sendOrderRequest(ids)
+    sendOrderRequest(ids, accessToken)
       .then((res) => {
         if (res && res.success) {          
           dispatch({
             type: GET_ORDER_SUCCESS,
             orderId: res.order.number
           })
+        } else if (res.message === "jwt expired") {
+
+          refreshTokenRequest(getCookie('token'))
+            .then((res) => {
+              if (res && res.success) {
+                setCookie('accessToken', getAccessToken(res.accessToken));
+                setCookie('token', res.refreshToken);
+  
+                sendOrderRequest(ids, getAccessToken(res.accessToken))
+                  .then((res) => {
+                    if (res && res.success) {
+                      dispatch({
+                        type: GET_ORDER_SUCCESS,
+                        orderId: res.order.number
+                      })
+                    }
+                  })
+                  .catch((err) => {
+                    dispatch({type: GET_ORDER_FAILED});
+                  })
+              }
+            })
         } else {
           dispatch({type: GET_ORDER_FAILED});
         }

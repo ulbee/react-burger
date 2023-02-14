@@ -157,6 +157,29 @@ export function editUser(user) {
           type: EDIT_USER_SUCCESS,
           user: res.user
         })
+      } else if (res.message === "jwt expired") {
+        refreshTokenRequest(getCookie('token'))
+          .then((res) => {
+            if (res && res.success) {
+              setCookie('accessToken', getAccessToken(res.accessToken));
+              setCookie('token', res.refreshToken);
+
+              getUserRequest(getAccessToken(res.accessToken))
+                .then((res) => {
+                  if (res && res.success) {
+                    dispatch({
+                      type: EDIT_USER_SUCCESS,
+                      user: res.user
+                    })
+                  }
+                })
+                .catch((err) => {
+                  dispatch({type: EDIT_USER_FAILED});
+                })
+            }
+          })
+      } else {
+        dispatch({type: EDIT_USER_FAILED});
       }
     })
     .catch((err) => {
@@ -176,8 +199,6 @@ export function forgotPassword(email) {
           type: FORGOT_PASSWORD_SUCCESS,
           user: res.user
         });
-
-
       }
     })
     .catch((err) => {
@@ -210,9 +231,33 @@ export function logoutUser() {
     logoutRequest(token)
       .then((res) => {
         if (res && res.success) {
+          setCookie('accessToken', '', {Expires: 0});
+          setCookie('token', '', {Expires: 0});
           dispatch({
             type: LOGOUT_USER_SUCCESS
           })
+        } else if (res.message === "jwt expired") {
+          refreshTokenRequest(getCookie('token'))
+            .then((res) => {
+              if (res && res.success) {
+                setCookie('accessToken', getAccessToken(res.accessToken));
+                setCookie('token', res.refreshToken);
+
+                logoutRequest(res.refreshToken)
+                  .then((res) => {
+                    if (res && res.success) {
+                      setCookie('accessToken', '', {Expires: 0});
+                      setCookie('token', '', {Expires: 0});
+                      dispatch({
+                        type: LOGOUT_USER_SUCCESS
+                      })
+                    }
+                  })
+                  .catch((err) => {
+                    dispatch({type: LOGOUT_USER_FAILED, errorMessage: res.message });
+                  })
+              }
+            })
         } else {
           dispatch({type: LOGOUT_USER_FAILED, errorMessage: res.message });
         }
