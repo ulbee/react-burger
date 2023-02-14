@@ -31,7 +31,10 @@ import {
   FORGOT_PASSWORD_FAILED,
 
   RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAILED
+  RESET_PASSWORD_FAILED,
+
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_FAILED
  } from '../../utils/constants'; 
 
 
@@ -198,4 +201,24 @@ export function resetPassword(password, code) {
     })
   }
 
+}
+
+export function logoutUser() {
+  return function(dispatch) {
+    const token = getCookie('token');
+
+    logoutRequest(token)
+      .then((res) => {
+        if (res && res.success) {
+          dispatch({
+            type: LOGOUT_USER_SUCCESS
+          })
+        } else {
+          dispatch({type: LOGOUT_USER_FAILED, errorMessage: res.message });
+        }
+      })
+      .catch((err) => {
+        dispatch({type: LOGOUT_USER_FAILED, errorMessage: err.message});
+      })
+  }
 }

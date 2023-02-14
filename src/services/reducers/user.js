@@ -22,7 +22,10 @@ import {
   FORGOT_PASSWORD_FAILED,
 
   RESET_PASSWORD_SUCCESS,
-  RESET_PASSWORD_FAILED
+  RESET_PASSWORD_FAILED,
+
+  LOGOUT_USER_SUCCESS,
+  LOGOUT_USER_FAILED
  } from '../../utils/constants';
 
 
@@ -43,6 +46,8 @@ const initialUserState = {
   loginUserSuccess: false,
   loginUserFailed: false,
   loginErrorMessage: '',
+
+  logoutError: false,
 
   editUserFailed: false,
   isUserEdited: false,
@@ -178,6 +183,19 @@ export const userReducer = (state = initialUserState, action) => {
       return {
         ...state,
         resetPasswordSuccess: false
+      }
+    }
+    case LOGOUT_USER_SUCCESS: {
+      return {
+        ...state,
+        isAuthSuccess: false,
+        logoutError: false
+      }
+    }
+    case LOGOUT_USER_FAILED: {
+      return {
+        ...state,
+        logoutError: true
       }
     }
     

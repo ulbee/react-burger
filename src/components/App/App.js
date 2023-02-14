@@ -16,6 +16,7 @@ import { ProfilePage } from '../../pages/profile';
 import { UserOrdersPage } from '../../pages/userOrdersPage';
 import { UserOrderPage } from '../../pages/userOrderPage';
 import { NotFoundPage } from '../../pages/notFound';
+import { LogoutPage } from '../../pages/logoutPage';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import { getIngredients } from '../../services/actions/ingredients';
@@ -51,6 +52,7 @@ function App() {
               <Route path="/register" element={ <ProtectedRoute element={<RegisterPage />} isAuthPage /> } />
               <Route path="/forgot-password" element={ <ProtectedRoute element={<ForgotPasswordPage />} isAuthPage /> } />
               <Route path="/reset-password" element={ <ProtectedRoute element={<ResetPasswordPage />} isAuthPage accessFrom='/forgot-password'/> } />
+              <Route path="/logout" element={ <LogoutPage /> } />
 
               <Route path='*' element={ <NotFoundPage/> } />
           </Routes>
