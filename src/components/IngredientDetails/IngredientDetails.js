@@ -23,7 +23,7 @@ function IngredientDetails() {
       {!currentIngredient && <p>Загружаем данные</p>}
       {currentIngredient && (
       <div className={IngredientDetailsStyles.container}>
-        <img src={currentIngredient.image_large} alt='Фото ингридиента'/>
+        <img src={currentIngredient.image_large} alt={currentIngredient.name}/>
         <p className={IngredientDetailsStyles.title + ' text text_type_main-medium pt-4'}>{currentIngredient.name}</p>
         <div className={IngredientDetailsStyles.details + ' pt-8'}>
           <p className='text text_type_main-default text_color_inactive'>Калории,ккал</p>

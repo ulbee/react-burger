@@ -18,7 +18,7 @@ export function RegisterPage() {
   }
 
   const onFormChange = (e) => {
-    dispatch(setRegisterFormValue(e.target.name, e.target.value));    
+    dispatch(setRegisterFormValue(e.target.name, e.target.value));
   }
 
   if (isAuthSuccess) {

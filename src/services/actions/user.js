@@ -66,10 +66,7 @@ export function addUser(user) {
             type: ADD_USER_SUCCESS,
             user: res.user
           })          
-        } else {
-          dispatch({type: ADD_USER_FAILED});
-        }
-      })
+        }})
       .catch((err) => {
         dispatch({type: ADD_USER_FAILED});
       })
@@ -93,10 +90,7 @@ export function loginUser(user) {
             type: LOGIN_USER_SUCCESS,
             user: res.user
           })          
-        } else {
-          dispatch({type: LOGIN_USER_FAILED, errorMessage: res.message });
-        }
-      })
+        }})
       .catch((err) => {
         dispatch({type: LOGIN_USER_FAILED, errorMessage: err.message});
       })
@@ -106,87 +100,23 @@ export function loginUser(user) {
 // Получение информации о пользователе
 export function getUser() {
   return function(dispatch) {
-    const accessToken = getCookie('accessToken');
-
-    getUserRequest(accessToken)
-      .then((res) => {
-        if (res && res.success) {
-          dispatch({
-            type: GET_USER_SUCCESS,
-            user: res.user
-          })
-        } else if (res.message === "jwt expired") {
-          refreshTokenRequest(getCookie('token'))
-            .then((res) => {
-              if (res && res.success) {
-                setCookie('accessToken', getAccessToken(res.accessToken));
-                setCookie('token', res.refreshToken);
-
-                getUserRequest(getAccessToken(res.accessToken))
-                  .then((res) => {
-                    if (res && res.success) {
-                      dispatch({
-                        type: GET_USER_SUCCESS,
-                        user: res.user
-                      })
-                    }
-                  })
-                  .catch((err) => {
-                    dispatch({type: GET_USER_FAILED});
-                  })
-              }
-            })
-        } else {
-          dispatch({type: GET_USER_FAILED});
-        }
-      })
-      .catch((err) => {
-        dispatch({type: GET_USER_FAILED});
-      })
+    getRequestWithRetry(
+      getUserRequest,
+      ({user}) => dispatch({type: GET_USER_SUCCESS, user}),
+      () => dispatch({type: GET_USER_FAILED})
+    );
   }
 }
 
 export function editUser(user) {
   return function(dispatch) {
-    const accessToken = getCookie('accessToken');
-
-    editUserRequest(user, accessToken)
-    .then((res) => {
-      if (res && res.success) {
-        dispatch({
-          type: EDIT_USER_SUCCESS,
-          user: res.user
-        })
-      } else if (res.message === "jwt expired") {
-        refreshTokenRequest(getCookie('token'))
-          .then((res) => {
-            if (res && res.success) {
-              setCookie('accessToken', getAccessToken(res.accessToken));
-              setCookie('token', res.refreshToken);
-
-              getUserRequest(getAccessToken(res.accessToken))
-                .then((res) => {
-                  if (res && res.success) {
-                    dispatch({
-                      type: EDIT_USER_SUCCESS,
-                      user: res.user
-                    })
-                  }
-                })
-                .catch((err) => {
-                  dispatch({type: EDIT_USER_FAILED});
-                })
-            }
-          })
-      } else {
-        dispatch({type: EDIT_USER_FAILED});
-      }
-    })
-    .catch((err) => {
-      dispatch({type: EDIT_USER_FAILED});
-    })
+    getRequestWithRetry(
+      editUserRequest,
+      ({user}) => dispatch({type: EDIT_USER_SUCCESS, user}),
+      () => dispatch({type: EDIT_USER_FAILED}),
+      {user}
+    );
   }
-
 }
 
 export function forgotPassword(email) {
@@ -226,44 +156,61 @@ export function resetPassword(password, code) {
 
 export function logoutUser() {
   return function(dispatch) {
-    const token = getCookie('token');
+    getRequestWithRetry(
+      logoutRequest,
+      (res) => {
+        setCookie('accessToken', '', {Expires: 0});
+        setCookie('token', '', {Expires: 0});
+        dispatch({
+          type: LOGOUT_USER_SUCCESS
+        })
+      },
+      ({message}) => {
+        dispatch({type: LOGOUT_USER_FAILED, errorMessage: message});
+      },
+      {token: getCookie('token')}
+    )
+  }
+}
 
-    logoutRequest(token)
+/**
+ * @param {function} getRequest - запрос для ретрая
+ * @param {object} options - параметры запроса
+ * @param {string} options.accessToken - токен авторизации
+ * @param {string} onSuccess - функция для обработки успешного результата
+ * @param {string} onFail - функция для обработки ошибок
+ */
+function getRequestWithRetry(getRequest, onSuccess, onFail, options = {}) {
+  options.accessToken = getCookie('accessToken');
+
+  getRequest(options)
       .then((res) => {
         if (res && res.success) {
-          setCookie('accessToken', '', {Expires: 0});
-          setCookie('token', '', {Expires: 0});
-          dispatch({
-            type: LOGOUT_USER_SUCCESS
-          })
-        } else if (res.message === "jwt expired") {
-          refreshTokenRequest(getCookie('token'))
+          onSuccess(res);
+        }})
+      .catch((err) => {
+        if (err.cause.message === "jwt expired") {
+          return refreshTokenRequest(getCookie('token'))
             .then((res) => {
               if (res && res.success) {
                 setCookie('accessToken', getAccessToken(res.accessToken));
                 setCookie('token', res.refreshToken);
+                
+                options.accessToken = getAccessToken(res.accessToken);
 
-                logoutRequest(res.refreshToken)
+                return getRequest(options)
                   .then((res) => {
                     if (res && res.success) {
-                      setCookie('accessToken', '', {Expires: 0});
-                      setCookie('token', '', {Expires: 0});
-                      dispatch({
-                        type: LOGOUT_USER_SUCCESS
-                      })
+                      onSuccess(res)
                     }
-                  })
-                  .catch((err) => {
-                    dispatch({type: LOGOUT_USER_FAILED, errorMessage: res.message });
                   })
               }
             })
-        } else {
-          dispatch({type: LOGOUT_USER_FAILED, errorMessage: res.message });
         }
+
+        return err;
       })
       .catch((err) => {
-        dispatch({type: LOGOUT_USER_FAILED, errorMessage: err.message});
+        onFail(err);
       })
-  }
 }

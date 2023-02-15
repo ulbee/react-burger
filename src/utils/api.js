@@ -10,9 +10,9 @@ import {
   PASSWORDRESETURL 
 } from "./constants";
 
-const checkResponse = (data) => {
+const checkResponse = async (data) => {
   if (!data.ok) {
-    throw new Error('Произошла ошибка: ' + data.status);
+    throw new Error(data.message, { cause: await data.json() });
   }
   return data.json();
 }
@@ -38,7 +38,7 @@ const sendOrderRequest = async (ingredientIds, accessToken) => {
   return await checkResponse(res);
 }
 
-const getUserRequest = async (accessToken) => {
+const getUserRequest = async ({accessToken}) => {
   const res = await fetch(USERURL, {
     method: 'GET',
     headers: {
@@ -47,10 +47,10 @@ const getUserRequest = async (accessToken) => {
     }
   });
 
-  return await res.json();
+  return await checkResponse(res);
 }
 
-const editUserRequest = async (user, accessToken) => {
+const editUserRequest = async ({user, accessToken}) => {
   const res = await fetch(USERURL, {
     method: 'PATCH',
     headers: {
@@ -60,7 +60,7 @@ const editUserRequest = async (user, accessToken) => {
     body: JSON.stringify(user)
   });
 
-  return await checkResponse(res);
+  return checkResponse(res);
 }
 
 const addUserRequest = async (user) => {
@@ -87,7 +87,7 @@ const loginRequest = async (user) => {
   return await checkResponse(res);
 }
 
-const logoutRequest = async (token) => {
+const logoutRequest = async ({token}) => {
   const res = await fetch(LOGOUTUSERURL, {
     method: 'POST',
     headers: {

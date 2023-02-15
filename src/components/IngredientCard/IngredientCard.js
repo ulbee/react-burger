@@ -8,7 +8,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
 function IngredientCard({ data, count, openIngredientModal }) {
-  let location = useLocation();
+  const location = useLocation();
 
   const [{ opacity }, ref] = useDrag({
     type: 'ingredient',
