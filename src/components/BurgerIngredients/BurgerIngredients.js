@@ -50,7 +50,6 @@ function BurgerIngredients({ openIngredientModal }) {
       </h1>
       <div className={BurgerIngredientsStyles.tabs + ' pb-10'}>
         {categoriesOrder.map((category) => {
-          console.log('TAB', activeTab, category.name);
           return (
             <Tab
               key={category.name}

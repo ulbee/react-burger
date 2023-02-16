@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { userReducer } from './user';
 import { 
   GET_INGREDIENTS_REQUEST, 
   GET_INGREDIENTS_SUCCESS, 
@@ -15,7 +16,7 @@ import {
   SET_ACTIVE_TAB
  } from '../../utils/constants';
 
-const initialState = {
+const initialMenuState = {
   ingredientsByType: null,
   ingredientsById: null,
   ingredientsRequest: false,
@@ -35,7 +36,7 @@ const initialState = {
 }
 
 let uniqId = 0;
-export const ingredientsReducer = (state = initialState, action) => {
+export const ingredientsReducer = (state = initialMenuState, action) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {
@@ -70,7 +71,11 @@ export const ingredientsReducer = (state = initialState, action) => {
       return {
         ...state,
         orderRequest: false,
-        orderId: action.orderId
+        orderId: action.orderId,
+        addedIngredients: {
+          bun: null,
+          others: []
+        }
       }
     }
     case GET_ORDER_FAILED: {
@@ -146,10 +151,11 @@ export const ingredientsReducer = (state = initialState, action) => {
       }
     }
 
-    default: return state;  
+    default: return state;
   }
 }
 
 export const rootReducer = combineReducers({
-  menu: ingredientsReducer
+  menu: ingredientsReducer,
+  user: userReducer
 });

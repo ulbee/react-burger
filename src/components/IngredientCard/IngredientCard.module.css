@@ -23,3 +23,8 @@
 .title {
   text-align: center;
 }
+
+.link {
+  color:  var(--text-primary-color);
+  text-decoration: none;
+}

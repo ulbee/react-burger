@@ -1,75 +1,74 @@
 import AppStyles from './App.module.css';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 
-import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
+import Main from '../Main/Main';
 import AppHeader from '../AppHeader/AppHeader';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
-import Modal from '../Modal/Modal';
-import OrderDetails from '../OrderDetails/OrderDetails';
-import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
-import {getIngredients} from '../../services/actions';
-import {SHOW_INGREDIENT, HIDE_INGREDIENT} from '../../utils/constants';
+import { LoginPage } from '../../pages/login';
+import { RegisterPage } from '../../pages/register';
+import { ForgotPasswordPage } from '../../pages/forgotPassword';
+import { ResetPasswordPage } from '../../pages/resetPassword';
+import { ProfilePage } from '../../pages/profile';
+import { UserOrdersPage } from '../../pages/userOrdersPage';
+import { UserOrderPage } from '../../pages/userOrderPage';
+import { NotFoundPage } from '../../pages/notFound';
+import { LogoutPage } from '../../pages/logoutPage';
+import Modal from '../Modal/Modal';
+import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import { getIngredients } from '../../services/actions/ingredients';
+import { getUser } from '../../services/actions/user';
 
 function App() {
   const dispatch = useDispatch();
 
-  const [isOrderDetailsOpened, setIsOrderDetailsOpened] = React.useState(false);
-  const [isIngredientDetailsOpened, setIsIngredientDetailsOpened] = React.useState(false);
+  const history = useNavigate();
 
-  const { ingredientsByType, ingredientsRequest, ingredientsFailed } = useSelector(state => state.menu);
-  
-  const closeAllModals = () => {
-    dispatch({type: HIDE_INGREDIENT});
-    setIsOrderDetailsOpened(false);
-    setIsIngredientDetailsOpened({isOpened: false});
-  };
-  
-  const openOrderDetailsModal = () => {
-    setIsOrderDetailsOpened(true);
-  }
+  const location = useLocation();
+  const modalBackground = location.state?.modalBackground;
 
-  const openIngredientModal = (e) => {
-    dispatch({type: SHOW_INGREDIENT, id: e.currentTarget.id});
-    setIsIngredientDetailsOpened({isOpened: true});
-  }
+  const { ingredientsByType } = useSelector(state => state.menu);
 
   useEffect(() => {
     dispatch(getIngredients());
-  }, [dispatch]);
-
+    dispatch(getUser());
+  }, []);
+  
   return (
     <div className={AppStyles.main + ' m-10'}>
       <AppHeader />
       <main className={AppStyles.container}>
-        <ErrorBoundary>
-          {ingredientsFailed && <p>Произошла ошибка</p>}
-          {ingredientsRequest && <p>Загружаем данные</p>}
-          {ingredientsByType && (
-            <DndProvider backend={HTML5Backend}>
-              <BurgerIngredients openIngredientModal={openIngredientModal}/>
-              <BurgerConstructor openOrderDetailsModal={openOrderDetailsModal}/>
-            </DndProvider>
+          <Routes location={ modalBackground || location}>
+              <Route path="/" exact element={<Main/>} />
+              <Route path="/ingredients/:ingredientId" element={ingredientsByType && <IngredientDetails/>} />
+
+              <Route path="/profile" element={ <ProtectedRoute element={<ProfilePage/>}/> } />
+              <Route path="/profile/orders" element={ <ProtectedRoute element={<UserOrdersPage/>}/> } />
+              <Route path="/profile/orders/:id" element={ <ProtectedRoute element={<UserOrderPage/>}/> } />
+              <Route path="/login" element={ <ProtectedRoute element={<LoginPage />} isAuthPage /> } />
+              <Route path="/register" element={ <ProtectedRoute element={<RegisterPage />} isAuthPage /> } />
+              <Route path="/forgot-password" element={ <ProtectedRoute element={<ForgotPasswordPage />} isAuthPage /> } />
+              <Route path="/reset-password" element={ <ProtectedRoute element={<ResetPasswordPage />} isAuthPage accessFrom='/forgot-password'/> } />
+              <Route path="/logout" element={ <LogoutPage /> } />
+
+              <Route path='*' element={ <NotFoundPage/> } />
+          </Routes>
+          { modalBackground && (
+            <Routes>
+              <Route path="/ingredients/:ingredientId" element={
+                  <Modal title='Детали ингридиента' onClose={() => history(-1)} >
+                    {!ingredientsByType && <p>Загружаем данные</p>}
+                    {ingredientsByType && <IngredientDetails />}
+                  </Modal>
+                }
+              />
+            </Routes>
           )}
-        </ErrorBoundary>
       </main>
-      {
-        isOrderDetailsOpened &&
-        <Modal title='' onClose={closeAllModals}>
-            <OrderDetails/>
-        </Modal>
-      }
-      {
-        isIngredientDetailsOpened.isOpened &&
-        <Modal title='Детали ингридиента' onClose={closeAllModals}>
-          <IngredientDetails/>
-        </Modal>
-      }
+      
     </div>
   );
 }

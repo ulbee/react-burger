@@ -9,14 +9,17 @@ import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger
 import TotalPrice from '../TotalPrice/TotalPrice';
 import Ingredient from '../Ingredient/Ingredient';
 
-import { sendOrder } from '../../services/actions';
+import { sendOrder } from '../../services/actions/ingredients';
 import { ADD_BUN, ADD_INGREDIENT } from '../../utils/constants';
+import { useNavigate } from 'react-router-dom';
 
 
 function BurgerConstructor({ openOrderDetailsModal }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const {addedIngredients, ingredientsById} = useSelector(state => state.menu);
+  const {isAuthSuccess} = useSelector(state => state.user);
 
   const ingredientIds = () => {
     let res = addedIngredients.bun ? [addedIngredients.bun._id] : [];
@@ -32,9 +35,13 @@ function BurgerConstructor({ openOrderDetailsModal }) {
   }
   
   const sendOrderHandler = () => {
-    dispatch(sendOrder(ingredientIds()));
+    if (isAuthSuccess) {
+      dispatch(sendOrder(ingredientIds()));
 
-    openOrderDetailsModal();
+      openOrderDetailsModal();
+    } else {
+      navigate('/login');
+    }
   }
 
   const [{isHover}, dropTarget] = useDrop({

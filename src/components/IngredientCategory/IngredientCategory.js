@@ -55,7 +55,9 @@ IngredientCategory.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
-  openIngredientModal: PropTypes.func.isRequired
+  openIngredientModal: PropTypes.func.isRequired,
+  link: PropTypes.func.isRequired,
+  inView: PropTypes.bool.isRequired
 }
 
 export default IngredientCategory;
