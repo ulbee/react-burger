@@ -34,7 +34,8 @@ import {
   RESET_PASSWORD_FAILED,
 
   LOGOUT_USER_SUCCESS,
-  LOGOUT_USER_FAILED
+  LOGOUT_USER_FAILED,
+  GET_USER_ORDERS
  } from '../../utils/constants'; 
 
 
@@ -213,4 +214,51 @@ function getRequestWithRetry(getRequest, onSuccess, onFail, options = {}) {
       .catch((err) => {
         onFail(err);
       })
+}
+
+export function getUserOrders() {
+  return function(dispatch) {
+    return (
+      dispatch({
+        type: GET_USER_ORDERS,
+        action: {
+          "success": true,
+          "orders": [
+            {
+              "ingredients": [
+                "60d3463f7034a000269f45e9",
+                "60d3463f7034a000269f45e7",
+                "60d3463f7034a000269f45e7",
+                "60d3463f7034a000269f45e7",
+                "60d3463f7034a000269f45e7",
+                "60d3463f7034a000269f45e7",
+                "60d3463f7034a000269f45e7"
+              ],
+              "_id": "34624",
+              "status": "done",
+              "number": 1,
+              "createdAt": "2021-06-23T20:11:01.403Z",
+              "updatedAt": "2021-06-23T20:11:01.406Z",
+              "name": 'test'
+            },
+            {
+              "ingredients": [
+                "60d3463f7034a000269f45e9"
+              ],
+              "_id": "32637865",
+              "status": "done",
+              "number": 3,
+              "createdAt": "2021-06-23T20:13:23.654Z",
+              "updatedAt": "2021-06-23T20:13:23.657Z",
+              "name": 'etst1'
+            }
+          ],
+          "total": 2,
+          "totalToday": 2
+        }
+      })
+    )
+  
+  }  
+  
 }

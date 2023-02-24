@@ -25,7 +25,9 @@ import {
   RESET_PASSWORD_FAILED,
 
   LOGOUT_USER_SUCCESS,
-  LOGOUT_USER_FAILED
+  LOGOUT_USER_FAILED,
+
+  GET_USER_ORDERS
  } from '../../utils/constants';
 
 
@@ -54,6 +56,8 @@ const initialUserState = {
   canResetPassword: false,
   resetPasswordSuccess: false,
   code: '',
+
+  orders: []
 }
 
 export const userReducer = (state = initialUserState, action) => {
@@ -208,6 +212,16 @@ export const userReducer = (state = initialUserState, action) => {
       return {
         ...state,
         logoutError: true
+      }
+    }
+    
+    
+    
+    
+    case GET_USER_ORDERS: {
+      return {
+        ...state,
+        orders: action.action.orders
       }
     }
     

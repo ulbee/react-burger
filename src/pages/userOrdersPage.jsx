@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import UserOrdersPageStyles from './userOrdersPage.module.css';
 
 import { NavLink } from 'react-router-dom';
+import { getUserOrders } from '../services/actions/user';
+import { useDispatch, useSelector } from 'react-redux';
+
+import OrderSnippet from '../components/App/OrderSnippet/OrderSnippet';
 
 const active = UserOrdersPageStyles.active + ' ' + UserOrdersPageStyles.link + ' pt-4 pb-4 text text_type_main-medium';
 const link = UserOrdersPageStyles.link + ' pt-4 pb-4 text text_type_main-medium text_color_inactive';
 
 export function UserOrdersPage() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUserOrders());
+  }, []);
+
+  const { orders } = useSelector(state => state.user);
+
   return (
     <div className={UserOrdersPageStyles.container + ' mt-30'}>
       <div className={UserOrdersPageStyles.menu}>
@@ -23,7 +35,14 @@ export function UserOrdersPage() {
           В этом разделе вы можете изменить свои персональные данные
         </p>
       </div>
-      <div>Скоро здесь появятся заказы</div>
+      <section className={UserOrdersPageStyles.section}>
+        {!orders && <div>Заказов пока нет</div>}
+        {orders && orders.map((item, index) => {
+          return (<OrderSnippet key={index} id={item._id} name={item.name} status={item.status} ingredients={item.ingredients} createdAt={item.createdAt}/>)
+        })}
+      </section>
+
+
     </div>
   );
 }

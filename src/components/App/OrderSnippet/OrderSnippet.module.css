@@ -1,0 +1,27 @@
+.snippet {
+  color: var(--text-primary-color);
+  background: rgba(28, 28, 33, 1);
+  border-radius: 40px;
+}
+
+.link  {
+  text-decoration: none;
+}
+
+.info {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  gap: 16px;  
+}
+
+.cards {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.price {
+  display: flex;
+  align-content: center;
+  align-self: center;
+}
