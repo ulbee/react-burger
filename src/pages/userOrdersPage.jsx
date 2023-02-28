@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import { getUserOrders } from '../services/actions/user';
 import { useDispatch, useSelector } from 'react-redux';
 
-import OrderSnippet from '../components/App/OrderSnippet/OrderSnippet';
+import OrderSnippet from '../components/OrderSnippet/OrderSnippet';
 
 const active = UserOrdersPageStyles.active + ' ' + UserOrdersPageStyles.link + ' pt-4 pb-4 text text_type_main-medium';
 const link = UserOrdersPageStyles.link + ' pt-4 pb-4 text text_type_main-medium text_color_inactive';

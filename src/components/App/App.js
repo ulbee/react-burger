@@ -8,6 +8,8 @@ import Main from '../Main/Main';
 import AppHeader from '../AppHeader/AppHeader';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
+import Orders from '../Orders/Orders';
+
 import { LoginPage } from '../../pages/login';
 import { RegisterPage } from '../../pages/register';
 import { ForgotPasswordPage } from '../../pages/forgotPassword';
@@ -44,6 +46,8 @@ function App() {
           <Routes location={ modalBackground || location}>
               <Route path="/" exact element={<Main/>} />
               <Route path="/ingredients/:ingredientId" element={ingredientsByType && <IngredientDetails/>} />
+              <Route path="/feed" element={<Orders/>} />
+              {/* <Route path="/feed/:feedId" element={<OrderDetails/>} /> */}
 
               <Route path="/profile" element={ <ProtectedRoute element={<ProfilePage/>}/> } />
               <Route path="/profile/orders" element={ <ProtectedRoute element={<UserOrdersPage/>}/> } />
