@@ -38,7 +38,7 @@ export function UserOrdersPage() {
       <section className={UserOrdersPageStyles.section}>
         {!orders && <div>Заказов пока нет</div>}
         {orders && orders.map((item, index) => {
-          return (<OrderSnippet key={index} id={item._id} name={item.name} status={item.status} ingredients={item.ingredients} createdAt={item.createdAt}/>)
+          return (<OrderSnippet key={index} order={item} needDetails link='/profile/orders'/>)
         })}
       </section>
 

@@ -21,6 +21,7 @@ import { NotFoundPage } from '../../pages/notFound';
 import { LogoutPage } from '../../pages/logoutPage';
 import Modal from '../Modal/Modal';
 import IngredientDetails from '../IngredientDetails/IngredientDetails';
+import OrderDetails from '../OrderDetails/OrderDetails';
 import { getIngredients } from '../../services/actions/ingredients';
 import { getUser } from '../../services/actions/user';
 
@@ -33,6 +34,7 @@ function App() {
   const modalBackground = location.state?.modalBackground;
 
   const { ingredientsByType } = useSelector(state => state.menu);
+  const { orders } = useSelector(state => state.ws.feed);
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -47,7 +49,7 @@ function App() {
               <Route path="/" exact element={<Main/>} />
               <Route path="/ingredients/:ingredientId" element={ingredientsByType && <IngredientDetails/>} />
               <Route path="/feed" element={<Orders/>} />
-              {/* <Route path="/feed/:feedId" element={<OrderDetails/>} /> */}
+              <Route path="/feed/:orderId" element={<OrderDetails/>} />
 
               <Route path="/profile" element={ <ProtectedRoute element={<ProfilePage/>}/> } />
               <Route path="/profile/orders" element={ <ProtectedRoute element={<UserOrdersPage/>}/> } />
@@ -66,6 +68,13 @@ function App() {
                   <Modal title='Детали ингридиента' onClose={() => history(-1)} >
                     {!ingredientsByType && <p>Загружаем данные</p>}
                     {ingredientsByType && <IngredientDetails />}
+                  </Modal>
+                }
+              />
+              <Route path="/feed/:orderId" element={
+                  <Modal onClose={() => history(-1)} >
+                    {!orders?.length && <p>Загружаем данные</p>}
+                    {orders?.length && <OrderDetails />}
                   </Modal>
                 }
               />
