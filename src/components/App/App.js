@@ -37,7 +37,7 @@ function App() {
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(getUser());
-  }, []);
+  }, [dispatch]);
   
   return (
     <div className={AppStyles.main + ' m-10'}>

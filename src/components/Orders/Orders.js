@@ -1,14 +1,28 @@
 import OrdersStyles from './Orders.module.css';
+import { GET_ALL_ORDERS_URL } from '../../utils/constants';
+import { wsConnect } from '../../services/actions/ws';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import OrderSnippet from '../OrderSnippet/OrderSnippet';
 
 
 function Orders() {
-  
+  const dispatch = useDispatch();
+  const { total, totalToday, orders } = useSelector( state => state.ws.feed);
+
+  useEffect(() => {
+    dispatch(wsConnect(GET_ALL_ORDERS_URL));
+  }, [dispatch])
 
   return (
     <section className={OrdersStyles.container}>
       <h2 className={OrdersStyles.title + ' text text_type_main-large mt-10 mb-5'}>Лента заказов</h2>
-      <section className={OrdersStyles.feed}>
-             
+      <section className={OrdersStyles.feed + ' pr-2'}>
+        {orders &&
+          orders.map((item, index) => {
+            return <OrderSnippet key={index} order={item} link='/feed'/>
+          })
+        }
       </section>
       <section className={OrdersStyles.board}>
         <div className={OrdersStyles.done}>
@@ -27,11 +41,11 @@ function Orders() {
         </div>
         <div className={OrdersStyles.statistics}>
           <h3 className="text text_type_main-medium">Выполнено за все время:</h3>
-          <p className={OrdersStyles.ordersNumber + ' text text_type_digits-large'}>28 752</p>
+          <p className={OrdersStyles.ordersNumber + ' text text_type_digits-large'}>{total}</p>
         </div>
         <div className={OrdersStyles.statistics}>
           <h3 className="text text_type_main-medium">Выполнено за сегодня:</h3>
-          <p className={OrdersStyles.ordersNumber + ' text text_type_digits-large'}>138</p>
+          <p className={OrdersStyles.ordersNumber + ' text text_type_digits-large'}>{totalToday}</p>
         </div>
       </section>
     </section>

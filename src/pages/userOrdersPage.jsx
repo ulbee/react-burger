@@ -15,7 +15,7 @@ export function UserOrdersPage() {
 
   useEffect(() => {
     dispatch(getUserOrders());
-  }, []);
+  }, [dispatch]);
 
   const { orders } = useSelector(state => state.user);
 

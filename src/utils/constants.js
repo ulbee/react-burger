@@ -9,6 +9,15 @@ export const USERURL = BASEURL + '/auth/user';
 export const PASSWORDFORGOTURL = BASEURL + '/password-reset';
 export const PASSWORDRESETURL = BASEURL + '/password-reset/reset';
 
+export const WSURL = 'wss://norma.nomoreparties.space';
+export const GET_ALL_ORDERS_URL = WSURL + '/orders/all';
+export const GET_USER_ORDERS_URL = WSURL + '/orders';
+export const WS_STATUS = {
+  CONNECTING : 'CONNECTING...',
+  ONLINE : 'ONLINE',
+  OFFLINE : 'OFFLINE'
+}
+
 // Константы для обработки запроса для получения всех ингридиентов
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
@@ -63,3 +72,9 @@ export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
 export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
 
 export const GET_USER_ORDERS = 'GET_USER_ORDERS';
+
+export const ORDER_STATUSES = {
+  done: 'Выполнен',
+  cancelled: 'Отменён',
+  progress: 'Готовится'
+}

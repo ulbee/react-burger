@@ -16,7 +16,7 @@ function IngredientDetails() {
     if (!currentIngredient) {
       dispatch({type: SHOW_INGREDIENT, id: ingredientId});
     };
-  }, []);
+  }, [dispatch, currentIngredient, ingredientId]);
 
   return (
     <>
