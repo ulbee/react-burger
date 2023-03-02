@@ -13,11 +13,14 @@ function OrderSnippet({ order, needDetails, link }) {
   const { ingredientsById } = useSelector(state => state.menu);
 
   const totalPrice = order.ingredients.reduce((res, item) => {
-    return res += ingredientsById[item]?.price;
+    if (item) {
+      res  += ingredientsById[item].price;
+    }
+    return res;
   }, 0);
 
   const ingredientsPreview = order.ingredients.reduceRight((res, item, index) => {
-    if (index < res.maxLength) {
+    if (item && index < res.maxLength) {
       res.ingredients.push(item);
     }
     return res;

@@ -25,18 +25,21 @@ function OrderDetails() {
   });
 
   const ingredientCounts = currentOrder?.ingredients.reduce((res, item) => {
-    if (!res.ingredients[item]) {
-      res.ingredients[item] = 0
+    if (item) {
+      if (!res.ingredients[item]) {
+        res.ingredients[item] = 0
+      }
+
+      res.ingredients[item]++;
+      res.total += ingredientsById[item]?.price;
     }
-    res.ingredients[item]++;
-    res.total += ingredientsById[item].price;
 
     return res;
   }, {total: 0, ingredients: {}});
 
   useEffect(() => {
     if (!orders && location.pathname.includes('/feed')) {
-      dispatch(wsConnect(GET_USER_ORDERS_URL));
+      dispatch(wsConnect(GET_ALL_ORDERS_URL));
     }
 
     if (!orders && location.pathname.includes('/profile/orders')) {

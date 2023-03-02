@@ -17,8 +17,8 @@ function Orders() {
     return res;
   }, {done: [], progress: []});
 
-  const columnCountDone = Math.floor(ordersByStatus.done.length / 10);
-  const columnCountProgress = Math.floor(ordersByStatus.progress.length / 10);
+  const columnCountDone = Math.floor(ordersByStatus?.done.length / 10);
+  const columnCountProgress = Math.floor(ordersByStatus?.progress.length / 10);
 
   useEffect(() => {
     dispatch(wsConnect(GET_ALL_ORDERS_URL));
@@ -40,7 +40,7 @@ function Orders() {
         <div className={OrdersStyles.done}>
           <h3 className='mb-6'>Готовы:</h3>
        
-          <ul className={OrdersStyles.ordersList} style={{ columnCount: columnCountDone}}>
+          <ul className={OrdersStyles.ordersList} style={{ columnCount: columnCountDone || 1}}>
             {ordersByStatus && ordersByStatus.done.map((item, index) => {
               return (
                 <li key={index} className='text text_type_digits-default mb-2'>{item.number}</li>
@@ -50,10 +50,10 @@ function Orders() {
         </div>
         <div className={OrdersStyles.inProgress}>
           <h3 className='mb-6'>В работе:</h3>
-          <ul className={OrdersStyles.ordersList} style={{ columnCount: columnCountProgress}}>
+          <ul className={OrdersStyles.ordersList} style={{ columnCount: columnCountProgress || 1}}>
             {ordersByStatus && ordersByStatus.progress.map((item, index) => {
               return (
-              <li className='text text_type_digits-default mb-2'>{item.number}</li>
+              <li key={index} className='text text_type_digits-default mb-2'>{item.number}</li>
               )
             })}
           </ul>

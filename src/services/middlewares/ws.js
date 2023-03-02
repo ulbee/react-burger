@@ -13,10 +13,8 @@ export const socketMiddleware = (wsActions) => {
       const { dispatch } = store;
       const { type } = action;
       const {wsConnect, wsDisconnect, wsConnecting, onOpen, onClose, onError, onMessage } = wsActions;
-      // const token = getCookie('accessToken');
 
       if (type === 'WS_CONNECT') {
-        console.log('action.payload', action);
         url = action.payload;
         socket = new WebSocket(`${url}`);
         tryReconnect = true;
@@ -26,7 +24,6 @@ export const socketMiddleware = (wsActions) => {
 
       if (socket) {
         socket.onopen = event => {
-          console.log('socket.onopen', event);
           tryReconnect = true;
           dispatch(onOpen());
         };
@@ -37,19 +34,17 @@ export const socketMiddleware = (wsActions) => {
         };
 
         socket.onmessage = event => {
-          console.log('socket.onmessage', event);
           const { data } = event;
           const parsedData = JSON.parse(data);
           dispatch(onMessage(parsedData));
 
-          if (data.message === 'Invalid or missing token') {
-            console.log('Invalid or missing token');
+          if (parsedData.message === 'Invalid or missing token') {
             refreshTokenRequest(getCookie('token'))
               .then((res) => {
                 if (res && res.success) {
                   setCookie('accessToken', getAccessToken(res.accessToken));
                   setCookie('token', res.refreshToken);
-    
+
                   dispatch(wsConnect(`${GET_USER_ORDERS_URL}?token=${getCookie('accessToken')}`));
                 }
               });
@@ -57,26 +52,12 @@ export const socketMiddleware = (wsActions) => {
         };
 
         socket.onclose = event => {
-          console.log('socket.onclose', event);
           if (event.code !== 1000) {
             console.log('socket.onclose', event);
             dispatch(onError(event.code.toString()))
           }
 
           dispatch(onClose(event.code.toString()));
-
-          if (event.message === 'Invalid or missing token') {
-            console.log('Invalid or missing token');
-            refreshTokenRequest(getCookie('token'))
-              .then((res) => {
-                if (res && res.success) {
-                  setCookie('accessToken', getAccessToken(res.accessToken));
-                  setCookie('token', res.refreshToken);
-    
-                  dispatch(wsConnect(`${GET_USER_ORDERS_URL}?token=${getCookie('accessToken')}`));
-                }
-              });
-          }
 
           if(tryReconnect){
             console.log('tryReconnect', tryReconnect);
@@ -88,7 +69,6 @@ export const socketMiddleware = (wsActions) => {
         };
 
         if (wsDisconnect.match(action)) {
-          console.log('wsDisconnect');
           tryReconnect = false;
           clearTimeout(reconnectTimer);
           reconnectTimer = 0;
