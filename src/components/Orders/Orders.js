@@ -1,6 +1,6 @@
 import OrdersStyles from './Orders.module.css';
 import { GET_ALL_ORDERS_URL } from '../../utils/constants';
-import { wsConnect } from '../../services/actions/ws';
+import { wsConnect, wsDisconnect } from '../../services/actions/ws';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import OrderSnippet from '../OrderSnippet/OrderSnippet';
@@ -9,9 +9,21 @@ import OrderSnippet from '../OrderSnippet/OrderSnippet';
 function Orders() {
   const dispatch = useDispatch();
   const { total, totalToday, orders } = useSelector( state => state.ws.feed);
+  const ordersByStatus = orders?.length && orders.reduce((res, item) => {
+    if (res[item.status].length < 20) {
+      res[item.status].push(item);
+    }
+
+    return res;
+  }, {done: [], progress: []});
+
+  const columnCountDone = Math.floor(ordersByStatus.done.length / 10);
+  const columnCountProgress = Math.floor(ordersByStatus.progress.length / 10);
 
   useEffect(() => {
     dispatch(wsConnect(GET_ALL_ORDERS_URL));
+
+    return () => dispatch(wsDisconnect());
   }, [dispatch])
 
   return (
@@ -20,23 +32,30 @@ function Orders() {
       <section className={OrdersStyles.feed + ' pr-2'}>
         {orders &&
           orders.map((item, index) => {
-            return <OrderSnippet key={index} order={item} link='/feed'/>
+            return <OrderSnippet key={item._id} order={item} link='/feed'/>
           })
         }
       </section>
       <section className={OrdersStyles.board}>
         <div className={OrdersStyles.done}>
           <h3 className='mb-6'>Готовы:</h3>
-          <ul className={OrdersStyles.ordersList}>
-            <li className='text text_type_digits-default mb-2'>034533</li>
-            <li className='text text_type_digits-default mb-2'>034533</li>
+       
+          <ul className={OrdersStyles.ordersList} style={{ columnCount: columnCountDone}}>
+            {ordersByStatus && ordersByStatus.done.map((item, index) => {
+              return (
+                <li key={index} className='text text_type_digits-default mb-2'>{item.number}</li>
+              )
+            })}
           </ul>
         </div>
         <div className={OrdersStyles.inProgress}>
           <h3 className='mb-6'>В работе:</h3>
-          <ul className={OrdersStyles.ordersList}>
-            <li className='text text_type_digits-default mb-2'>034533</li>
-            <li className='text text_type_digits-default mb-2'>034533</li>
+          <ul className={OrdersStyles.ordersList} style={{ columnCount: columnCountProgress}}>
+            {ordersByStatus && ordersByStatus.progress.map((item, index) => {
+              return (
+              <li className='text text_type_digits-default mb-2'>{item.number}</li>
+              )
+            })}
           </ul>
         </div>
         <div className={OrdersStyles.statistics}>

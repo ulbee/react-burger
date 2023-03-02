@@ -16,7 +16,6 @@ import { ForgotPasswordPage } from '../../pages/forgotPassword';
 import { ResetPasswordPage } from '../../pages/resetPassword';
 import { ProfilePage } from '../../pages/profile';
 import { UserOrdersPage } from '../../pages/userOrdersPage';
-import { UserOrderPage } from '../../pages/userOrderPage';
 import { NotFoundPage } from '../../pages/notFound';
 import { LogoutPage } from '../../pages/logoutPage';
 import Modal from '../Modal/Modal';
@@ -53,7 +52,7 @@ function App() {
 
               <Route path="/profile" element={ <ProtectedRoute element={<ProfilePage/>}/> } />
               <Route path="/profile/orders" element={ <ProtectedRoute element={<UserOrdersPage/>}/> } />
-              <Route path="/profile/orders/:id" element={ <ProtectedRoute element={<UserOrderPage/>}/> } />
+              <Route path="/profile/orders/:orderId" element={ <ProtectedRoute element={<OrderDetails/>}/> } />
               <Route path="/login" element={ <ProtectedRoute element={<LoginPage />} isAuthPage /> } />
               <Route path="/register" element={ <ProtectedRoute element={<RegisterPage />} isAuthPage /> } />
               <Route path="/forgot-password" element={ <ProtectedRoute element={<ForgotPasswordPage />} isAuthPage /> } />
@@ -72,6 +71,13 @@ function App() {
                 }
               />
               <Route path="/feed/:orderId" element={
+                  <Modal onClose={() => history(-1)} >
+                    {!orders?.length && <p>Загружаем данные</p>}
+                    {orders?.length && <OrderDetails />}
+                  </Modal>
+                }
+              />
+              <Route path="/profile/orders/:orderId" element={
                   <Modal onClose={() => history(-1)} >
                     {!orders?.length && <p>Загружаем данные</p>}
                     {orders?.length && <OrderDetails />}
