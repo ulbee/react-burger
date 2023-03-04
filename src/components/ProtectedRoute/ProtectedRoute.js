@@ -5,11 +5,14 @@ import PropTypes from 'prop-types';
 
 function ProtectedRoute({element, isAuthPage, accessFrom}) {
 
-  const { isAuthSuccess } = useSelector(state => state.user);
+  const { isAuthSuccess, isUserLoaded } = useSelector(state => state.user);
 
   const location = useLocation();
   const { from } = location?.state || { from: {pathname: '/'}}
 
+  if (!isUserLoaded) {
+    return <p>Загрузка</p>
+}
   if (isAuthPage && isAuthSuccess) {
     return <Navigate to={from} />;
   }

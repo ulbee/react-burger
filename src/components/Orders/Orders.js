@@ -15,7 +15,7 @@ function Orders() {
     }
 
     return res;
-  }, {done: [], progress: []});
+  }, {done: [], progress: [], created: []});
 
   const columnCountDone = Math.floor(ordersByStatus?.done.length / 10);
   const columnCountProgress = Math.floor(ordersByStatus?.progress.length / 10);

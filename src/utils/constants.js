@@ -17,6 +17,7 @@ export const WS_STATUS = {
   ONLINE : 'ONLINE',
   OFFLINE : 'OFFLINE'
 }
+export const WS_MESSAGE = 'WS_MESSAGE';
 
 // Константы для обработки запроса для получения всех ингридиентов
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';

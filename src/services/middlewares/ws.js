@@ -1,7 +1,3 @@
-import { getCookie, setCookie, getAccessToken } from "../../utils/cookie";
-import { refreshTokenRequest } from '../../utils/api';
-import { GET_USER_ORDERS_URL } from '../../utils/constants';
-
 export const socketMiddleware = (wsActions) => {
   return store => {
     let socket = null;
@@ -11,19 +7,22 @@ export const socketMiddleware = (wsActions) => {
 
     return next => action => {
       const { dispatch } = store;
-      const { type } = action;
       const {wsConnect, wsDisconnect, wsConnecting, onOpen, onClose, onError, onMessage } = wsActions;
 
-      if (type === 'WS_CONNECT') {
+
+      if (wsConnect.match(action)) {
+        console.log('wsConnect');
         url = action.payload;
         socket = new WebSocket(`${url}`);
         tryReconnect = true;
         dispatch(wsConnecting());
+
       }
 
 
       if (socket) {
         socket.onopen = event => {
+          console.log('onopen');
           tryReconnect = true;
           dispatch(onOpen());
         };
@@ -34,24 +33,15 @@ export const socketMiddleware = (wsActions) => {
         };
 
         socket.onmessage = event => {
+          console.log('onmessage');
           const { data } = event;
           const parsedData = JSON.parse(data);
+
           dispatch(onMessage(parsedData));
-
-          if (parsedData.message === 'Invalid or missing token') {
-            refreshTokenRequest(getCookie('token'))
-              .then((res) => {
-                if (res && res.success) {
-                  setCookie('accessToken', getAccessToken(res.accessToken));
-                  setCookie('token', res.refreshToken);
-
-                  dispatch(wsConnect(`${GET_USER_ORDERS_URL}?token=${getCookie('accessToken')}`));
-                }
-              });
-          }
         };
 
         socket.onclose = event => {
+          console.log('onclose');
           if (event.code !== 1000) {
             console.log('socket.onclose', event);
             dispatch(onError(event.code.toString()))
@@ -60,7 +50,6 @@ export const socketMiddleware = (wsActions) => {
           dispatch(onClose(event.code.toString()));
 
           if(tryReconnect){
-            console.log('tryReconnect', tryReconnect);
             dispatch(wsConnecting());
             reconnectTimer = window.setTimeout(() => {
                 dispatch(wsConnect(url))
@@ -69,6 +58,7 @@ export const socketMiddleware = (wsActions) => {
         };
 
         if (wsDisconnect.match(action)) {
+          console.log('wsDisconnect');
           tryReconnect = false;
           clearTimeout(reconnectTimer);
           reconnectTimer = 0;

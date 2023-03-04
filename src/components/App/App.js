@@ -78,10 +78,12 @@ function App() {
                 }
               />
               <Route path="/profile/orders/:orderId" element={
-                  <Modal onClose={() => history(-1)} >
-                    {!orders?.length && <p>Загружаем данные</p>}
-                    {orders?.length && <OrderDetails />}
-                  </Modal>
+                  <ProtectedRoute element={
+                    <Modal onClose={() => history(-1)} >
+                      {!orders?.length && <p>Загружаем данные</p>}
+                      {orders?.length && <OrderDetails />}
+                    </Modal>
+                  } />
                 }
               />
             </Routes>

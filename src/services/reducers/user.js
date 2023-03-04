@@ -40,6 +40,7 @@ const initialUserState = {
   prevSavedPassword: '',
 
   isAuthSuccess: false,
+  isUserLoaded: false,
 
   addUserRequest: false,
   addUserFailed: false,
@@ -90,6 +91,7 @@ export const userReducer = (state = initialUserState, action) => {
         email: action.user.email,
         addUserRequest: false,
         isAuthSuccess: true,
+        isUserLoaded: true,
         canResetPassword: false,
         resetPasswordSuccess: false,
       }
@@ -115,6 +117,7 @@ export const userReducer = (state = initialUserState, action) => {
         email: action.user.email,
         loginUserRequest: false,
         isAuthSuccess: true,
+        isUserLoaded: true,
         canResetPassword: false,
         resetPasswordSuccess: false
       }
@@ -135,7 +138,8 @@ export const userReducer = (state = initialUserState, action) => {
         email: action.user.email,
         prevSavedName: action.user.name,
         prevSavedEmail: action.user.email,
-        isAuthSuccess: true
+        isAuthSuccess: true,
+        isUserLoaded: true
       }
     }
     case GET_USER_FAILED: {

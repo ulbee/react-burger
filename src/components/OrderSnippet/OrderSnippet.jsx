@@ -26,8 +26,9 @@ function OrderSnippet({ order, needDetails, link }) {
     return res;
   }, {hidedLength: order.ingredients.length - 6, maxLength: 6, ingredients: []});
 
+  // console.log('OrderSnippet location', location);
   return (
-    <Link to={`${link}/${order._id}`} state={{modalBackground: location}} className={OrderSnippetStyles.link}>
+    <Link to={`${link}/${order._id}`} state={{modalBackground: location, from: location}} className={OrderSnippetStyles.link}>
       <div className={OrderSnippetStyles.snippet + ' p-6 mb-4'}>
         <div className={OrderSnippetStyles.info + ' mb-6'}>
           <span className='text text_type_digits-default'>#{order.number}</span>
