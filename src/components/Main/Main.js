@@ -7,7 +7,7 @@ import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
 import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
 import Modal from '../Modal/Modal';
-import OrderDetails from '../OrderDetails/OrderDetails';
+import OrderAccepted from '../OrderAccepted/OrderAccepted';
 
 import {SHOW_INGREDIENT, HIDE_INGREDIENT} from '../../utils/constants';
 
@@ -46,7 +46,7 @@ function Main() {
       {
         isOrderDetailsOpened &&
         <Modal title='' onClose={closeAllModals}>
-            <OrderDetails/>
+            <OrderAccepted/>
         </Modal>
       }
     </>

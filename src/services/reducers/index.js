@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { userReducer } from './user';
+import { wsReducer } from './ws';
 import { 
   GET_INGREDIENTS_REQUEST, 
   GET_INGREDIENTS_SUCCESS, 
@@ -157,5 +158,6 @@ export const ingredientsReducer = (state = initialMenuState, action) => {
 
 export const rootReducer = combineReducers({
   menu: ingredientsReducer,
-  user: userReducer
+  user: userReducer,
+  ws: wsReducer
 });

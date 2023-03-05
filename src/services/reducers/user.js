@@ -25,7 +25,9 @@ import {
   RESET_PASSWORD_FAILED,
 
   LOGOUT_USER_SUCCESS,
-  LOGOUT_USER_FAILED
+  LOGOUT_USER_FAILED,
+
+  GET_USER_ORDERS
  } from '../../utils/constants';
 
 
@@ -38,6 +40,7 @@ const initialUserState = {
   prevSavedPassword: '',
 
   isAuthSuccess: false,
+  isUserLoaded: false,
 
   addUserRequest: false,
   addUserFailed: false,
@@ -54,6 +57,8 @@ const initialUserState = {
   canResetPassword: false,
   resetPasswordSuccess: false,
   code: '',
+
+  orders: []
 }
 
 export const userReducer = (state = initialUserState, action) => {
@@ -86,6 +91,7 @@ export const userReducer = (state = initialUserState, action) => {
         email: action.user.email,
         addUserRequest: false,
         isAuthSuccess: true,
+        isUserLoaded: true,
         canResetPassword: false,
         resetPasswordSuccess: false,
       }
@@ -111,6 +117,7 @@ export const userReducer = (state = initialUserState, action) => {
         email: action.user.email,
         loginUserRequest: false,
         isAuthSuccess: true,
+        isUserLoaded: true,
         canResetPassword: false,
         resetPasswordSuccess: false
       }
@@ -131,7 +138,8 @@ export const userReducer = (state = initialUserState, action) => {
         email: action.user.email,
         prevSavedName: action.user.name,
         prevSavedEmail: action.user.email,
-        isAuthSuccess: true
+        isAuthSuccess: true,
+        isUserLoaded: true
       }
     }
     case GET_USER_FAILED: {
@@ -208,6 +216,16 @@ export const userReducer = (state = initialUserState, action) => {
       return {
         ...state,
         logoutError: true
+      }
+    }
+    
+    
+    
+    
+    case GET_USER_ORDERS: {
+      return {
+        ...state,
+        orders: action.action.orders
       }
     }
     

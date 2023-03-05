@@ -34,7 +34,8 @@ import {
   RESET_PASSWORD_FAILED,
 
   LOGOUT_USER_SUCCESS,
-  LOGOUT_USER_FAILED
+  LOGOUT_USER_FAILED,
+  GET_USER_ORDERS
  } from '../../utils/constants'; 
 
 
