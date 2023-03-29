@@ -12,12 +12,12 @@ import { socketMiddleware } from './services/middlewares/ws';
 import { wsConnect, wsDisconnect, wsConnecting, wsOpen, wsClose, wsError, wsMessage } from './services/actions/ws';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root')
+  document.getElementById('root') as HTMLElement
 );
 
 const composeEnhancers =
-  typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
+  typeof window === 'object' && (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']
+    ? (window as any)['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__']({})
     : compose;
 
 const wsActions = {

@@ -8,7 +8,7 @@ import {
   GET_ORDER_FAILED
  } from '../../utils/constants';
  import { getAccessToken, getCookie, setCookie } from "../../utils/cookie";
- import { getUserRequest, refreshTokenRequest } from "../../utils/api";
+ import { refreshTokenRequest } from "../../utils/api";
 
 export function getIngredients() {
   return function(dispatch) {

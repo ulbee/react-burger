@@ -1,6 +1,5 @@
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
 
-import React, { useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';

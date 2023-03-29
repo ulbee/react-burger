@@ -3,7 +3,7 @@ import IngredientCategoryStyles from './IngredientCategory.module.css';
 import { useMemo, useEffect } from 'react';
 
 import PropTypes from 'prop-types';
-import IngredientsPropTypes from '../../utils/propTypes';
+import IngredientsPropTypes from '../../utils/TIngredient';
 
 import IngredientCard from '../IngredientCard/IngredientCard';
 import { useDispatch, useSelector } from 'react-redux';

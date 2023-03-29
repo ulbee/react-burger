@@ -1,4 +1,3 @@
-import React from 'react';
 import NotFoundPageStyles from './notFound.module.css';
 
 import { Link } from 'react-router-dom';

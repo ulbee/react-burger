@@ -1,13 +1,18 @@
 import IngredientCardStyles from './IngredientCard.module.css';
 
-import PropTypes from 'prop-types';
-import IngredientsPropTypes from '../../utils/propTypes';
+import TIngredient from '../../utils/TIngredient';
+import { FC } from 'react';
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
-function IngredientCard({ data, count, openIngredientModal }) {
+type TIngredientCardProps = {
+  data: TIngredient;
+  count?: number;
+  openIngredientModal: () => void;
+}
+const IngredientCard: FC<TIngredientCardProps> = ({ data, count, openIngredientModal }) => {
   const location = useLocation();
 
   const [{ opacity }, ref] = useDrag({
@@ -38,12 +43,6 @@ function IngredientCard({ data, count, openIngredientModal }) {
       </div>
     </Link>
   );
-}
-
-IngredientCard.propTypes = {
-  data: IngredientsPropTypes.isRequired,
-  count: PropTypes.number,
-  openIngredientModal: PropTypes.func.isRequired
 }
 
 export default IngredientCard;

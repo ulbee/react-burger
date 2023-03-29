@@ -1,14 +1,12 @@
-// import React from 'react';
 import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { NavLink } from 'react-router-dom';
 import AppHeaderStyles from './AppHeader.module.css';
 
 function AppHeader() {
-
-  const active = AppHeaderStyles.link + ' ' + AppHeaderStyles.active + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default';
-  const link = AppHeaderStyles.link + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive';
-  const activeAccountLink = AppHeaderStyles.link + ' ' + AppHeaderStyles.active + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default';
-  const accountLink = AppHeaderStyles.link + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive';
+  const active: string = AppHeaderStyles.link + ' ' + AppHeaderStyles.active + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default';
+  const link: string = AppHeaderStyles.link + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive';
+  const activeAccountLink: string = AppHeaderStyles.link + ' ' + AppHeaderStyles.active + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default';
+  const accountLink: string = AppHeaderStyles.link + ' ' + AppHeaderStyles.account + ' pl-5 pt-4 pr-5 pb-4 text text_type_main-default text_color_inactive';
 
   return (
     <header className={AppHeaderStyles.header}>

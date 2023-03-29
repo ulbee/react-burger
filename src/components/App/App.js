@@ -45,7 +45,7 @@ function App() {
       <AppHeader />
       <main className={AppStyles.container}>
           <Routes location={ modalBackground || location}>
-              <Route path="/" exact element={<Main/>} />
+              <Route path="/" element={<Main/>} />
               <Route path="/ingredients/:ingredientId" element={ingredientsByType && <IngredientDetails/>} />
               <Route path="/feed" element={<Orders/>} />
               <Route path="/feed/:orderId" element={<OrderDetails/>} />
