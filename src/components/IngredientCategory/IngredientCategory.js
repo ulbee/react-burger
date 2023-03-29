@@ -3,7 +3,7 @@ import IngredientCategoryStyles from './IngredientCategory.module.css';
 import { useMemo, useEffect } from 'react';
 
 import PropTypes from 'prop-types';
-import IngredientsPropTypes from '../../utils/TIngredient';
+// import IngredientsPropTypes from '../../utils/TIngredient';
 
 import IngredientCard from '../IngredientCard/IngredientCard';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,13 +51,13 @@ function IngredientCategory({ id, title, data, openIngredientModal, link, inView
   );
 }
 
-IngredientCategory.propTypes = {
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  data: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
-  openIngredientModal: PropTypes.func.isRequired,
-  link: PropTypes.func.isRequired,
-  inView: PropTypes.bool.isRequired
-}
+// IngredientCategory.propTypes = {
+//   id: PropTypes.string.isRequired,
+//   title: PropTypes.string.isRequired,
+//   data: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
+//   openIngredientModal: PropTypes.func.isRequired,
+//   link: PropTypes.func.isRequired,
+//   inView: PropTypes.bool.isRequired
+// }
 
 export default IngredientCategory;

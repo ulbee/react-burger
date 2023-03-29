@@ -1,4 +1,15 @@
-export const setCookie = (name, value, props) => {
+type ICookieProps = {
+  path: string;
+  expires?: Date | string;
+  domain?: string;
+  httpOnly?: boolean;
+  sameSite?: boolean;
+  secure?: boolean;
+  overwrite?: boolean;
+  maxAge?: number;
+}
+
+export const setCookie = (name: string, value: string, props?: ICookieProps) => {
   props = {
     path: '/',
     ...props
@@ -12,14 +23,16 @@ export const setCookie = (name, value, props) => {
     exp = props.expires = d;
   }
 
-  if (exp && exp.toUTCString) {
+  if (exp && exp instanceof Date) {
     props.expires = exp.toUTCString();
   }
 
   value = encodeURIComponent(value);
   let updatedCookie = name + '=' + value;
   
-  for (const propName in props) {
+  let propName: keyof ICookieProps;
+
+  for (propName in props) {
     updatedCookie += '; ' + propName;
     const propValue = props[propName];
     if (propValue !== true) {
@@ -30,9 +43,10 @@ export const setCookie = (name, value, props) => {
   document.cookie = updatedCookie;
 }
 
-export const getCookie = (name) => {
-  let cookies = document.cookie.split('; ').reduce((res, el) => {
-    let cookie = el.split('=');   
+export const getCookie = (name: string) => {
+  let cookies = document.cookie.split('; ').reduce((res : any, el) => {
+    let cookie: Array<string> = el.split('=');
+
     res[cookie[0]] = cookie[1];
     return res;
   }, {});
@@ -40,6 +54,6 @@ export const getCookie = (name) => {
   return cookies[name];
 }
 
-export const getAccessToken = (accessToken) => {
+export const getAccessToken = (accessToken: string) => {
  return accessToken.split('Bearer ')[1];
 }
