@@ -9,21 +9,25 @@ import {
   PASSWORDFORGOTURL,
   PASSWORDRESETURL 
 } from "./constants";
+import { IEditUserOptions, IGetUserOptions, ILogoutUserOptions } from './requestTypes';
+import { TUser } from "./userTypes";
 
-const checkResponse = async (data) => {
+// TODO: нужно ли типизировать data? Должен быть {ok: boolean, json?: () => any } ???
+const checkResponse = async (data: any) => {
   if (!data.ok) {
     throw new Error(data.message, { cause: await data.json() });
   }
   return data.json();
 }
 
-const getIngredientsRequest = async () => {
+// TODO: как вообще типизировать ответ сервера???
+const getIngredientsRequest = async (): Promise<any> => {
   const res = await fetch(GETINGREDIENTSURL);
 
   return await checkResponse(res);
 }
 
-const sendOrderRequest = async (ingredientIds, accessToken) => {
+const sendOrderRequest = async (ingredientIds: Array<string>, accessToken: string): Promise<any> => {
   const res = await fetch(SAVEORDERURL, {
     method: 'POST',
     headers: {
@@ -38,7 +42,7 @@ const sendOrderRequest = async (ingredientIds, accessToken) => {
   return await checkResponse(res);
 }
 
-const getUserRequest = async ({accessToken}) => {
+const getUserRequest = async ({accessToken}: IGetUserOptions): Promise<any> => {
   const res = await fetch(USERURL, {
     method: 'GET',
     headers: {
@@ -50,7 +54,7 @@ const getUserRequest = async ({accessToken}) => {
   return await checkResponse(res);
 }
 
-const editUserRequest = async ({user, accessToken}) => {
+const editUserRequest = async ({user, accessToken} : IEditUserOptions): Promise<any> => {
   const res = await fetch(USERURL, {
     method: 'PATCH',
     headers: {
@@ -63,7 +67,7 @@ const editUserRequest = async ({user, accessToken}) => {
   return checkResponse(res);
 }
 
-const addUserRequest = async (user) => {
+const addUserRequest = async (user: TUser): Promise<any> => {
   const res = await fetch(ADDUSERURL, {
     method: 'POST',
     headers: {
@@ -75,7 +79,7 @@ const addUserRequest = async (user) => {
   return await checkResponse(res);
 }
 
-const loginRequest = async (user) => {
+const loginRequest = async (user: TUser): Promise<any> => {
   const res = await fetch(LOGINUSERURL, {
     method: 'POST',
     headers: {
@@ -87,7 +91,7 @@ const loginRequest = async (user) => {
   return await checkResponse(res);
 }
 
-const logoutRequest = async ({token}) => {
+const logoutRequest = async ({token}: ILogoutUserOptions): Promise<any> => {
   const res = await fetch(LOGOUTUSERURL, {
     method: 'POST',
     headers: {
@@ -99,7 +103,7 @@ const logoutRequest = async ({token}) => {
   return await checkResponse(res);
 }
 
-const refreshTokenRequest = async (token) => {
+const refreshTokenRequest = async (token: string): Promise<any> => {
   const res = await fetch(REFRESHTOKENURL, {
     method: 'POST',
     headers: {
@@ -111,7 +115,7 @@ const refreshTokenRequest = async (token) => {
   return await checkResponse(res);
 }
 
-const passwordForgotRequest = async (email) => {
+const passwordForgotRequest = async (email: string): Promise<any> => {
   const res = await fetch(PASSWORDFORGOTURL, {
     method: 'POST',
     headers: {
@@ -123,7 +127,7 @@ const passwordForgotRequest = async (email) => {
   return await checkResponse(res);
 }
 
-const passwordResetRequest = async (password, token) => {
+const passwordResetRequest = async (password: string, token: number): Promise<any> => {
   const res = await fetch(PASSWORDRESETURL, {
     method: 'POST',
     headers: {

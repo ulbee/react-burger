@@ -1,4 +1,4 @@
-type TIngredient = {
+export type TIngredient = {
   _id: string;
   name: string;
   type: string;
@@ -13,4 +13,10 @@ type TIngredient = {
   __v?: number;
 };
 
-export default TIngredient;
+export type TIngredientsByType = {
+  [name: string]: Array<TIngredient>;
+}
+
+export type TIngredientsById = {
+  [name: string] : TIngredient;
+}

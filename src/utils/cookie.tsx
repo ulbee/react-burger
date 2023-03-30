@@ -1,6 +1,6 @@
-type ICookieProps = {
-  path: string;
-  expires?: Date | string;
+type TCookieProps = {
+  path?: string;
+  expires?: Date | string | number;
   domain?: string;
   httpOnly?: boolean;
   sameSite?: boolean;
@@ -9,7 +9,7 @@ type ICookieProps = {
   maxAge?: number;
 }
 
-export const setCookie = (name: string, value: string, props?: ICookieProps) => {
+export const setCookie = (name: string, value: string, props?: TCookieProps) => {
   props = {
     path: '/',
     ...props
@@ -30,7 +30,7 @@ export const setCookie = (name: string, value: string, props?: ICookieProps) => 
   value = encodeURIComponent(value);
   let updatedCookie = name + '=' + value;
   
-  let propName: keyof ICookieProps;
+  let propName: keyof TCookieProps;
 
   for (propName in props) {
     updatedCookie += '; ' + propName;

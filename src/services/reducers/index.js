@@ -5,9 +5,9 @@ import {
   GET_INGREDIENTS_REQUEST, 
   GET_INGREDIENTS_SUCCESS, 
   GET_INGREDIENTS_FAILED,
-  GET_ORDER_REQUEST,
-  GET_ORDER_SUCCESS,
-  GET_ORDER_FAILED,
+  SEND_ORDER_REQUEST,
+  SEND_ORDER_SUCCESS,
+  SEND_ORDER_FAILED,
   SHOW_INGREDIENT,
   HIDE_INGREDIENT,
   ADD_INGREDIENT,
@@ -61,14 +61,14 @@ export const ingredientsReducer = (state = initialMenuState, action) => {
         ingredientsFailed: true
       }
     }
-    case GET_ORDER_REQUEST: {
+    case SEND_ORDER_REQUEST: {
       return {
         ...state,
         orderRequest: true,
         orderFailed: false
       }
     }
-    case GET_ORDER_SUCCESS: {
+    case SEND_ORDER_SUCCESS: {
       return {
         ...state,
         orderRequest: false,
@@ -79,7 +79,7 @@ export const ingredientsReducer = (state = initialMenuState, action) => {
         }
       }
     }
-    case GET_ORDER_FAILED: {
+    case SEND_ORDER_FAILED: {
       return {
         ...state,
         orderRequest: false,
