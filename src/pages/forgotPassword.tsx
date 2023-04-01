@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { ChangeEvent, FormEvent } from 'react';
+import { useDispatch, useSelector } from '../services/hooks';
 import ForgotPasswordPageStyles from './login.module.css';
 
 import { Link, Navigate, useLocation } from 'react-router-dom';
@@ -12,13 +12,13 @@ export function ForgotPasswordPage() {
 
   const {email, canResetPassword} = useSelector(state => state.user);
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     dispatch(forgotPassword(email));
   }
 
-  const onFormChange = (e) => {
+  const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setRegisterFormValue(e.target.name, e.target.value));
   }
 

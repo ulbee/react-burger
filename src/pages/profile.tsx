@@ -1,4 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { FormEvent, ChangeEvent } from 'react';
+import { useDispatch, useSelector } from '../services/hooks';
 import ProfilePageStyles from './profile.module.css';
 
 import { NavLink } from 'react-router-dom';
@@ -10,21 +11,21 @@ export function ProfilePage() {
   const dispatch = useDispatch();
   const {name, email, password, isUserEdited, editUserFailed} = useSelector(state => state.user);
 
-  const onFormChange = (e) => {
+  const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setEditUserForm(e.target.name, e.target.value));
   }
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = (e: FormEvent) => {
     e.preventDefault();
     dispatch(editUser({name, email, password}));
   }
 
-  const onReset = (e) => {
+  const onReset = () => {
     dispatch({type: RESET_EDIT_USER_FORM});
   }
 
-  const active = ProfilePageStyles.active + ' ' + ProfilePageStyles.link + ' pt-4 pb-4 text text_type_main-medium';
-  const link = ProfilePageStyles.link + ' pt-4 pb-4 text text_type_main-medium text_color_inactive';
+  const active: string = ProfilePageStyles.active + ' ' + ProfilePageStyles.link + ' pt-4 pb-4 text text_type_main-medium';
+  const link: string = ProfilePageStyles.link + ' pt-4 pb-4 text text_type_main-medium text_color_inactive';
 
   return (
     <div className={ProfilePageStyles.container + ' mt-30'}>
@@ -44,7 +45,7 @@ export function ProfilePage() {
       </div>
       <form className={ProfilePageStyles.form} onSubmit={onFormSubmit} onReset={onReset}>
         <Input placeholder='Имя' value={name} name='name' onChange={onFormChange} icon='EditIcon'/>
-        <EmailInput placeholder='E-mail' value={email} name='email' onChange={onFormChange} extraClass='mt-6' icon='EditIcon'/>
+        <EmailInput placeholder='E-mail' value={email} name='email' onChange={onFormChange} extraClass='mt-6' isIcon={true}/>
         <PasswordInput placeholder='Пароль' value={password} name='password' onChange={onFormChange} extraClass='mt-6' icon='EditIcon'/>
         { isUserEdited &&
           <div className={ProfilePageStyles.formButtons + ' mt-6'}>

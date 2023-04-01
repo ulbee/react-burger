@@ -17,11 +17,11 @@ import {
   SET_ACTIVE_TAB
 } from '../../utils/constants';
 import { TIngredientsByType, TIngredientsById, TIngredient } from '../types/ingredients';
-import { TIngredientsAction } from '../actions/ingredients';
+import { TIngredientsAction } from '../types/ingredients';
 
 export type TMenuState = {
-  ingredientsByType: TIngredientsByType ,
-  ingredientsById: TIngredientsById,
+  ingredientsByType: {} & TIngredientsByType ,
+  ingredientsById: {} & TIngredientsById,
   ingredientsRequest: boolean,
   ingredientsFailed: boolean,
 
@@ -37,7 +37,6 @@ export type TMenuState = {
   orderRequest: boolean,
   orderFailed: boolean
 }
-
 
 const initialMenuState: TMenuState = {
   ingredientsByType: {},

@@ -1,3 +1,4 @@
+import { AppDispatch, AppThunk } from '../types/index';
 import { 
   addUserRequest,
   refreshTokenRequest,
@@ -55,7 +56,7 @@ export const setEditUserForm = (field: string, value: string) => ({
 
 // Добавление нового пользователя
 export function addUser(user: TUser) {
-  return function(dispatch: any) {
+  return function(dispatch: AppDispatch) {
     dispatch(addUserAction());
 
     addUserRequest(user)
@@ -75,29 +76,27 @@ export function addUser(user: TUser) {
 }
 
 // Вход уже существующего пользователя
-export function loginUser(user: TUser) {
-  return function(dispatch: any) {
-    dispatch(loginUserAction());
+export const loginUser: AppThunk = (user: TUser) => (dispatch: AppDispatch) => {
+  dispatch(loginUserAction());
 
-    loginRequest(user)
-      .then((res) => {
-        if (res && res.success) {
-          const accessToken: string = getAccessToken(res.accessToken);
+  loginRequest(user)
+    .then((res) => {
+      if (res && res.success) {
+        const accessToken: string = getAccessToken(res.accessToken);
 
-          setCookie('token', res.refreshToken);
-          setCookie('accessToken', accessToken);
+        setCookie('token', res.refreshToken);
+        setCookie('accessToken', accessToken);
 
-          dispatch(loginUserSuccessAction(res.user));
-        }})
-      .catch((err) => {
-        dispatch(loginUserFailedAction(err.message));
-      })
-  }
+        dispatch(loginUserSuccessAction(res.user));
+      }})
+    .catch((err) => {
+      dispatch(loginUserFailedAction(err.message));
+    })
 }
 
 // Получение информации о пользователе
 export function getUser() {
-  return function(dispatch: any) {
+  return function(dispatch: AppDispatch) {
     getRequestWithRetry(
       getUserRequest,
       ({user}) => dispatch(getUserSuccessAction(user)),
@@ -108,34 +107,30 @@ export function getUser() {
 
 // Редактирование информации о пользователе
 export function editUser(user: TUser) {
-  return function(dispatch: any) {
+  return function(dispatch: AppDispatch) {
     getRequestWithRetry(
       editUserRequest,
       ({user}) => dispatch(editUserSuccessAction(user)),
       () => dispatch(editUserFailedAction()),
-      { user }
+      user
     );
   }
 }
 
-export function forgotPassword(email: string) {
-  return function(dispatch: any) {
-
-    passwordForgotRequest(email)
-    .then((res) => {
-      if (res && res.success) {
-        dispatch(forgotPasswordSuccessAction(res.user));        
-      }
-    })
-    .catch(() => {
-      dispatch(forgotPasswordFailedAction());
-    })
-  }
-
+export const forgotPassword: AppThunk = (email: string) => (dispatch: AppDispatch) => {
+  passwordForgotRequest(email)
+  .then((res) => {
+    if (res && res.success) {
+      dispatch(forgotPasswordSuccessAction(res.user));        
+    }
+  })
+  .catch(() => {
+    dispatch(forgotPasswordFailedAction());
+  })
 }
 
-export function resetPassword(password: string, code: number) {
-  return function(dispatch: any) {
+export function resetPassword(password: string, code: string) {
+  return function(dispatch: AppDispatch) {
 
     passwordResetRequest(password, code)
     .then((res) => {
@@ -150,21 +145,19 @@ export function resetPassword(password: string, code: number) {
 
 }
 
-export function logoutUser() {
-  return function(dispatch: any) {
-    getRequestWithRetry(
-      logoutRequest,
-      () => {
-        setCookie('accessToken', '', {expires: 0});
-        setCookie('token', '', {expires: 0});
-        dispatch(logoutUserSuccessAction())
-      },
-      ({message}) => {
-        dispatch(logoutUserFailedAction(message));
-      },
-      {token: getCookie('token')}
-    )
-  }
+export const logoutUser: AppThunk = () => (dispatch: AppDispatch) => {
+  getRequestWithRetry(
+    logoutRequest,
+    () => {
+      setCookie('accessToken', '', {expires: 0});
+      setCookie('token', '', {expires: 0});
+      dispatch(logoutUserSuccessAction())
+    },
+    ({message}) => {
+      dispatch(logoutUserFailedAction(message));
+    },
+    getCookie('token')
+  )
 }
 
 /**
@@ -176,10 +169,9 @@ export function logoutUser() {
  */
 
 // TODO что делать с options и getRequest???
-function getRequestWithRetry(getRequest: requestRetry, onSuccess: requestRetryOnSuccess, onFail: requestRetryOnFail, options: any = {}) {
-  options.accessToken = getCookie('accessToken');
-
-  getRequest(options)
+function getRequestWithRetry(getRequest: requestRetry, onSuccess: requestRetryOnSuccess, onFail: requestRetryOnFail, options?: TRequestRetryOptions) {
+  
+  getRequest(getCookie('accessToken'), options)
       .then((res: any) => {
         if (res && res.success) {
           onSuccess(res);
@@ -192,9 +184,7 @@ function getRequestWithRetry(getRequest: requestRetry, onSuccess: requestRetryOn
                 setCookie('accessToken', getAccessToken(res.accessToken));
                 setCookie('token', res.refreshToken);
                 
-                options.accessToken = getAccessToken(res.accessToken);
-
-                return getRequest(options)
+                return getRequest(getAccessToken(res.accessToken), options)
                   .then((res: any) => {
                     if (res && res.success) {
                       onSuccess(res)

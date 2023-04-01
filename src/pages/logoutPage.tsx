@@ -1,4 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { FormEvent } from 'react';
+import { useDispatch, useSelector } from '../services/hooks';
 import LogoutPageStyles from './login.module.css';
 
 import { Navigate } from 'react-router-dom';
@@ -10,7 +11,7 @@ export function LogoutPage() {
 
   const {isAuthSuccess} = useSelector(state => state.user);
 
-  const onFormSubmit = (e) => {
+  const onFormSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     dispatch(logoutUser({}));

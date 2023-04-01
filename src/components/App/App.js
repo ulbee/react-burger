@@ -10,7 +10,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import Orders from '../Orders/Orders';
 
-import { LoginPage } from '../../pages/login';
+import { LoginPage } from '../../pages/login.tsx';
 import { RegisterPage } from '../../pages/register';
 import { ForgotPasswordPage } from '../../pages/forgotPassword';
 import { ResetPasswordPage } from '../../pages/resetPassword';

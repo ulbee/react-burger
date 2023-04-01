@@ -56,7 +56,7 @@ export type TUserState = {
 
   canResetPassword: boolean,
   resetPasswordSuccess: boolean,
-  code: number
+  code: string
 }
 
 const initialUserState = {
@@ -84,7 +84,7 @@ const initialUserState = {
 
   canResetPassword: false,
   resetPasswordSuccess: false,
-  code: 0,
+  code: '',
 
   // orders: []
 }

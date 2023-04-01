@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from '../services/hooks';
 import UserOrdersPageStyles from './userOrdersPage.module.css';
 
 import { NavLink } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { wsConnect, wsDisconnect } from '../services/actions/ws';
 import { GET_USER_ORDERS_URL } from '../utils/constants';
 
@@ -19,10 +19,10 @@ export function UserOrdersPage() {
   useEffect(() => {
     dispatch(wsConnect(`${GET_USER_ORDERS_URL}?token=${token}`));
 
-    return () => dispatch(wsDisconnect());
+    return () => { dispatch(wsDisconnect()); }
   }, [dispatch]);
 
-  const { orders } = useSelector(state => state.ws.feed);
+  const feed = useSelector(state => state.ws.feed);
 
   return (
     <div className={UserOrdersPageStyles.container + ' mt-30'}>
@@ -41,8 +41,8 @@ export function UserOrdersPage() {
         </p>
       </div>
       <section className={UserOrdersPageStyles.section}>
-        {!orders && <div>Заказов пока нет</div>}
-        {orders && orders.map((item, index) => {
+        {!feed && <div>Заказов пока нет</div>}
+        {feed?.orders && feed.orders.map((item, index) => {
           return (<OrderSnippet key={index} order={item} needDetails link='/profile/orders'/>)
         })}
       </section>

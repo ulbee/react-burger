@@ -1,5 +1,4 @@
 import { TIngredient } from "./ingredients";
-import { IWSMessage } from '../actions/ws';
 
 export type TOrder = {
   _id: string;

@@ -1,5 +1,5 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FormEvent, ChangeEvent } from 'react';
+import { useDispatch, useSelector } from '../services/hooks';
 import RegisterPageStyles from './login.module.css';
 
 import { Link, Navigate } from 'react-router-dom';
@@ -11,13 +11,13 @@ export function RegisterPage() {
 
   const {name, email, password, isAuthSuccess} = useSelector(state => state.user);
 
-  const addUserHandler = (e) => {
+  const addUserHandler = (e: FormEvent) => {
     e.preventDefault();
 
     dispatch(addUser({name, email, password}));
   }
 
-  const onFormChange = (e) => {
+  const onFormChange = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setRegisterFormValue(e.target.name, e.target.value));
   }
 

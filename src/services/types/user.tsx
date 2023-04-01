@@ -33,7 +33,7 @@ export type TUser = {
   password?: string;
 };
 
-// Типизация создания нового пользователя
+// Типизация экшнов для создания нового пользователя
 interface IAddUserAction {
   readonly type: typeof ADD_USER_REQUEST;
 }
@@ -60,7 +60,7 @@ export const addUserFailedAction = (): IAddUserFailedAction => ({
   type: ADD_USER_FAILED
 });
 
-// Типизация для логина пользователя
+// Типизация экшнов для логина пользователя
 interface ILoginUserAction {
   readonly type: typeof LOGIN_USER_REQUEST;
 }
@@ -89,7 +89,7 @@ export const loginUserFailedAction = (errorMessage: string): ILoginUserFailedAct
   errorMessage
 });
 
-// Типизация получения данных о пользователе
+// Типизация экшнов получения данных о пользователе
 interface IGetUserSuccessAction {
   readonly type: typeof GET_USER_SUCCESS;
   user: TUser
@@ -108,7 +108,7 @@ export const getUserFailedAction = (): IGetUserFailedAction => ({
   type: GET_USER_FAILED
 });
 
-// Типизация редактирования данных о пользователе
+// Типизация экшнов редактирования данных о пользователе
 interface IEditUserSuccessAction {
   readonly type: typeof EDIT_USER_SUCCESS;
   user: TUser
