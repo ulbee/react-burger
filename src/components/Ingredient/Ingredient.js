@@ -15,8 +15,8 @@ function Ingredient({id, index}) {
 
   const {ingredientsById} = useSelector(state => state.menu);  
 
-  const moveItem = (prevId, newId) => {
-    dispatch({type: CHANGE_INGREDIENT_ORDER, prevId, newId});
+  const moveItem = (prevIndex, newIndex) => {
+    dispatch({type: CHANGE_INGREDIENT_ORDER, prevId: prevIndex, newId: newIndex});
   }
 
   const handleDeleteIngredient = (e) => {

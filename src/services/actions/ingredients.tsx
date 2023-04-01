@@ -5,7 +5,14 @@ import {
   GET_INGREDIENTS_FAILED,
   SEND_ORDER_REQUEST,
   SEND_ORDER_SUCCESS,
-  SEND_ORDER_FAILED
+  SEND_ORDER_FAILED,
+  SHOW_INGREDIENT,
+  HIDE_INGREDIENT,
+  ADD_INGREDIENT,
+  DELETE_INGREDIENT,
+  ADD_BUN,
+  CHANGE_INGREDIENT_ORDER,
+  SET_ACTIVE_TAB
  } from '../../utils/constants';
  import { TIngredient, TIngredientsByType, TIngredientsById } from "../../utils/ingredientsTypes";
  import { getAccessToken, getCookie, setCookie } from "../../utils/cookie";
@@ -66,7 +73,56 @@ const sendOrderFailedAction = (): ISendOrderFailedAction => ({
   type: SEND_ORDER_FAILED
 });
 
+// Типизация других действий с ингридиентами
+interface IShowIngredient {
+  readonly type: typeof SHOW_INGREDIENT;
+  id: string;
+}
 
+interface IHideIngredient {
+  readonly type: typeof HIDE_INGREDIENT;
+}
+
+interface IAddIngredient {
+  readonly type: typeof ADD_INGREDIENT;
+  id: string;
+}
+
+interface IDeleteIngredient {
+  readonly type: typeof DELETE_INGREDIENT;
+  index: number;
+}
+
+interface IAddBun {
+  readonly type: typeof ADD_BUN;
+  id: string;
+}
+
+interface IChangeOrderIngredients {
+  readonly type: typeof CHANGE_INGREDIENT_ORDER;
+  prevIndex: number;
+  newIndex: number;
+}
+
+interface ISetActiveTab {
+  readonly type: typeof SET_ACTIVE_TAB;
+  name: string;
+}
+
+export type TIngredientsAction = 
+  IGetIngredientsAction
+  | IGetCountriesSuccessAction
+  | IGetIngredientsFailedAction
+  | ISendOrderAction
+  | ISendOrderSuccessAction
+  | ISendOrderFailedAction
+  | IShowIngredient
+  | IHideIngredient
+  | IAddIngredient
+  | IDeleteIngredient
+  | IAddBun
+  | IChangeOrderIngredients
+  | ISetActiveTab;
 
 export function getIngredients() {
   return function(dispatch: any) {

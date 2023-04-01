@@ -2,7 +2,7 @@ import IngredientCategoryStyles from './IngredientCategory.module.css';
 
 import { useMemo, useEffect } from 'react';
 
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 // import IngredientsPropTypes from '../../utils/TIngredient';
 
 import IngredientCard from '../IngredientCard/IngredientCard';
@@ -15,7 +15,7 @@ function IngredientCategory({ id, title, data, openIngredientModal, link, inView
   const { addedIngredients } = useSelector(store => store.menu);
 
   const ingredientsCount = useMemo(() => {
-    return data.reduce((res, item) => {
+    return data?.reduce((res, item) => {
       res[item._id] = {};
       if (item.type === 'bun' && item._id === addedIngredients.bun?._id) {
         res[item._id].count = 1;
@@ -39,7 +39,7 @@ function IngredientCategory({ id, title, data, openIngredientModal, link, inView
         {title}
       </h2>
       <div className={IngredientCategoryStyles.container + ' pt-6 pb-10 pr-4 pl-4'}>
-        {data.map((item) => {
+        {data?.map((item) => {
           return <IngredientCard 
             data={item} 
             key={item._id} 

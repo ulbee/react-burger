@@ -27,9 +27,37 @@ import {
   LOGOUT_USER_SUCCESS,
   LOGOUT_USER_FAILED,
 
-  GET_USER_ORDERS
- } from '../../utils/constants';
+  // GET_USER_ORDERS
+} from '../../utils/constants';
+import { TUserActions } from '../../utils/userTypes';
 
+type TUserState = {
+  name: string,
+  email: string,
+  password: string,
+  prevSavedName: string,
+  prevSavedEmail: string,
+  prevSavedPassword: string,
+
+  isAuthSuccess: boolean,
+  isUserLoaded: boolean,
+
+  addUserRequest: boolean,
+  addUserFailed: boolean,
+
+  loginUserRequest: boolean,
+  loginUserFailed: boolean,
+  loginErrorMessage: string,
+
+  logoutError: boolean,
+
+  editUserFailed: boolean,
+  isUserEdited: boolean,
+
+  canResetPassword: boolean,
+  resetPasswordSuccess: boolean,
+  code: number
+}
 
 const initialUserState = {
   name: '',
@@ -56,12 +84,12 @@ const initialUserState = {
 
   canResetPassword: false,
   resetPasswordSuccess: false,
-  code: '',
+  code: 0,
 
-  orders: []
+  // orders: []
 }
 
-export const userReducer = (state = initialUserState, action) => {
+export const userReducer = (state: TUserState = initialUserState, action: TUserActions) => {
   switch (action.type) {
     case SET_REGISTER_FORM_VALUE: {
       
@@ -222,12 +250,12 @@ export const userReducer = (state = initialUserState, action) => {
     
     
     
-    case GET_USER_ORDERS: {
-      return {
-        ...state,
-        orders: action.action.orders
-      }
-    }
+    // case GET_USER_ORDERS: {
+    //   return {
+    //     ...state,
+    //     orders: action.action.orders
+    //   }
+    // }
     
 
     default: return state;  

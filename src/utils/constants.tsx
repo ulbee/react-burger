@@ -18,6 +18,12 @@ export const WS_STATUS = {
   OFFLINE : 'OFFLINE'
 }
 export const WS_MESSAGE: 'WS_MESSAGE' = 'WS_MESSAGE';
+export const WS_CONNECT: 'WS_CONNECT' = 'WS_CONNECT';
+export const WS_DISCONNECT: 'WS_DISCONNECT' = 'WS_DISCONNECT';
+export const WS_CONNECTING: 'WS_CONNECTING' = 'WS_CONNECTING';
+export const WS_OPEN: 'WS_OPEN' = 'WS_OPEN';
+export const WS_CLOSE: 'WS_CLOSE' = 'WS_CLOSE';
+export const WS_ERROR: 'WS_ERROR' = 'WS_ERROR';
 
 // Константы для обработки запроса для получения всех ингридиентов
 export const GET_INGREDIENTS_REQUEST: 'GET_INGREDIENTS_REQUEST' = 'GET_INGREDIENTS_REQUEST';

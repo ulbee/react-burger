@@ -20,7 +20,11 @@ import {
   RESET_PASSWORD_FAILED,
 
   LOGOUT_USER_SUCCESS,
-  LOGOUT_USER_FAILED
+  LOGOUT_USER_FAILED,
+
+  SET_REGISTER_FORM_VALUE,
+  SET_EDIT_USER_FORM,
+  RESET_EDIT_USER_FORM
  } from './constants'; 
 
 export type TUser = {
@@ -178,3 +182,44 @@ export const logoutUserFailedAction = (errorMessage: string): ILogoutUserFailedA
   type: LOGOUT_USER_FAILED,
   errorMessage
 });
+
+// Типизация экшнов работы с формами
+interface ISetRegisterFormAction {
+  readonly type: typeof SET_REGISTER_FORM_VALUE;
+  [name: string]: string;
+}
+
+type TSetEditFormAction = {
+  readonly type: typeof SET_EDIT_USER_FORM;
+  [name: string]: string;
+} & {
+  isUserEdited: boolean;
+}
+
+interface IResetEditUserFormUserAction {
+  readonly type: typeof RESET_EDIT_USER_FORM;
+  name: string;
+  email: string;
+  password: string;
+}
+
+export type TUserActions = 
+ IAddUserAction
+ | IAddUserSuccessAction
+ | IAddUserFailedAction
+ | ILoginUserAction
+ | ILoginUserSuccessAction
+ | ILoginUserFailedAction
+ | IGetUserSuccessAction
+ | IGetUserFailedAction
+ | IEditUserSuccessAction
+ | IEditUserFailedAction
+ | IForgotPasswordSuccessAction
+ | IForgotPasswordFailedAction
+ | IResetPasswordSuccessAction
+ | IResetPasswordFailedAction
+ | ILogoutUserSuccessAction
+ | ILogoutUserFailedAction
+ | ISetRegisterFormAction
+ | TSetEditFormAction
+ | IResetEditUserFormUserAction;

@@ -15,11 +15,33 @@ import {
   ADD_BUN,
   CHANGE_INGREDIENT_ORDER,
   SET_ACTIVE_TAB
- } from '../../utils/constants';
+} from '../../utils/constants';
+import { TIngredientsByType, TIngredientsById } from '../../utils/ingredientsTypes';
+import { TIngredientsAction } from '../actions/ingredients';
 
-const initialMenuState = {
-  ingredientsByType: null,
-  ingredientsById: null,
+type TMenuState = {
+  ingredientsByType: TIngredientsByType ,
+  ingredientsById: TIngredientsById,
+  ingredientsRequest: boolean,
+  ingredientsFailed: boolean,
+
+  addedIngredients: {
+    bun: string| null,
+    others: Array<string>
+  },
+  currentIngredient: string | null,
+
+  activeTab: 'bun' | 'main' | 'sauce',
+
+  orderId: number | null,
+  orderRequest: boolean,
+  orderFailed: boolean
+}
+
+
+const initialMenuState: TMenuState = {
+  ingredientsByType: {},
+  ingredientsById: {},
   ingredientsRequest: false,
   ingredientsFailed: false,
 
@@ -37,7 +59,8 @@ const initialMenuState = {
 }
 
 let uniqId = 0;
-export const ingredientsReducer = (state = initialMenuState, action) => {
+
+export const ingredientsReducer = (state = initialMenuState, action: TIngredientsAction) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {
@@ -129,10 +152,10 @@ export const ingredientsReducer = (state = initialMenuState, action) => {
     }
     case CHANGE_INGREDIENT_ORDER: {
       const items = state.addedIngredients.others.slice();
-      const draggedItem = items.splice(action.prevId, 1)[0];
+      const draggedItem = items.splice(action.prevIndex, 1)[0];
 
       items.splice(
-        action.newId,
+        action.newIndex,
         0,
         draggedItem
       );
