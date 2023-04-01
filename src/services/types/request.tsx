@@ -1,4 +1,4 @@
-import { TUser } from "./userTypes";
+import { TUser } from "./user";
 
 export interface IGetUserOptions {
   accessToken?: string;

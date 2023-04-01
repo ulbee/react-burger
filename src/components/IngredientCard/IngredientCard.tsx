@@ -1,6 +1,6 @@
 import IngredientCardStyles from './IngredientCard.module.css';
 
-import { TIngredient } from '../../utils/ingredientsTypes';
+import { TIngredient } from '../../services/types/ingredients';
 import { FC } from 'react';
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';

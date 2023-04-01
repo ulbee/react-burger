@@ -11,7 +11,7 @@ import {
   WS_CLOSE,
   WS_ERROR
 } from '../../utils/constants';
-import { TOrder } from '../../utils/orderTypes';
+import { TOrder } from '../types/order';
 
 function withPayloadType<T>() {
   return (t: T) => ({ payload: t })

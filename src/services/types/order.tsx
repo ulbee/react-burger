@@ -1,5 +1,5 @@
-import { TIngredient } from "./ingredientsTypes";
-import { IWSMessage } from '../services/actions/ws';
+import { TIngredient } from "./ingredients";
+import { IWSMessage } from '../actions/ws';
 
 export type TOrder = {
   _id: string;
@@ -18,8 +18,3 @@ export type TFeedData = {
   orders: Array<TOrder>;
 }
 
-export type TWSState = {
-  status: string;
-  connectionError: string | IWSMessage;
-  feed: TFeedData | {};
-}

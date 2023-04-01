@@ -27,13 +27,13 @@ import {
   resetPasswordFailedAction,
   logoutUserSuccessAction,
   logoutUserFailedAction
- } from "../../utils/userTypes";
+ } from "../types/user";
  import { 
   TRequestRetryOptions, 
   requestRetryOnFail, 
   requestRetryOnSuccess ,
   requestRetry
-} from "../../utils/requestTypes";
+} from "../types/request";
 import {
   SET_REGISTER_FORM_VALUE,
   SET_EDIT_USER_FORM,

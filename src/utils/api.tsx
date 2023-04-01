@@ -9,8 +9,8 @@ import {
   PASSWORDFORGOTURL,
   PASSWORDRESETURL 
 } from "./constants";
-import { IEditUserOptions, IGetUserOptions, ILogoutUserOptions } from './requestTypes';
-import { TUser } from "./userTypes";
+import { IEditUserOptions, IGetUserOptions, ILogoutUserOptions } from '../services/types/request';
+import { TUser } from "../services/types/user";
 
 // TODO: нужно ли типизировать data? Должен быть {ok: boolean, json?: () => any } ???
 const checkResponse = async (data: any) => {

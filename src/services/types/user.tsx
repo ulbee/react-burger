@@ -25,7 +25,7 @@ import {
   SET_REGISTER_FORM_VALUE,
   SET_EDIT_USER_FORM,
   RESET_EDIT_USER_FORM
- } from './constants'; 
+ } from '../../utils/constants'; 
 
 export type TUser = {
   name: string;

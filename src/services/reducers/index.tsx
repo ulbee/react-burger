@@ -16,17 +16,17 @@ import {
   CHANGE_INGREDIENT_ORDER,
   SET_ACTIVE_TAB
 } from '../../utils/constants';
-import { TIngredientsByType, TIngredientsById } from '../../utils/ingredientsTypes';
+import { TIngredientsByType, TIngredientsById, TIngredient } from '../types/ingredients';
 import { TIngredientsAction } from '../actions/ingredients';
 
-type TMenuState = {
+export type TMenuState = {
   ingredientsByType: TIngredientsByType ,
   ingredientsById: TIngredientsById,
   ingredientsRequest: boolean,
   ingredientsFailed: boolean,
 
   addedIngredients: {
-    bun: string| null,
+    bun: TIngredient | null,
     others: Array<string>
   },
   currentIngredient: string | null,
@@ -60,7 +60,7 @@ const initialMenuState: TMenuState = {
 
 let uniqId = 0;
 
-export const ingredientsReducer = (state = initialMenuState, action: TIngredientsAction) => {
+export const ingredientsReducer = (state: TMenuState = initialMenuState, action: TIngredientsAction) => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {

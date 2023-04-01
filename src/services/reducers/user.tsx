@@ -29,9 +29,9 @@ import {
 
   // GET_USER_ORDERS
 } from '../../utils/constants';
-import { TUserActions } from '../../utils/userTypes';
+import { TUserActions } from '../types/user';
 
-type TUserState = {
+export type TUserState = {
   name: string,
   email: string,
   password: string,

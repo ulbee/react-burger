@@ -1,7 +1,14 @@
 import { WS_STATUS, WS_MESSAGE } from '../../utils/constants';
 import { wsClose, wsConnecting, wsError, wsOpen, TWSAction } from '../actions/ws';
 import { createReducer } from '@reduxjs/toolkit';
-import { TWSState } from '../../utils/orderTypes';
+import { IWSMessage } from '../actions/ws';
+import { TFeedData } from '../types/order';
+
+export type TWSState = {
+  status: string;
+  connectionError: string | IWSMessage;
+  feed: TFeedData | {};
+}
 
 const initialWSState: TWSState = {
   status: WS_STATUS.OFFLINE,

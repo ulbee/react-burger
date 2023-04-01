@@ -14,7 +14,7 @@ import {
   CHANGE_INGREDIENT_ORDER,
   SET_ACTIVE_TAB
  } from '../../utils/constants';
- import { TIngredient, TIngredientsByType, TIngredientsById } from "../../utils/ingredientsTypes";
+ import { TIngredient, TIngredientsByType, TIngredientsById } from "../types/ingredients";
  import { getAccessToken, getCookie, setCookie } from "../../utils/cookie";
  import { refreshTokenRequest } from "../../utils/api";
 
