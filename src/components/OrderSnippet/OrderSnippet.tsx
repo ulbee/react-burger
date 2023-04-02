@@ -16,18 +16,24 @@ type TOrderSnippet = {
   link: string;
 }
 
+type TIngredientsPreview = {
+  hidedLength: number;
+  maxLength: 6;
+  ingredients: Array<string>;
+}
+
 const OrderSnippet: FC<TOrderSnippet> = ({ order, needDetails, link }) => {
   const location = useLocation();
   const { ingredientsById } = useSelector(state => state.menu);
 
-  const totalPrice = order.ingredients.reduce((res, item) => {
-    if (item) {
-      res  += ingredientsById[item].price;
+  const totalPrice = order.ingredients.reduce((res, id) => {
+    if (id) {
+      res  += ingredientsById[id].price;
     }
     return res;
   }, 0);
 
-  const ingredientsPreview = order.ingredients.reduceRight((res, item, index) => {
+  const ingredientsPreview: TIngredientsPreview = order.ingredients.reduceRight((res: TIngredientsPreview, item, index) => {
     if (item && index < res.maxLength) {
       res.ingredients.push(item);
     }

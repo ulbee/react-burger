@@ -15,8 +15,8 @@ type TOrdersByStatus = {
 
 const Orders: FC = () => {
   const dispatch = useDispatch();
-  const { total, totalToday, orders } = useSelector(({ ws }) => (
-    ws.status === WS_STATUS_ONLINE && ws.feed.success ? ws.feed as TFeedData : {orders: [], total: 0, totalToday: 0}
+  const { total, totalToday, orders } = useSelector((state) => (
+    state.ws.status === WS_STATUS_ONLINE && state.ws.feed?.success ? state.ws.feed as TFeedData : {orders: [], total: 0, totalToday: 0}
   ));
 
   const ordersByStatus: TOrdersByStatus | undefined = orders?.length ? (orders as Array<TOrder>).reduce((res: TOrdersByStatus, item) => {

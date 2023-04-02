@@ -56,12 +56,11 @@ const OrderDetails: FC = () => {
       dispatch(wsConnect(`${GET_USER_ORDERS_URL}?token=${token}`));
     }
 
-    return () => { dispatch(wsDisconnect()); }
-    // return () => {
-      // if (!location.state) {
-        // return dispatch(wsDisconnect());
-      // }
-    // };
+    return () => {
+      if (!location.state) { 
+        dispatch(wsDisconnect());
+      }
+    };
   }, [dispatch])
 
   return (
