@@ -58,12 +58,14 @@ interface IGetCountriesSuccessAction {
 export const getIngredientsAction = (): IGetIngredientsAction => ({
   type: GET_INGREDIENTS_REQUEST
 });
+
 export const getIngredientsSuccessAction = 
 (ingredientsByType: TIngredientsByType, ingredientsById: TIngredientsById): IGetCountriesSuccessAction => ({
   type: GET_INGREDIENTS_SUCCESS,
   ingredientsByType,
   ingredientsById
 });
+
 export const getIngredientsFailedAction = (): IGetIngredientsFailedAction => ({
   type: GET_INGREDIENTS_FAILED
 });

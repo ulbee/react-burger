@@ -1,5 +1,5 @@
 import OrdersStyles from './Orders.module.css';
-import { GET_ALL_ORDERS_URL } from '../../utils/constants';
+import { GET_ALL_ORDERS_URL, WS_STATUS_ONLINE } from '../../utils/constants';
 import { wsConnect, wsDisconnect } from '../../services/actions/ws';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,7 +8,10 @@ import OrderSnippet from '../OrderSnippet/OrderSnippet';
 
 function Orders() {
   const dispatch = useDispatch();
-  const { total, totalToday, orders } = useSelector( state => state.ws.feed);
+  const { total, totalToday, orders } = useSelector(({ws}) => (
+    ws.status === WS_STATUS_ONLINE && ws.feed.success ? ws.feed : {}
+  ));
+
   const ordersByStatus = orders?.length && orders.reduce((res, item) => {
     if (res[item.status].length < 20) {
       res[item.status].push(item);

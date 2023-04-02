@@ -1,39 +1,48 @@
-import { WS_STATUS, WS_MESSAGE } from '../../utils/constants';
+import { WS_STATUS_OFFLINE, WS_STATUS_CONNECTING, WS_STATUS_ONLINE, WS_MESSAGE } from '../../utils/constants';
 import { wsClose, wsConnecting, wsError, wsOpen } from '../actions/ws';
 import { createReducer } from '@reduxjs/toolkit';
-import { IWSMessage, TWSAction } from '../types/ws';
+import { TWSMessage, TWSAction, IWSErrorAction } from '../types/ws';
 import { TFeedData } from '../types/order';
 
-export type TWSState = {
-  status: string;
-  connectionError: string | undefined;
-  feed: TFeedData | IWSMessage | undefined;
-}
+type TWSStateOffline = {
+  status: typeof WS_STATUS_OFFLINE; 
+  connectionError: string;
+};
+type TWSStateConnecting = {
+  status: typeof WS_STATUS_CONNECTING;
+  connectionError: string;
+};
+type TWSStateOnline = {
+  status: typeof WS_STATUS_ONLINE;
+  feed: TFeedData | TWSMessage;
+  connectionError: string;
+};
+
+export type TWSState = TWSStateOffline | TWSStateConnecting | TWSStateOnline;
 
 const initialWSState: TWSState = {
-  status: WS_STATUS.OFFLINE,
-  connectionError: '',
-  feed: undefined
+  status: WS_STATUS_OFFLINE,
+  connectionError: ''
 }
 
-export const wsReducer = createReducer(initialWSState, (builder: any) => {
+export const wsReducer = createReducer(initialWSState as TWSState, (builder: any) => {
 
   builder
-  .addCase(wsConnecting, (state: TWSState) => {
-    state.status = WS_STATUS.CONNECTING
-  })
-  .addCase(wsOpen, (state: TWSState) => {
-    state.status = WS_STATUS.ONLINE;
-    state.connectionError = ''
-  })
-  .addCase(wsClose, (state: TWSState) => {
-    state.status = WS_STATUS.OFFLINE;
-    state.connectionError = ''
-  })
-  .addCase(wsError, (state: TWSState, action: TWSAction) => {
-    state.connectionError = action.payload?.message
-  })
-  .addCase(WS_MESSAGE, (state: TWSState, action: TWSAction) => {
-    state.feed = action.payload;
-  })
+    .addCase(wsConnecting, (state: TWSState) => {
+      state.status = WS_STATUS_CONNECTING
+    })
+    .addCase(wsOpen, (state: TWSState) => {
+      state.status = WS_STATUS_ONLINE;
+      state.connectionError = ''
+    })
+    .addCase(wsClose, (state: TWSState) => {
+      state.status = WS_STATUS_OFFLINE;
+      state.connectionError = ''
+    })
+    .addCase(wsError, (state: TWSState, action: TWSAction) => {
+      state.connectionError = action.payload.success ? '' : action.payload.message;
+    })
+    .addCase(WS_MESSAGE, (state: TWSStateOnline, action: TWSAction) => {
+      state.feed = action.payload;
+    })
 })

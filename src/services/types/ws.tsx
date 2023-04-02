@@ -9,49 +9,51 @@ import {
 } from '../../utils/constants';
 import { TOrder } from './order';
 
-
-export interface IWSMessage {
-  success: boolean;
-  message?: string;
-  orders?: Array<TOrder>;
+export type TWSErrorMessage = {
+  success: false;
+  message: string;
 }
+export type TWSMessage = {
+  success: true;  
+  orders: Array<TOrder>;
+} | TWSErrorMessage;
 
 interface IWSMessageAction {
   readonly type: typeof WS_MESSAGE;
-  payload: IWSMessage;
+  payload: TWSMessage;
 }
 
-interface IWSErrorAction {
+export interface IWSErrorAction {
   readonly type: typeof WS_ERROR;
-  payload: IWSMessage;
+  payload: TWSErrorMessage;
 }
 
 interface IWSOpenAction {
   readonly type: typeof WS_OPEN;
-  payload: IWSMessage;
+  payload: TWSMessage;
 }
 
 interface IWSCloseAction {
   readonly type: typeof WS_CLOSE;
-  payload: IWSMessage;
+  payload: TWSMessage;
 }
 
 interface IWSConnectingAction {
   readonly type: typeof WS_CONNECTING;
-  payload: IWSMessage;
+  payload: TWSMessage;
 }
 
 interface IWSConnectAction {
   readonly type: typeof WS_CONNECT;
-  payload: IWSMessage;
+  payload: TWSMessage;
 }
 
 interface IWSDisconnectAction {
   readonly type: typeof WS_DISCONNECT;
-  payload: IWSMessage | undefined;
+  payload: TWSMessage;
 }
 
-export const wsMessageAction = (payload: IWSMessage): IWSMessageAction => ({
+export const wsMessageAction = (payload: TWSMessage): IWSMessageAction => ({
   type: WS_MESSAGE,
   payload
 });

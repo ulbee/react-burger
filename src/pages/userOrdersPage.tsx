@@ -4,7 +4,7 @@ import UserOrdersPageStyles from './userOrdersPage.module.css';
 
 import { NavLink } from 'react-router-dom';
 import { wsConnect, wsDisconnect } from '../services/actions/ws';
-import { GET_USER_ORDERS_URL } from '../utils/constants';
+import { GET_USER_ORDERS_URL, WS_STATUS_ONLINE } from '../utils/constants';
 
 import OrderSnippet from '../components/OrderSnippet/OrderSnippet';
 import { getCookie } from '../utils/cookie';
@@ -22,7 +22,9 @@ export function UserOrdersPage() {
     return () => { dispatch(wsDisconnect()); }
   }, [dispatch]);
 
-  const feed = useSelector(state => state.ws.feed);
+  const feed = useSelector(({ ws }) => (
+    ws.status === WS_STATUS_ONLINE && ws.feed?.success ? ws.feed : undefined
+  ));
 
   return (
     <div className={UserOrdersPageStyles.container + ' mt-30'}>

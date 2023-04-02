@@ -27,7 +27,7 @@ export type TMenuState = {
 
   addedIngredients: {
     bun: TIngredient | null,
-    others: Array<string>
+    others: Array<TIngredient>
   },
   currentIngredient: string | null,
 

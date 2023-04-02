@@ -4,6 +4,8 @@ import React, { useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
+import { WS_STATUS_ONLINE } from '../../utils/constants';
+
 import Main from '../Main/Main';
 import AppHeader from '../AppHeader/AppHeader';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
@@ -33,8 +35,11 @@ function App() {
   const modalBackground = location.state?.modalBackground;
 
   const { ingredientsByType } = useSelector(state => state.menu);
-  const { orders } = useSelector(state => state.ws.feed);
-
+  
+  const { orders } = useSelector(({ status, feed }) => (
+    status === WS_STATUS_ONLINE && feed?.success ? feed : {}
+  ));
+    
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(getUser());

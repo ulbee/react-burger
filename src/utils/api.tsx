@@ -9,19 +9,22 @@ import {
   PASSWORDFORGOTURL,
   PASSWORDRESETURL 
 } from "./constants";
-import { IEditUserOptions, IGetUserOptions, ILogoutUserOptions } from '../services/types/request';
 import { TUser } from "../services/types/user";
+import { TIngredient } from "../services/types/ingredients";
 
-// TODO: нужно ли типизировать data? Должен быть {ok: boolean, json?: () => any } ???
-const checkResponse = async (data: any) => {
+type TErrorResponse = { success: false; message: string; };
+type TIngredientsResponse = { success: true; data: Array<TIngredient>; } | TErrorResponse;
+
+export type TResponse = TIngredientsResponse;
+
+const checkResponse = async (data: Response): Promise<TResponse> => {
   if (!data.ok) {
-    throw new Error(data.message, { cause: await data.json() });
+    throw new Error(data.status.toString(), { cause: await data.json() });
   }
   return data.json();
 }
 
-// TODO: как вообще типизировать ответ сервера???
-const getIngredientsRequest = async (): Promise<any> => {
+const getIngredientsRequest = async (): Promise<TIngredientsResponse> => {
   const res = await fetch(GETINGREDIENTSURL);
 
   return await checkResponse(res);
@@ -42,7 +45,7 @@ const sendOrderRequest = async (ingredientIds: Array<string>, accessToken: strin
   return await checkResponse(res);
 }
 
-const getUserRequest = async ({accessToken}: IGetUserOptions): Promise<any> => {
+const getUserRequest = async (accessToken: string): Promise<any> => {
   const res = await fetch(USERURL, {
     method: 'GET',
     headers: {
@@ -54,7 +57,7 @@ const getUserRequest = async ({accessToken}: IGetUserOptions): Promise<any> => {
   return await checkResponse(res);
 }
 
-const editUserRequest = async ({user, accessToken} : IEditUserOptions): Promise<any> => {
+const editUserRequest = async (accessToken: string, user: TUser): Promise<any> => {
   const res = await fetch(USERURL, {
     method: 'PATCH',
     headers: {
@@ -91,7 +94,7 @@ const loginRequest = async (user: TUser): Promise<any> => {
   return await checkResponse(res);
 }
 
-const logoutRequest = async ({token}: ILogoutUserOptions): Promise<any> => {
+const logoutRequest = async (accessToken: string, token: string): Promise<any> => {
   const res = await fetch(LOGOUTUSERURL, {
     method: 'POST',
     headers: {
@@ -127,7 +130,7 @@ const passwordForgotRequest = async (email: string): Promise<any> => {
   return await checkResponse(res);
 }
 
-const passwordResetRequest = async (password: string, token: number): Promise<any> => {
+const passwordResetRequest = async (password: string, token: string): Promise<any> => {
   const res = await fetch(PASSWORDRESETURL, {
     method: 'POST',
     headers: {

@@ -30,10 +30,8 @@ import {
   logoutUserFailedAction
  } from "../types/user";
  import { 
-  TRequestRetryOptions, 
   requestRetryOnFail, 
   requestRetryOnSuccess ,
-  requestRetry
 } from "../types/request";
 import {
   SET_REGISTER_FORM_VALUE,
@@ -98,7 +96,7 @@ export const loginUser: AppThunk = (user: TUser) => (dispatch: AppDispatch) => {
 export function getUser() {
   return function(dispatch: AppDispatch) {
     getRequestWithRetry(
-      getUserRequest,
+      (accessToken) => getUserRequest(accessToken),
       ({user}) => dispatch(getUserSuccessAction(user)),
       () => dispatch(getUserFailedAction())
     );
@@ -109,10 +107,9 @@ export function getUser() {
 export function editUser(user: TUser) {
   return function(dispatch: AppDispatch) {
     getRequestWithRetry(
-      editUserRequest,
+      (accessToken) => editUserRequest(accessToken, user),
       ({user}) => dispatch(editUserSuccessAction(user)),
-      () => dispatch(editUserFailedAction()),
-      user
+      () => dispatch(editUserFailedAction())
     );
   }
 }
@@ -147,7 +144,7 @@ export function resetPassword(password: string, code: string) {
 
 export const logoutUser: AppThunk = () => (dispatch: AppDispatch) => {
   getRequestWithRetry(
-    logoutRequest,
+    (accessToken) => logoutRequest(accessToken, getCookie('token')),
     () => {
       setCookie('accessToken', '', {expires: 0});
       setCookie('token', '', {expires: 0});
@@ -155,8 +152,7 @@ export const logoutUser: AppThunk = () => (dispatch: AppDispatch) => {
     },
     ({message}) => {
       dispatch(logoutUserFailedAction(message));
-    },
-    getCookie('token')
+    }
   )
 }
 
@@ -169,9 +165,9 @@ export const logoutUser: AppThunk = () => (dispatch: AppDispatch) => {
  */
 
 // TODO что делать с options и getRequest???
-function getRequestWithRetry(getRequest: requestRetry, onSuccess: requestRetryOnSuccess, onFail: requestRetryOnFail, options?: TRequestRetryOptions) {
+function getRequestWithRetry(getRequest: ((accessToken: string) => Promise<any>), onSuccess: requestRetryOnSuccess, onFail: requestRetryOnFail) {
   
-  getRequest(getCookie('accessToken'), options)
+  getRequest(getCookie('accessToken'))
       .then((res: any) => {
         if (res && res.success) {
           onSuccess(res);
@@ -184,7 +180,7 @@ function getRequestWithRetry(getRequest: requestRetry, onSuccess: requestRetryOn
                 setCookie('accessToken', getAccessToken(res.accessToken));
                 setCookie('token', res.refreshToken);
                 
-                return getRequest(getAccessToken(res.accessToken), options)
+                return getRequest(getAccessToken(res.accessToken))
                   .then((res: any) => {
                     if (res && res.success) {
                       onSuccess(res)
