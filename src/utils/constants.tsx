@@ -24,8 +24,6 @@ export const WS_OPEN: 'WS_OPEN' = 'WS_OPEN';
 export const WS_CLOSE: 'WS_CLOSE' = 'WS_CLOSE';
 export const WS_ERROR: 'WS_ERROR' = 'WS_ERROR';
 
-// export const CATEGORIES_TITLES: 'bun' | 'main' | 'sauce' = ;
-
 // Константы для обработки запроса для получения всех ингридиентов
 export const GET_INGREDIENTS_REQUEST: 'GET_INGREDIENTS_REQUEST' = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_SUCCESS: 'GET_INGREDIENTS_SUCCESS' = 'GET_INGREDIENTS_SUCCESS';

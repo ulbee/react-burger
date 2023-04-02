@@ -1,10 +1,16 @@
+import { FC, ReactElement } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 
-import PropTypes from 'prop-types';
 import { getCookie } from '../../utils/cookie';
 
-function ProtectedRoute({element, isAuthPage, accessFrom}) {
+type TProtectedRoute = {
+  element: ReactElement;
+  isAuthPage?: boolean;
+  accessFrom?: string;
+}
+
+const ProtectedRoute: FC<TProtectedRoute> = ({element, isAuthPage, accessFrom}) => {
   const accessToken = getCookie('accessToken');
   const refreshToken = getCookie('token');
   const { isAuthSuccess, isUserLoaded } = useSelector(state => state.user);
@@ -29,12 +35,6 @@ function ProtectedRoute({element, isAuthPage, accessFrom}) {
   }
 
   return element;
-}
-
-ProtectedRoute.propTypes = {
-  element: PropTypes.node.isRequired,
-  isAuthPage: PropTypes.bool,
-  accessFrom: PropTypes.string
 }
 
 export default ProtectedRoute;

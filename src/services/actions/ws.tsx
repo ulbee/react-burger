@@ -1,4 +1,4 @@
-import { AppDispatch } from '../types/index';
+import { AppDispatch, AppThunk } from '../types/index';
 import { createAction } from '@reduxjs/toolkit';
 import { refreshTokenRequest } from '../../utils/api';
 import { setCookie, getCookie, getAccessToken } from '../../utils/cookie';
@@ -26,7 +26,7 @@ export const wsOpen = createAction(WS_OPEN);
 export const wsClose = createAction(WS_CLOSE);
 export const wsError = createAction(WS_ERROR);
 
-export const wsMessage = (action: TWSMessage) => (dispatch: AppDispatch) => {
+export const wsMessage: AppThunk = (action: TWSMessage) => (dispatch: AppDispatch) => {
   dispatch(wsMessageAction(action));
 
   if (!action.success) {

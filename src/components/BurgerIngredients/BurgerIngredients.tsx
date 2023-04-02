@@ -1,4 +1,4 @@
-import { FC, Ref } from 'react';
+import { FC, Ref, MouseEvent } from 'react';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
 
 import { useDispatch, useSelector } from '../../services/hooks';
@@ -17,7 +17,7 @@ type TCategoriesTitles = {
   sauce: string;
 }
 
-const BurgerIngredients: FC<{ openIngredientModal: () => void }> = ({ openIngredientModal }) => {
+const BurgerIngredients: FC<{ openIngredientModal: (e: MouseEvent) => void }> = ({ openIngredientModal }) => {
   const dispatch = useDispatch();
 
   const { ingredientsByType, activeTab } = useSelector(state => state.menu);

@@ -1,7 +1,7 @@
 import { WS_STATUS_OFFLINE, WS_STATUS_CONNECTING, WS_STATUS_ONLINE, WS_MESSAGE } from '../../utils/constants';
 import { wsClose, wsConnecting, wsError, wsOpen } from '../actions/ws';
 import { createReducer } from '@reduxjs/toolkit';
-import { TWSMessage, TWSAction, IWSErrorAction } from '../types/ws';
+import { TWSMessage, IWSMessageAction, IWSErrorAction } from '../types/ws';
 import { TFeedData } from '../types/order';
 
 type TWSStateOffline = {
@@ -10,7 +10,7 @@ type TWSStateOffline = {
 };
 type TWSStateConnecting = {
   status: typeof WS_STATUS_CONNECTING;
-  connectionError: string;
+  connectionError: string | TWSMessage;
 };
 type TWSStateOnline = {
   status: typeof WS_STATUS_ONLINE;
@@ -39,10 +39,10 @@ export const wsReducer = createReducer(initialWSState as TWSState, (builder: any
       state.status = WS_STATUS_OFFLINE;
       state.connectionError = ''
     })
-    .addCase(wsError, (state: TWSState, action: TWSAction) => {
+    .addCase(wsError, (state: TWSState, action: IWSErrorAction) => {
       state.connectionError = action.payload.success ? '' : action.payload.message;
     })
-    .addCase(WS_MESSAGE, (state: TWSStateOnline, action: TWSAction) => {
+    .addCase(WS_MESSAGE, (state: TWSStateOnline, action: IWSMessageAction) => {
       state.feed = action.payload;
     })
 })

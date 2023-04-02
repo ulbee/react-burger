@@ -1,6 +1,6 @@
 import AppStyles from './App.module.css';
 
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from '../../services/hooks';
 
@@ -26,7 +26,7 @@ import OrderDetails from '../OrderDetails/OrderDetails';
 import { getIngredients } from '../../services/actions/ingredients';
 import { getUser } from '../../services/actions/user';
 
-function App() {
+const App: FC = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const location = useLocation();

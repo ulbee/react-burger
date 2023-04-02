@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from '../../services/hooks';
 import { useParams } from 'react-router-dom';
 
 import { SHOW_INGREDIENT } from '../../utils/constants';
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 
-function IngredientDetails() {
+const IngredientDetails: FC = () => {
   const dispatch = useDispatch();
   const { ingredientId } = useParams();
 

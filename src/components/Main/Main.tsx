@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, FC, MouseEvent } from 'react';
+import { useSelector, useDispatch } from '../../services/hooks';
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -11,7 +11,7 @@ import OrderAccepted from '../OrderAccepted/OrderAccepted';
 
 import {SHOW_INGREDIENT, HIDE_INGREDIENT} from '../../utils/constants';
 
-function Main() {
+const Main: FC = () => {
   const dispatch = useDispatch();
 
   const [isOrderDetailsOpened, setIsOrderDetailsOpened] = useState(false);
@@ -27,7 +27,7 @@ function Main() {
     setIsOrderDetailsOpened(true);
   }
 
-  const openIngredientModal = (e) => {
+  const openIngredientModal = (e: MouseEvent) => {
     dispatch({type: SHOW_INGREDIENT, id: e.currentTarget.id});
   }
 

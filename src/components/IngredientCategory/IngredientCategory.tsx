@@ -1,6 +1,6 @@
 import IngredientCategoryStyles from './IngredientCategory.module.css';
 
-import { useMemo, useEffect, FC, Ref } from 'react';
+import { useMemo, useEffect, FC, Ref, MouseEvent} from 'react';
 
 import IngredientCard from '../IngredientCard/IngredientCard';
 import { useDispatch, useSelector } from '../../services/hooks';
@@ -11,7 +11,7 @@ type TIngredientCategory = {
   id: string;
   title: string;
   data: Array<TIngredient>;
-  openIngredientModal: () => void;
+  openIngredientModal: (e: MouseEvent) => void;
   link: Ref<HTMLDivElement>;
   inView: boolean;
 }

@@ -1,7 +1,7 @@
 import IngredientCardStyles from './IngredientCard.module.css';
 
 import { TIngredient } from '../../services/types/ingredients';
-import { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -10,8 +10,9 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 type TIngredientCardProps = {
   data: TIngredient;
   count?: number;
-  openIngredientModal: () => void;
+  openIngredientModal: (e: MouseEvent) => void;
 }
+
 const IngredientCard: FC<TIngredientCardProps> = ({ data, count, openIngredientModal }) => {
   const location = useLocation();
 

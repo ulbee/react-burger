@@ -18,7 +18,7 @@ export type TWSMessage = {
   orders: Array<TOrder>;
 } | TWSErrorMessage;
 
-interface IWSMessageAction {
+export interface IWSMessageAction {
   readonly type: typeof WS_MESSAGE;
   payload: TWSMessage;
 }
@@ -43,9 +43,9 @@ interface IWSConnectingAction {
   payload: TWSMessage;
 }
 
-interface IWSConnectAction {
+export interface IWSConnectAction {
   readonly type: typeof WS_CONNECT;
-  payload: TWSMessage;
+  payload: string;
 }
 
 interface IWSDisconnectAction {
