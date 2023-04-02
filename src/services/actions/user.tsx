@@ -118,7 +118,7 @@ export const forgotPassword: AppThunk = (email: string) => (dispatch: AppDispatc
   passwordForgotRequest(email)
   .then((res) => {
     if (res && res.success) {
-      dispatch(forgotPasswordSuccessAction(res.user));        
+      dispatch(forgotPasswordSuccessAction());
     }
   })
   .catch(() => {

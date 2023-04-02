@@ -40,7 +40,7 @@ export const wsMessage = (action: TWSMessage) => (dispatch: AppDispatch) => {
 
             dispatch(wsConnect(`${GET_USER_ORDERS_URL}?token=${getCookie('accessToken')}`));
           } else {
-            throw new Error('Произошла ошибка ', res.message);
+            throw new Error('Произошла ошибка ');
           }
 
         })

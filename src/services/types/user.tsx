@@ -129,17 +129,15 @@ export const editUserFailedAction = (): IEditUserFailedAction => ({
 
 // Типизация экшнов для забытого юзером пароля
 interface IForgotPasswordSuccessAction {
-  readonly type: typeof RESET_PASSWORD_SUCCESS;
-  user: TUser
+  readonly type: typeof FORGOT_PASSWORD_SUCCESS;
 }
 
 interface IForgotPasswordFailedAction {
   readonly type: typeof FORGOT_PASSWORD_FAILED;
 }
 
-export const forgotPasswordSuccessAction = (user: TUser): IForgotPasswordSuccessAction => ({
-  type: RESET_PASSWORD_SUCCESS,
-  user
+export const forgotPasswordSuccessAction = (): IForgotPasswordSuccessAction => ({
+  type: FORGOT_PASSWORD_SUCCESS
 });
 
 export const forgotPasswordFailedAction = (): IForgotPasswordFailedAction => ({
@@ -149,7 +147,7 @@ export const forgotPasswordFailedAction = (): IForgotPasswordFailedAction => ({
 
 // Типизация экшнов для сброса пароля
 interface IResetPasswordSuccessAction {
-  readonly type: typeof FORGOT_PASSWORD_SUCCESS;
+  readonly type: typeof RESET_PASSWORD_SUCCESS;
 }
 
 interface IResetPasswordFailedAction {
@@ -157,7 +155,7 @@ interface IResetPasswordFailedAction {
 }
 
 export const resetPasswordSuccessAction = (): IResetPasswordSuccessAction => ({
-  type: FORGOT_PASSWORD_SUCCESS
+  type: RESET_PASSWORD_SUCCESS
 });
 
 export const resetPasswordFailedAction = (): IResetPasswordFailedAction => ({

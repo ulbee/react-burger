@@ -25,9 +25,7 @@ import {
   RESET_PASSWORD_FAILED,
 
   LOGOUT_USER_SUCCESS,
-  LOGOUT_USER_FAILED,
-
-  // GET_USER_ORDERS
+  LOGOUT_USER_FAILED
 } from '../../utils/constants';
 import { TUserActions } from '../types/user';
 
@@ -84,9 +82,7 @@ const initialUserState = {
 
   canResetPassword: false,
   resetPasswordSuccess: false,
-  code: '',
-
-  // orders: []
+  code: ''
 }
 
 export const userReducer = (state: TUserState = initialUserState, action: TUserActions) => {
@@ -246,17 +242,6 @@ export const userReducer = (state: TUserState = initialUserState, action: TUserA
         logoutError: true
       }
     }
-    
-    
-    
-    
-    // case GET_USER_ORDERS: {
-    //   return {
-    //     ...state,
-    //     orders: action.action.orders
-    //   }
-    // }
-    
 
     default: return state;  
   }

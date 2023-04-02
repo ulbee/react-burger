@@ -11,11 +11,53 @@ import {
 } from "./constants";
 import { TUser } from "../services/types/user";
 import { TIngredient } from "../services/types/ingredients";
+import { TOrder } from "../services/types/order";
 
 type TErrorResponse = { success: false; message: string; };
 type TIngredientsResponse = { success: true; data: Array<TIngredient>; } | TErrorResponse;
+type TSendOrderResponse = {
+  success: true;
+  name: string;
+  order: TOrder;
+} | TErrorResponse;
 
-export type TResponse = TIngredientsResponse;
+type TUserResponse = {
+  success: true;
+  user: TUser
+} | TErrorResponse;
+
+type TLoginUserResponse = {
+  success: true;
+  accessToken: string;
+  refreshToken: string;
+  user: TUser;
+} | TErrorResponse;
+
+type TLogoutUserResponse = {
+  success: true;
+  message: string;
+} | TErrorResponse;
+
+type TRefreshTokenResponse = {
+  success: true;
+  accessToken: string;
+  refreshToken: string;
+} | TErrorResponse;
+
+type TForgotPasswordResponse = {
+  success: boolean;
+  message: string;
+  user: TUser;
+}
+
+export type TResponse =
+TIngredientsResponse
+& TSendOrderResponse
+& TUserResponse
+& TLoginUserResponse
+& TLogoutUserResponse
+& TRefreshTokenResponse
+& TForgotPasswordResponse;
 
 const checkResponse = async (data: Response): Promise<TResponse> => {
   if (!data.ok) {
@@ -30,7 +72,7 @@ const getIngredientsRequest = async (): Promise<TIngredientsResponse> => {
   return await checkResponse(res);
 }
 
-const sendOrderRequest = async (ingredientIds: Array<string>, accessToken: string): Promise<any> => {
+const sendOrderRequest = async (ingredientIds: Array<string>, accessToken: string): Promise<TSendOrderResponse> => {
   const res = await fetch(SAVEORDERURL, {
     method: 'POST',
     headers: {
@@ -45,7 +87,7 @@ const sendOrderRequest = async (ingredientIds: Array<string>, accessToken: strin
   return await checkResponse(res);
 }
 
-const getUserRequest = async (accessToken: string): Promise<any> => {
+const getUserRequest = async (accessToken: string): Promise<TUserResponse> => {
   const res = await fetch(USERURL, {
     method: 'GET',
     headers: {
@@ -57,7 +99,7 @@ const getUserRequest = async (accessToken: string): Promise<any> => {
   return await checkResponse(res);
 }
 
-const editUserRequest = async (accessToken: string, user: TUser): Promise<any> => {
+const editUserRequest = async (accessToken: string, user: TUser): Promise<TUserResponse> => {
   const res = await fetch(USERURL, {
     method: 'PATCH',
     headers: {
@@ -70,7 +112,7 @@ const editUserRequest = async (accessToken: string, user: TUser): Promise<any> =
   return checkResponse(res);
 }
 
-const addUserRequest = async (user: TUser): Promise<any> => {
+const addUserRequest = async (user: TUser): Promise<TLoginUserResponse> => {
   const res = await fetch(ADDUSERURL, {
     method: 'POST',
     headers: {
@@ -82,7 +124,7 @@ const addUserRequest = async (user: TUser): Promise<any> => {
   return await checkResponse(res);
 }
 
-const loginRequest = async (user: TUser): Promise<any> => {
+const loginRequest = async (user: TUser): Promise<TLoginUserResponse> => {
   const res = await fetch(LOGINUSERURL, {
     method: 'POST',
     headers: {
@@ -94,7 +136,7 @@ const loginRequest = async (user: TUser): Promise<any> => {
   return await checkResponse(res);
 }
 
-const logoutRequest = async (accessToken: string, token: string): Promise<any> => {
+const logoutRequest = async (accessToken: string, token: string): Promise<TLogoutUserResponse> => {
   const res = await fetch(LOGOUTUSERURL, {
     method: 'POST',
     headers: {
@@ -106,7 +148,7 @@ const logoutRequest = async (accessToken: string, token: string): Promise<any> =
   return await checkResponse(res);
 }
 
-const refreshTokenRequest = async (token: string): Promise<any> => {
+const refreshTokenRequest = async (token: string): Promise<TRefreshTokenResponse> => {
   const res = await fetch(REFRESHTOKENURL, {
     method: 'POST',
     headers: {
@@ -118,7 +160,7 @@ const refreshTokenRequest = async (token: string): Promise<any> => {
   return await checkResponse(res);
 }
 
-const passwordForgotRequest = async (email: string): Promise<any> => {
+const passwordForgotRequest = async (email: string): Promise<TForgotPasswordResponse> => {
   const res = await fetch(PASSWORDFORGOTURL, {
     method: 'POST',
     headers: {
@@ -130,7 +172,7 @@ const passwordForgotRequest = async (email: string): Promise<any> => {
   return await checkResponse(res);
 }
 
-const passwordResetRequest = async (password: string, token: string): Promise<any> => {
+const passwordResetRequest = async (password: string, token: string): Promise<TForgotPasswordResponse> => {
   const res = await fetch(PASSWORDRESETURL, {
     method: 'POST',
     headers: {

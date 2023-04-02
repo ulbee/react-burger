@@ -14,7 +14,8 @@ function ProtectedRoute({element, isAuthPage, accessFrom}) {
 
   if (!isUserLoaded && (accessToken || refreshToken)) {
     return <p>Загрузка</p>
-}
+  }
+
   if (isAuthPage && isAuthSuccess) {
     return <Navigate to={from} />;
   }
