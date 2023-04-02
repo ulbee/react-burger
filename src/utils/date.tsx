@@ -1,4 +1,4 @@
-export function getFormattedDate(dateStr: string) {
+export function getFormattedDate(dateStr: string | Date) {
   const dateNow: Date = new Date();
   const date: Date = new Date(dateStr);
   const dateTimezone: string = 'i-GMT' + date.getTimezoneOffset()/60;

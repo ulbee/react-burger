@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import OrderSnippetStyles from './OrderSnippet.module.css';
 
 import { Link, useLocation } from 'react-router-dom';
@@ -7,8 +8,15 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 import IngredientPreview from '../IngredientPreview/IngredientPreview';
 import { ORDER_STATUSES } from '../../utils/constants';
 import { getFormattedDate } from '../../utils/date';
+import { TOrder } from '../../services/types/order';
 
-function OrderSnippet({ order, needDetails, link }) {
+type TOrderSnippet = {
+  order: TOrder;
+  needDetails?: boolean;
+  link: string;
+}
+
+const OrderSnippet: FC<TOrderSnippet> = ({ order, needDetails, link }) => {
   const location = useLocation();
   const { ingredientsById } = useSelector(state => state.menu);
 
@@ -26,7 +34,6 @@ function OrderSnippet({ order, needDetails, link }) {
     return res;
   }, {hidedLength: order.ingredients.length - 6, maxLength: 6, ingredients: []});
 
-  // console.log('OrderSnippet location', location);
   return (
     <Link to={`${link}/${order._id}`} state={{modalBackground: location, from: location}} className={OrderSnippetStyles.link}>
       <div className={OrderSnippetStyles.snippet + ' p-6 mb-4'}>

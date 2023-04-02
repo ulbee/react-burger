@@ -84,5 +84,6 @@ export const GET_USER_ORDERS: 'GET_USER_ORDERS' = 'GET_USER_ORDERS';
 export const ORDER_STATUSES = {
   done: 'Выполнен',
   cancelled: 'Отменён',
-  progress: 'Готовится'
+  progress: 'Готовится',
+  created: 'Создан'
 }

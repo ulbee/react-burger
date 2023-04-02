@@ -5,7 +5,7 @@ type TModalProps = {
   onClick: () => void;
 }
 
-const ModalOverlay: FC<TModalProps> = ({onClick}) => {
+const ModalOverlay: FC<TModalProps> = ({ onClick }) => {
 
   return (
     <div className={ModalOverlayStyles.overlay} onClick={onClick} />

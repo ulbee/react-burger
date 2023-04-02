@@ -1,30 +1,40 @@
 import OrderDetailsStyles from './OrderDetails.module.css';
 
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, FC } from 'react';
+import { useDispatch, useSelector } from '../../services/hooks';
 
 import { useLocation, useParams } from 'react-router-dom';
 import IngredientPreview from '../IngredientPreview/IngredientPreview';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { ORDER_STATUSES, GET_ALL_ORDERS_URL, GET_USER_ORDERS_URL } from '../../utils/constants';
+import { ORDER_STATUSES, GET_ALL_ORDERS_URL, GET_USER_ORDERS_URL, WS_STATUS_ONLINE } from '../../utils/constants';
 import { wsConnect, wsDisconnect } from '../../services/actions/ws';
 import { getFormattedDate } from '../../utils/date';
 import { getCookie } from '../../utils/cookie';
+import { TFeedData } from '../../services/types/order';
 
-function OrderDetails() {
+type TIngredientCounts = {
+  total: number;
+  ingredients: {
+    [name: string]: number;
+  }
+}
+
+const OrderDetails: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { orders } = useSelector(state => state.ws.feed);
+  const { orders } = useSelector(({ ws }) => (
+    ws.status === WS_STATUS_ONLINE && ws.feed.success ? ws.feed as TFeedData : {orders: [], total: 0, totalToday: 0}
+  ));
   const { ingredientsById } = useSelector(state => state.menu);
   const { orderId } = useParams();
   const token = getCookie('accessToken');
   let fullPageClass = location.state ? '' : 'fullPage';
 
-  const currentOrder = orders?.find((el) => {
+  const currentOrder = orders.find((el) => {
     return el._id === orderId;
   });
 
-  const ingredientCounts = currentOrder?.ingredients.reduce((res, item) => {
+  const ingredientCounts: TIngredientCounts | undefined = currentOrder ? currentOrder.ingredients.reduce((res: TIngredientCounts, item) => {
     if (item) {
       if (!res.ingredients[item]) {
         res.ingredients[item] = 0
@@ -35,7 +45,7 @@ function OrderDetails() {
     }
 
     return res;
-  }, {total: 0, ingredients: {}});
+  }, {total: 0, ingredients: {}}) : undefined;
 
   useEffect(() => {
     if (!orders && location.pathname.includes('/feed')) {
@@ -46,17 +56,18 @@ function OrderDetails() {
       dispatch(wsConnect(`${GET_USER_ORDERS_URL}?token=${token}`));
     }
 
-    return () => {
-      if (!location.state) {
-        return dispatch(wsDisconnect());
-      }
-    };
+    return () => { dispatch(wsDisconnect()); }
+    // return () => {
+      // if (!location.state) {
+        // return dispatch(wsDisconnect());
+      // }
+    // };
   }, [dispatch])
 
   return (
     <>
       { !currentOrder && <p>Обрабатываем запрос</p> }
-      { currentOrder &&
+      { currentOrder && ingredientCounts &&
         <div className={OrderDetailsStyles.container + ' ' + OrderDetailsStyles[fullPageClass]}>
           <p className={OrderDetailsStyles.orderNumber + ' text text_type_digits-default mb-10'}>#{currentOrder.number}</p>
           <h2 className='text text_type_main-medium'>{currentOrder.name}</h2>

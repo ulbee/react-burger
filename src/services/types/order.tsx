@@ -2,12 +2,13 @@ import { TIngredient } from "./ingredients";
 
 export type TOrder = {
   _id: string;
-  status: string;
+  status: 'created' | 'done' | 'progress' | 'cancelled';
   name: string;
   createdAt: Date | string;
   updatedAt: Date | string;
   number: number;
-  ingredients: Array<TIngredient>
+  ingredients: Array<string>
+  // ingredients: Array<TIngredient>
 }
 
 export type TFeedData = {

@@ -1,10 +1,11 @@
+import { FC } from 'react';
 import OrderAcceptedStyles from './OrderAccepted.module.css';
 
 import { useSelector } from '../../services/hooks';
 
 import done from '../../images/done.svg';
 
-function OrderAccepted() {
+const OrderAccepted: FC = () => {
   const {orderId, orderRequest, orderFailed} = useSelector(state => state.menu);
   
   return (
