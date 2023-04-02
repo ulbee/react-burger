@@ -7,7 +7,7 @@ import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 const modalsContainer = document.querySelector('#modals') as HTMLElement;
 
 type TModalProps = {
-  title: string;
+  title?: string;
   onClose: () => void;
   children: ReactNode;
 }

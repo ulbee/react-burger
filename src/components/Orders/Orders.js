@@ -9,7 +9,7 @@ import OrderSnippet from '../OrderSnippet/OrderSnippet';
 function Orders() {
   const dispatch = useDispatch();
   const { total, totalToday, orders } = useSelector(({ws}) => (
-    ws.status === WS_STATUS_ONLINE && ws.feed.success ? ws.feed : {}
+    ws.status === WS_STATUS_ONLINE && ws.feed.success ? ws.feed : {orders: []}
   ));
 
   const ordersByStatus = orders?.length && orders.reduce((res, item) => {

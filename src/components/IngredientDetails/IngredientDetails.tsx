@@ -1,6 +1,6 @@
 import IngredientDetailsStyles from './IngredientDetails.module.css';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { useParams } from 'react-router-dom';
 
 import { SHOW_INGREDIENT } from '../../utils/constants';

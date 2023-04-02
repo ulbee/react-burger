@@ -1,8 +1,9 @@
+import { FC } from 'react';
 import BurgerConstructorStyles from './BurgerConstructor.module.css';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import PropTypes from 'prop-types';
-import { useDrop } from 'react-dnd';
+import { useDrop, DropTargetMonitor } from 'react-dnd';
 
 import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import TotalPrice from '../TotalPrice/TotalPrice';
@@ -11,14 +12,15 @@ import Ingredient from '../Ingredient/Ingredient';
 import { sendOrder } from '../../services/actions/ingredients';
 import { ADD_BUN, ADD_INGREDIENT } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
+import { TIngredientList } from '../../services/types/ingredients';
 
 
-function BurgerConstructor({ openOrderDetailsModal }) {
+const BurgerConstructor: FC<{openOrderDetailsModal: () => void}> = ({ openOrderDetailsModal }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const {addedIngredients, ingredientsById} = useSelector(state => state.menu);
-  const {isAuthSuccess} = useSelector(state => state.user);
+  const { addedIngredients, ingredientsById } = useSelector(state => state.menu);
+  const { isAuthSuccess } = useSelector(state => state.user);
 
   const ingredientIds = () => {
     let res = addedIngredients.bun ? [addedIngredients.bun._id] : [];
@@ -43,13 +45,12 @@ function BurgerConstructor({ openOrderDetailsModal }) {
     }
   }
 
-  const [{isHover}, dropTarget] = useDrop({
+  const [{ isHover }, dropTarget] = useDrop({
     accept: 'ingredient',
-    item: {},
-    collect: monitor => ({
+    collect: (monitor: DropTargetMonitor<TIngredientList>) => ({
       isHover: monitor.isOver()
     }),
-    drop(item) {
+    drop(item: TIngredientList) {
       const type = ingredientsById[item.id].type === 'bun' ? ADD_BUN : ADD_INGREDIENT;
       dispatch({type: type, id: item.id})
     },

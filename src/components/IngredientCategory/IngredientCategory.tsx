@@ -1,21 +1,28 @@
 import IngredientCategoryStyles from './IngredientCategory.module.css';
 
-import { useMemo, useEffect } from 'react';
-
-// import PropTypes from 'prop-types';
-// import IngredientsPropTypes from '../../utils/TIngredient';
+import { useMemo, useEffect, FC, Ref } from 'react';
 
 import IngredientCard from '../IngredientCard/IngredientCard';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 import { SET_ACTIVE_TAB } from '../../utils/constants';
+import { TIngredient } from '../../services/types/ingredients';
 
-function IngredientCategory({ id, title, data, openIngredientModal, link, inView }) {
+type TIngredientCategory = {
+  id: string;
+  title: string;
+  data: Array<TIngredient>;
+  openIngredientModal: () => void;
+  link: Ref<HTMLDivElement>;
+  inView: boolean;
+}
+
+const IngredientCategory: FC<TIngredientCategory> = ({ id, title, data, openIngredientModal, link, inView }) => {
   const dispatch = useDispatch();
 
   const { addedIngredients } = useSelector(store => store.menu);
 
   const ingredientsCount = useMemo(() => {
-    return data?.reduce((res, item) => {
+    return data?.reduce((res: {[name: string]: { count?: number}}, item) => {
       res[item._id] = {};
       if (item.type === 'bun' && item._id === addedIngredients.bun?._id) {
         res[item._id].count = 1;
@@ -50,14 +57,5 @@ function IngredientCategory({ id, title, data, openIngredientModal, link, inView
     </div>  
   );
 }
-
-// IngredientCategory.propTypes = {
-//   id: PropTypes.string.isRequired,
-//   title: PropTypes.string.isRequired,
-//   data: PropTypes.arrayOf(IngredientsPropTypes).isRequired,
-//   openIngredientModal: PropTypes.func.isRequired,
-//   link: PropTypes.func.isRequired,
-//   inView: PropTypes.bool.isRequired
-// }
 
 export default IngredientCategory;

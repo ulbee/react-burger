@@ -1,26 +1,28 @@
 import IngredientStyles from './Ingredient.module.css';
 
-import React, { useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
-import { useDrag, useDrop } from 'react-dnd';
+import { useRef, FC, BaseSyntheticEvent, MouseEvent } from 'react';
+import { useDispatch, useSelector } from '../../services/hooks';
+import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { CHANGE_INGREDIENT_ORDER, DELETE_INGREDIENT } from '../../utils/constants';
+import { TIngredientList } from '../../services/types/ingredients';
 
-
-function Ingredient({id, index}) {
+const Ingredient: FC<TIngredientList> = ({id, index}) => {
   const dispatch = useDispatch();
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
 
-  const {ingredientsById} = useSelector(state => state.menu);  
+  const { ingredientsById } = useSelector(state => state.menu);  
 
-  const moveItem = (prevIndex, newIndex) => {
-    dispatch({type: CHANGE_INGREDIENT_ORDER, prevId: prevIndex, newId: newIndex});
+  const moveItem = (prevIndex: number, newIndex: number) => {
+    dispatch({type: CHANGE_INGREDIENT_ORDER, prevIndex, newIndex});
   }
 
-  const handleDeleteIngredient = (e) => {
-    const targetElement = e.target.parentNode.parentNode;
+  // TODO
+  const handleDeleteIngredient = (e: MouseEvent<HTMLLIElement>) => {
+    console.log('e', e.target);
+    const targetElement = (e.target as HTMLLIElement).parentNode?.parentNode as HTMLElement;
+
     if (targetElement.classList.contains('constructor-element__action')) {
       dispatch({type: DELETE_INGREDIENT, index: e.currentTarget.id});
     }
@@ -29,7 +31,7 @@ function Ingredient({id, index}) {
   const [, dropRef] = useDrop({
     accept: 'sortIngregient',
 
-   hover(item, monitor) {
+    hover(item: TIngredientList, monitor: DropTargetMonitor<TIngredientList>) {
       if (!ref.current) {
         return
       }
@@ -42,6 +44,7 @@ function Ingredient({id, index}) {
       const hoverBoundingRect = ref.current?.getBoundingClientRect()
       const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
+      if (!clientOffset) return;
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
@@ -71,7 +74,7 @@ function Ingredient({id, index}) {
 
   dragRef(dropRef(ref));
   return (
-    <li id={index} draggable ref={ref} className={IngredientStyles.item + ' mb-4 mr-2'} style={{opacity}} onClick={handleDeleteIngredient}>
+    <li id={index.toString()} draggable ref={ref} className={IngredientStyles.item + ' mb-4 mr-2'} style={{opacity}} onClick={handleDeleteIngredient}>
       <DragIcon type="primary" />
       <ConstructorElement
         isLocked={false}
@@ -82,11 +85,6 @@ function Ingredient({id, index}) {
     </li>
   );
 
-}
-
-Ingredient.propTypes = {
-  id: PropTypes.string,
-  index: PropTypes.number
 }
 
 export default Ingredient;

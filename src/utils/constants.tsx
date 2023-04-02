@@ -15,11 +15,7 @@ export const GET_USER_ORDERS_URL = WSURL + '/orders';
 export const WS_STATUS_OFFLINE: 'OFFLINE' = 'OFFLINE';
 export const WS_STATUS_ONLINE: 'ONLINE' = 'ONLINE';
 export const WS_STATUS_CONNECTING: 'CONNECTING...' = 'CONNECTING...';
-// export const WS_STATUS = {
-//   CONNECTING : 'CONNECTING...',
-//   ONLINE : 'ONLINE',
-//   OFFLINE : 'OFFLINE'
-// }
+
 export const WS_MESSAGE: 'WS_MESSAGE' = 'WS_MESSAGE';
 export const WS_CONNECT: 'WS_CONNECT' = 'WS_CONNECT';
 export const WS_DISCONNECT: 'WS_DISCONNECT' = 'WS_DISCONNECT';
@@ -27,6 +23,8 @@ export const WS_CONNECTING: 'WS_CONNECTING' = 'WS_CONNECTING';
 export const WS_OPEN: 'WS_OPEN' = 'WS_OPEN';
 export const WS_CLOSE: 'WS_CLOSE' = 'WS_CLOSE';
 export const WS_ERROR: 'WS_ERROR' = 'WS_ERROR';
+
+// export const CATEGORIES_TITLES: 'bun' | 'main' | 'sauce' = ;
 
 // Константы для обработки запроса для получения всех ингридиентов
 export const GET_INGREDIENTS_REQUEST: 'GET_INGREDIENTS_REQUEST' = 'GET_INGREDIENTS_REQUEST';

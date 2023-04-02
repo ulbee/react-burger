@@ -4,8 +4,16 @@ import { store } from '../store';
 import { TIngredientsAction } from '../types/ingredients';
 import { TUserActions } from './user';
 import { TWSAction } from '../types/ws';
+import { TMenuState } from '../reducers';
+import { TUserState } from '../reducers/user';
+import { TWSState } from '../reducers/ws';
 
-export type TRootState = ReturnType<typeof store.getState>
+// export type TRootState = ReturnType<typeof store.getState>
+export type TRootState = {
+  menu: TMenuState;
+  user: TUserState;
+  ws: TWSState;
+};
 
 // Типизация всех экшенов приложения
 type TApplicationActions = TIngredientsAction | TUserActions | TWSAction;

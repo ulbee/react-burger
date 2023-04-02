@@ -19,26 +19,29 @@ import {
 import { TIngredientsByType, TIngredientsById, TIngredient } from '../types/ingredients';
 import { TIngredientsAction } from '../types/ingredients';
 
-export type TMenuState = {
-  ingredientsByType: {} & TIngredientsByType ,
-  ingredientsById: {} & TIngredientsById,
-  ingredientsRequest: boolean,
-  ingredientsFailed: boolean,
 
-  addedIngredients: {
-    bun: TIngredient | null,
-    others: Array<TIngredient>
-  },
-  currentIngredient: string | null,
-
-  activeTab: 'bun' | 'main' | 'sauce',
-
-  orderId: number | null,
-  orderRequest: boolean,
-  orderFailed: boolean
+type TAddedIngredients = {
+  bun: TIngredient | null;
+  others: Array<TIngredient> | [];
 }
 
-const initialMenuState: TMenuState = {
+export type TMenuState = {
+  ingredientsByType: TIngredientsByType;
+  ingredientsById: TIngredientsById;
+  ingredientsRequest: boolean;
+  ingredientsFailed: boolean;
+
+  addedIngredients: TAddedIngredients;
+  currentIngredient: null | TIngredient;
+
+  activeTab: string;
+
+  orderId: number | null;
+  orderRequest: boolean;
+  orderFailed: boolean;
+}
+
+const initialMenuState = {
   ingredientsByType: {},
   ingredientsById: {},
   ingredientsRequest: false,
@@ -46,7 +49,7 @@ const initialMenuState: TMenuState = {
 
   addedIngredients: {
     bun: null,
-    others: []
+    others: [],
   },
   currentIngredient: null,
 
@@ -59,7 +62,7 @@ const initialMenuState: TMenuState = {
 
 let uniqId = 0;
 
-export const ingredientsReducer = (state: TMenuState = initialMenuState, action: TIngredientsAction) => {
+export const ingredientsReducer = (state: TMenuState = initialMenuState, action: TIngredientsAction): TMenuState => {
   switch (action.type) {
     case GET_INGREDIENTS_REQUEST: {
       return {

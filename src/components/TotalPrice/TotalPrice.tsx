@@ -1,19 +1,20 @@
 import TotalPriceStyles from './TotalPrice.module.css';
 
 import { useMemo, FC } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 import { TRootState } from '../../services/types/index';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { TMenuState } from '../../services/reducers';
+import { TIngredient } from '../../services/types/ingredients';
 
 const TotalPrice: FC = () => {
 
   const { addedIngredients: { bun, others } }: TMenuState = useSelector((state: TRootState) => state.menu);
 
   const total = useMemo(() => (
-    others.reduce(
-      (res, {price}) => res += price, 
+    (others as TIngredient[]).reduce(
+      (res: number, {price}: TIngredient) => res += price, 
       bun ? bun.price * 2 : 0
     )), [bun, others]);
 

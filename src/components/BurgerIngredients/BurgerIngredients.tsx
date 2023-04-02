@@ -1,6 +1,7 @@
+import { FC, Ref } from 'react';
 import BurgerIngredientsStyles from './BurgerIngredients.module.css';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../services/hooks';
 
 import PropTypes from 'prop-types';
 import { useInView } from 'react-intersection-observer';
@@ -10,19 +11,24 @@ import IngredientCategory from '../IngredientCategory/IngredientCategory';
 
 import { SET_ACTIVE_TAB } from '../../utils/constants';
 
+type TCategoriesTitles = {
+  bun: string;
+  main: string;
+  sauce: string;
+}
 
-function BurgerIngredients({ openIngredientModal }) {
+const BurgerIngredients: FC<{ openIngredientModal: () => void }> = ({ openIngredientModal }) => {
   const dispatch = useDispatch();
 
   const { ingredientsByType, activeTab } = useSelector(state => state.menu);
   
-  const categoriesTitles = {
-    'bun': 'Булки',
-    'main': 'Начинки',
-    'sauce': 'Соусы'
+  const categoriesTitles: TCategoriesTitles = {
+    bun: 'Булки',
+    main: 'Начинки',
+    sauce: 'Соусы'
   }
   
-  const [bunsRef, inViewBuns] = useInView({
+  const [bunRef, inViewBun] = useInView({
     threshold: 0.3
   });
 
@@ -33,13 +39,13 @@ function BurgerIngredients({ openIngredientModal }) {
     threshold: 0.3
   });
 
-  const categoriesOrder = [
-    {name: 'bun', ref: bunsRef, inView: inViewBuns}, 
+  const categoriesOrder: Array<{name: keyof TCategoriesTitles; ref: Ref<HTMLDivElement>; inView: boolean}> = [
+    {name: 'bun', ref: bunRef, inView: inViewBun}, 
     {name: 'main', ref: mainsRef, inView: inViewFilling}, 
     {name: 'sauce', ref: saucesRef, inView: inViewSauces}
   ];
 
-  const setActiveTab = (name) => {
+  const setActiveTab = (name: string) => {
     dispatch({type: SET_ACTIVE_TAB, name})
   }
 

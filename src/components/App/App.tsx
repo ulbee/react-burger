@@ -1,8 +1,8 @@
 import AppStyles from './App.module.css';
 
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../services/hooks';
 
 import { WS_STATUS_ONLINE } from '../../utils/constants';
 
@@ -12,7 +12,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 
 import Orders from '../Orders/Orders';
 
-import { LoginPage } from '../../pages/login.tsx';
+import { LoginPage } from '../../pages/login';
 import { RegisterPage } from '../../pages/register';
 import { ForgotPasswordPage } from '../../pages/forgotPassword';
 import { ResetPasswordPage } from '../../pages/resetPassword';
@@ -28,16 +28,14 @@ import { getUser } from '../../services/actions/user';
 
 function App() {
   const dispatch = useDispatch();
-
   const history = useNavigate();
-
   const location = useLocation();
   const modalBackground = location.state?.modalBackground;
 
   const { ingredientsByType } = useSelector(state => state.menu);
   
-  const { orders } = useSelector(({ status, feed }) => (
-    status === WS_STATUS_ONLINE && feed?.success ? feed : {}
+  const { orders } = useSelector(({ws}) => (
+    ws.status === WS_STATUS_ONLINE && ws.feed?.success ? ws.feed : { orders: []}
   ));
     
   useEffect(() => {

@@ -1,7 +1,7 @@
 import OrderSnippetStyles from './OrderSnippet.module.css';
 
 import { Link, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/hooks';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import IngredientPreview from '../IngredientPreview/IngredientPreview';

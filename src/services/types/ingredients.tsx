@@ -29,6 +29,7 @@ export type TIngredient = {
   image_mobile: string;
   image_large: string;
   __v?: number;
+  key?: number;
 };
 
 export type TIngredientsByType = {
@@ -147,3 +148,5 @@ export type TIngredientsAction =
   | IAddBun
   | IChangeOrderIngredients
   | ISetActiveTab;
+
+export type TIngredientList = {id: string, index: number};
