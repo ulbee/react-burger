@@ -1,0 +1,114 @@
+import { FC } from 'react';
+import BurgerConstructorStyles from './BurgerConstructor.module.css';
+
+import { useDispatch, useSelector } from '../../services/hooks';
+import PropTypes from 'prop-types';
+import { useDrop, DropTargetMonitor } from 'react-dnd';
+
+import { ConstructorElement, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import TotalPrice from '../TotalPrice/TotalPrice';
+import Ingredient from '../Ingredient/Ingredient';
+
+import { sendOrder } from '../../services/actions/ingredients';
+import { ADD_BUN, ADD_INGREDIENT } from '../../utils/constants';
+import { useNavigate } from 'react-router-dom';
+import { TIngredientList } from '../../services/types/ingredients';
+
+type TBurgerConstructor = {
+  openOrderDetailsModal: () => void;
+};
+
+const BurgerConstructor: FC<TBurgerConstructor> = ({ openOrderDetailsModal }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { addedIngredients, ingredientsById } = useSelector(state => state.menu);
+  const { isAuthSuccess } = useSelector(state => state.user);
+
+  const ingredientIds = () => {
+    let res = addedIngredients.bun ? [addedIngredients.bun._id] : [];
+
+    addedIngredients.others.map(item => {
+      res.push(item._id);
+    });
+
+    if (addedIngredients.bun) {
+      res.push(addedIngredients.bun._id);
+    }
+    return res;
+  }
+  
+  const sendOrderHandler = () => {
+    if (isAuthSuccess) {
+      dispatch(sendOrder(ingredientIds()));
+
+      openOrderDetailsModal();
+    } else {
+      navigate('/login');
+    }
+  }
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingredient',
+    collect: (monitor: DropTargetMonitor<TIngredientList>) => ({
+      isHover: monitor.isOver()
+    }),
+    drop(item: TIngredientList) {
+      const type = ingredientsById[item.id].type === 'bun' ? ADD_BUN : ADD_INGREDIENT;
+      dispatch({type: type, id: item.id})
+    },
+  })
+
+  const hoverClassName = isHover ? 'onHover': '' ;
+
+  return (
+    <section ref={dropTarget} className={BurgerConstructorStyles.section + ' pt-25 pl-4 pr-4 pb-13'}>
+      <div className={BurgerConstructorStyles.burger + ' ' + BurgerConstructorStyles[hoverClassName]} >
+        <div className={BurgerConstructorStyles.bun + ' pl-8 pr-4'}>
+          { !addedIngredients.bun && <p className={BurgerConstructorStyles.info}>Выберите булку</p> }
+          { addedIngredients.bun &&
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={addedIngredients.bun?.name + ' (верх)'}
+              price={addedIngredients.bun?.price}
+              thumbnail={addedIngredients.bun?.image}/>
+          } 
+        </div>
+        {(addedIngredients.others.length) ?
+          <ul className={BurgerConstructorStyles.list} >
+            {addedIngredients.others.map((item, index) => {
+                return (
+                  <Ingredient key={item.key} id={item._id} index={index}/>
+                );
+              })
+            }
+          </ul>
+          : <p className={BurgerConstructorStyles.info + ' pl-8'}>Выберите начинку для бургера</p>
+        }
+        <div className={BurgerConstructorStyles.bun + ' pl-8 pr-4'}>
+          { addedIngredients.bun &&
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={addedIngredients.bun?.name + ' (низ)'}
+              price={addedIngredients.bun?.price}
+              thumbnail={addedIngredients.bun?.image}/>
+          }
+        </div>
+      </div>
+      <div className={BurgerConstructorStyles.total + ' pr-4'}>
+        <TotalPrice/>        
+        <Button type="primary" size="medium" htmlType="submit" onClick={sendOrderHandler}>
+          Оформить заказ
+        </Button>
+      </div>
+    </section>
+  );
+}
+
+BurgerConstructor.propTypes = {
+  openOrderDetailsModal: PropTypes.func.isRequired
+};
+
+export default BurgerConstructor;
