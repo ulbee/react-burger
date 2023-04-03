@@ -4,28 +4,19 @@ import { createReducer } from '@reduxjs/toolkit';
 import { TWSMessage, IWSMessageAction, IWSErrorAction } from '../types/ws';
 import { TFeedData } from '../types/order';
 
-type TWSStateOffline = {
-  status: typeof WS_STATUS_OFFLINE; 
+export type TWSState = {
+  status: typeof WS_STATUS_ONLINE | typeof WS_STATUS_CONNECTING | typeof WS_STATUS_OFFLINE;
+  feed?: TFeedData | TWSMessage | undefined;
   connectionError: string;
 };
-type TWSStateConnecting = {
-  status: typeof WS_STATUS_CONNECTING;
-  connectionError: string | TWSMessage;
-};
-type TWSStateOnline = {
-  status: typeof WS_STATUS_ONLINE;
-  feed: TFeedData | TWSMessage;
-  connectionError: string;
-};
-
-export type TWSState = TWSStateOffline | TWSStateConnecting | TWSStateOnline;
 
 const initialWSState: TWSState = {
   status: WS_STATUS_OFFLINE,
-  connectionError: ''
+  connectionError: '',
+  feed: undefined
 }
 
-export const wsReducer = createReducer(initialWSState as TWSState, (builder: any) => {
+export const wsReducer = createReducer(initialWSState, (builder) => {
 
   builder
     .addCase(wsConnecting, (state: TWSState) => {
@@ -40,9 +31,20 @@ export const wsReducer = createReducer(initialWSState as TWSState, (builder: any
       state.connectionError = ''
     })
     .addCase(wsError, (state: TWSState, action: IWSErrorAction) => {
-      state.connectionError = action.payload.success ? '' : action.payload.message;
+      let error = '';
+      if (typeof action.payload !== 'string' && typeof action.payload !== 'undefined') {
+        if (!action.payload.success) {
+          error = action.payload.message;
+        }
+      }
+
+      state.connectionError = error;
     })
-    .addCase(WS_MESSAGE, (state: TWSStateOnline, action: IWSMessageAction) => {
-      state.feed = action.payload;
+    .addCase(WS_MESSAGE, (state: TWSState, action: IWSMessageAction) => {
+      let feed = undefined;
+      if (typeof action.payload !== 'string') {
+        feed = action.payload;
+      }
+      state.feed = feed;
     })
 })

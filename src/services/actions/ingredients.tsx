@@ -28,8 +28,7 @@ export const getIngredients: AppThunk = () => (dispatch: AppDispatch) => {
 
         dispatch(getIngredientsSuccessAction(ingredientsByType, ingredientsById))
       } else {
-        // Пробрасывать ошибку и обрабатывать все только в catch
-        dispatch(getIngredientsFailedAction());
+        throw new Error('Ошибка: ' + res.message);
       }
     })
     .catch(() => {

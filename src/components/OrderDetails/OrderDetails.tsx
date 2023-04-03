@@ -22,9 +22,8 @@ type TIngredientCounts = {
 const OrderDetails: FC = () => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const { orders } = useSelector(({ ws }) => (
-    ws.status === WS_STATUS_ONLINE && ws.feed.success ? ws.feed as TFeedData : {orders: [], total: 0, totalToday: 0}
-  ));
+  const { orders } = useSelector(({ ws }) => (ws.feed as TFeedData));
+
   const { ingredientsById } = useSelector(state => state.menu);
   const { orderId } = useParams();
   const token = getCookie('accessToken');

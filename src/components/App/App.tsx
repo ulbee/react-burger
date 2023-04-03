@@ -4,8 +4,6 @@ import { useEffect, FC } from 'react';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from '../../services/hooks';
 
-import { WS_STATUS_ONLINE } from '../../utils/constants';
-
 import Main from '../Main/Main';
 import AppHeader from '../AppHeader/AppHeader';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
@@ -25,6 +23,7 @@ import IngredientDetails from '../IngredientDetails/IngredientDetails';
 import OrderDetails from '../OrderDetails/OrderDetails';
 import { getIngredients } from '../../services/actions/ingredients';
 import { getUser } from '../../services/actions/user';
+import { TFeedData } from '../../services/types/order';
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -34,9 +33,7 @@ const App: FC = () => {
 
   const { ingredientsByType } = useSelector(state => state.menu);
   
-  const { orders } = useSelector(({ws}) => (
-    ws.status === WS_STATUS_ONLINE && ws.feed?.success ? ws.feed : { orders: []}
-  ));
+  const { orders } = useSelector(({ws}) => (ws.feed as TFeedData));
     
   useEffect(() => {
     dispatch(getIngredients());

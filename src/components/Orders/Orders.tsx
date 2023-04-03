@@ -15,9 +15,11 @@ type TOrdersByStatus = {
 
 const Orders: FC = () => {
   const dispatch = useDispatch();
-  const { total, totalToday, orders } = useSelector((state) => (
-    state.ws.status === WS_STATUS_ONLINE && state.ws.feed?.success ? state.ws.feed as TFeedData : {orders: [], total: 0, totalToday: 0}
-  ));
+  const feed = useSelector((state) => (state.ws.feed as TFeedData));
+
+  const total = feed ? feed.total : 0;
+  const totalToday = feed ? feed.totalToday : 0;
+  const orders = feed ? feed.orders : [];
 
   const ordersByStatus: TOrdersByStatus | undefined = orders?.length ? (orders as Array<TOrder>).reduce((res: TOrdersByStatus, item) => {
     if (res[item.status].length < 20) {
@@ -41,8 +43,8 @@ const Orders: FC = () => {
       <h2 className={OrdersStyles.title + ' text text_type_main-large mt-10 mb-5'}>Лента заказов</h2>
       <section className={OrdersStyles.feed + ' pr-2'}>
         {orders &&
-          orders.map((item, index) => {
-            return <OrderSnippet key={item._id} order={item} link='/feed' />
+          orders.map((order: TOrder) => {
+            return <OrderSnippet key={order._id} order={order} link='/feed' />
           })
         }
       </section>

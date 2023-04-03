@@ -13,44 +13,48 @@ export type TWSErrorMessage = {
   success: false;
   message: string;
 }
+
 export type TWSMessage = {
   success: true;  
   orders: Array<TOrder>;
 } | TWSErrorMessage;
 
+
+type TPayload = TWSMessage | TWSErrorMessage | string| undefined;
+
 export interface IWSMessageAction {
   readonly type: typeof WS_MESSAGE;
-  payload: TWSMessage;
+  payload: TPayload;
 }
 
 export interface IWSErrorAction {
   readonly type: typeof WS_ERROR;
-  payload: TWSErrorMessage;
+  payload: TPayload;
 }
 
 interface IWSOpenAction {
   readonly type: typeof WS_OPEN;
-  payload: TWSMessage;
+  payload: TPayload;
 }
 
 interface IWSCloseAction {
   readonly type: typeof WS_CLOSE;
-  payload: TWSMessage;
+  payload: TPayload;
 }
 
 interface IWSConnectingAction {
   readonly type: typeof WS_CONNECTING;
-  payload: TWSMessage;
+  payload: TPayload;
 }
 
 export interface IWSConnectAction {
   readonly type: typeof WS_CONNECT;
-  payload: string;
+  payload: TPayload;
 }
 
 interface IWSDisconnectAction {
   readonly type: typeof WS_DISCONNECT;
-  payload: TWSMessage;
+  payload: TPayload;
 }
 
 export const wsMessageAction = (payload: TWSMessage): IWSMessageAction => ({

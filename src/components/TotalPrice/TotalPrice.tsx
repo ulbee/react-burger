@@ -5,12 +5,11 @@ import { useSelector } from '../../services/hooks';
 import { TRootState } from '../../services/types/index';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { TMenuState } from '../../services/reducers';
 import { TIngredient } from '../../services/types/ingredients';
 
 const TotalPrice: FC = () => {
 
-  const { addedIngredients: { bun, others } }: TMenuState = useSelector((state: TRootState) => state.menu);
+  const { addedIngredients: { bun, others } } = useSelector((state: TRootState) => state.menu);
 
   const total = useMemo(() => (
     (others as TIngredient[]).reduce(

@@ -12,9 +12,9 @@ export const PASSWORDRESETURL = BASEURL + '/password-reset/reset';
 export const WSURL = 'wss://norma.nomoreparties.space';
 export const GET_ALL_ORDERS_URL = WSURL + '/orders/all';
 export const GET_USER_ORDERS_URL = WSURL + '/orders';
-export const WS_STATUS_OFFLINE: 'OFFLINE' = 'OFFLINE';
-export const WS_STATUS_ONLINE: 'ONLINE' = 'ONLINE';
-export const WS_STATUS_CONNECTING: 'CONNECTING...' = 'CONNECTING...';
+export const WS_STATUS_OFFLINE = 'OFFLINE';
+export const WS_STATUS_ONLINE = 'ONLINE';
+export const WS_STATUS_CONNECTING = 'CONNECTING...';
 
 export const WS_MESSAGE: 'WS_MESSAGE' = 'WS_MESSAGE';
 export const WS_CONNECT: 'WS_CONNECT' = 'WS_CONNECT';

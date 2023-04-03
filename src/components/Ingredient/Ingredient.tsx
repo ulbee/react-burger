@@ -1,6 +1,6 @@
 import IngredientStyles from './Ingredient.module.css';
 
-import { useRef, FC, BaseSyntheticEvent, MouseEvent } from 'react';
+import { useRef, FC, MouseEvent } from 'react';
 import { useDispatch, useSelector } from '../../services/hooks';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 
@@ -18,9 +18,7 @@ const Ingredient: FC<TIngredientList> = ({id, index}) => {
     dispatch({type: CHANGE_INGREDIENT_ORDER, prevIndex, newIndex});
   }
 
-  // TODO
   const handleDeleteIngredient = (e: MouseEvent<HTMLLIElement>) => {
-    console.log('e', e.target);
     const targetElement = (e.target as HTMLLIElement).parentNode?.parentNode as HTMLElement;
 
     if (targetElement.classList.contains('constructor-element__action')) {

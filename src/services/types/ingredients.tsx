@@ -1,5 +1,3 @@
-import { AppThunk } from './index';
-
 import {
   GET_INGREDIENTS_REQUEST,
   GET_INGREDIENTS_FAILED,

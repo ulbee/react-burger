@@ -158,13 +158,11 @@ export const logoutUser: AppThunk = () => (dispatch: AppDispatch) => {
 
 /**
  * @param {function} getRequest - запрос для ретрая
- * @param {object} options - параметры запроса
  * @param {string} options.accessToken - токен авторизации
  * @param {string} onSuccess - функция для обработки успешного результата
  * @param {string} onFail - функция для обработки ошибок
  */
 
-// TODO что делать с options и getRequest???
 function getRequestWithRetry(getRequest: ((accessToken: string) => Promise<any>), onSuccess: requestRetryOnSuccess, onFail: requestRetryOnFail) {
   
   getRequest(getCookie('accessToken'))

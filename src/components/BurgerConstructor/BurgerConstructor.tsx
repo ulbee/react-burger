@@ -14,8 +14,11 @@ import { ADD_BUN, ADD_INGREDIENT } from '../../utils/constants';
 import { useNavigate } from 'react-router-dom';
 import { TIngredientList } from '../../services/types/ingredients';
 
+type TBurgerConstructor = {
+  openOrderDetailsModal: () => void;
+};
 
-const BurgerConstructor: FC<{openOrderDetailsModal: () => void}> = ({ openOrderDetailsModal }) => {
+const BurgerConstructor: FC<TBurgerConstructor> = ({ openOrderDetailsModal }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

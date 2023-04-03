@@ -1,5 +1,3 @@
-import { TIngredient } from "./ingredients";
-
 export type TOrder = {
   _id: string;
   status: 'created' | 'done' | 'progress' | 'cancelled';
@@ -8,7 +6,6 @@ export type TOrder = {
   updatedAt: Date | string;
   number: number;
   ingredients: Array<string>
-  // ingredients: Array<TIngredient>
 }
 
 export type TFeedData = {
